@@ -1,0 +1,221 @@
+/* Settings panel */
+
+.settings h4 {
+    font-weight: 600;
+    margin-bottom: 0;
+    padding: 30px 0;
+    color: var(--plain-font-color);
+}
+
+
+.settings ul {
+    padding-left: 0;
+    list-style: none;
+    margin-bottom: 0;
+}
+
+.settings .inside label {
+    color: var(--plain-font-color);
+}
+
+.settings .content .inside {
+    padding: 25px 0;
+}
+
+
+.settings ul > li {
+}
+
+.settings ul > li > .headline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 30px 0;
+}
+
+
+.settings ul > li > .headline h5 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 7px;
+    transition: all 0.3s;
+    color: var(--plain-font-color);
+}
+
+.settings ul > li > .headline .eva {
+    fill: var(--icon-color);
+    transition: all 0.3s ease;
+}
+
+.settings ul > li > .headline[data-toggle="collapse"][aria-expanded="true"] .eva-arrow-ios-forward {
+    /* select the icon when the headline data-toggle="collapse" and aria-expanded="true" */
+    display: none;
+}
+
+.settings ul > li > .headline[data-toggle="collapse"][aria-expanded="true"] .eva-arrow-ios-downward {
+    /* ??? */
+    display: inline-block;
+    fill: #007bff;
+}
+
+.settings ul > li > .headline .eva-arrow-ios-downward {
+    display: none;
+}
+
+.settings .account .primary {
+    padding: 14px 0;
+    background: var(--purple);
+    border: none;
+}
+
+.settings .account .form-control {
+    border: 1px solid transparent;
+}
+
+.settings .account .form-control:focus {
+    border: 1px solid var(--purple);
+}
+
+.settings .options > li .headline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.settings .options > li:first-of-type {
+    padding-top: 0;
+}
+
+.settings .options li {
+    padding: 25px 0;
+}
+
+.settings .options > li .switch {
+    margin-left: 30px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    min-width: 42px;
+    max-width: 42px;
+    height: 20px;
+    margin-bottom: 0;
+}
+
+.switch .round {
+    width: 42px;
+    height: 20px;
+    border: 34px;
+}
+
+.switch .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--form-input-background-color);
+    transition: .4s;
+}
+
+.switch .slider.round {
+    border-radius: 34px;
+    width: 42px;
+    height: 20px;
+}
+
+.switch .slider.round:before {
+    border-radius: 50%;
+}
+
+.switch .slider:before {
+    position: absolute;
+    content: "";
+    height: 14px;
+    width: 14px;
+    left: 3px;
+    bottom: 3px;
+    background: #fff;
+    transition: .4s;
+}
+
+.switch input:checked + .slider {
+    /* :checked means the checked input radio */
+    background-color: var(--active-link-color) !important;
+}
+
+.switch input:checked + .slider:before {
+    /* pseudo Element that add content before */
+    -webkit-transform: translateX(22px);
+    -ms-transform: translateX(22px);
+    transform: translateX(22px);
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+
+.settings .integrations > li {
+    display: flex;
+    align-items: center;
+    padding: 25px;
+    background: var(--sidebar-discussion-chat-color);
+    border-radius: 6px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .03);
+}
+
+.settings .integrations > li .btn {
+    min-width: 42px;
+    margin-right: 15px;
+}
+
+.settings .integrations > li .content {
+    flex-basis: 100%;
+    /* defines the default size of a flex item */
+}
+
+.settings .integrations > li .headline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+.settings .integrations > li .headline h5 {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.7;
+    margin-bottom: 0;
+}
+
+
+.settings .integrations > li + li {
+    /*all (li)'s followed by type (li)*/
+    margin-top: 15px;
+}
+
+.settings .integrations > li > .btn > .eva {
+    fill: var(--white);
+}
+
+.settings .integrations > li:nth-child(1) .btn {
+    background: #dc3545;
+}
+
+.settings .integrations > li:nth-child(2) .btn {
+    background: #6610f2;
+}
+
+.settings .integrations > li:nth-child(3) .btn {
+    background: #007bff;
+}
+
+.settings .integrations > li:nth-child(4) .btn {
+    background: #6f42c1;
+}

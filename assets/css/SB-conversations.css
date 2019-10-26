@@ -1,0 +1,97 @@
+/* conversation panel */
+.discussion {
+    flex-basis: 100%;
+    /* ??? */
+    padding-left: 0;
+    list-style: none;
+    margin-bottom: 0;
+}
+
+.discussion > li {
+    flex-basis: 100%;
+    /* ??? */
+    margin-top: 15px;
+}
+
+/*.discussion>li>a.active{
+    border-bottom:2px solid var(--active-link-color);
+}*/
+
+.discussion > li > a {
+    display: block;
+    padding: 25px;
+    border-radius: 10px;
+    background: var(--sidebar-discussion-chat-color);
+    /*border-bottom: 2px solid var(--hr-border-color);*/
+}
+
+
+.discussion > li > a.active {
+    background: linear-gradient(148deg, #f6305e, #8725c7);
+}
+
+.discussion > li > a.active p {
+    color: var(--plain-font-color);
+}
+
+.discussion > li > a.active span {
+    color: var(--plain-font-color);
+}
+
+
+.discussion > li .direct {
+    display: flex;
+    align-items: flex-start;
+}
+
+
+.discussion > li > a img {
+    width: 42px;
+    height: 42px;
+    border-radius: 100%;
+}
+
+.discussion > li > a h5 {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.7;
+    color: var(--plain-font-color);
+    margin-right: auto;
+    margin-bottom: 0;
+}
+
+.discussion > li > a p {
+    color: var(--mute-font-color);
+}
+
+.discussion > li > a .headline {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 10px;
+}
+
+.discussion > li > a span {
+    font-size: 15px;
+    font-weight: 500;
+    white-space: nowrap;
+    color: var(--icon-color);
+    margin-left: 30px;
+}
+
+.discussion > li > a .online .circle-status {
+    border-radius: 100%;
+    /* transform: scale(1.5); */
+    /* width: 50px; */
+    /* height: 50px; */
+    width: 47px;
+    height: 47px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@media (max-width: 991px) {
+    .discussion > li:last-of-type {
+        margin-bottom: 40px;
+    }
+}

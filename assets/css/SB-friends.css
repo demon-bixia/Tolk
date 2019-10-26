@@ -1,0 +1,62 @@
+/* Friends panel*/
+.users {
+    list-style: none;
+    padding-left: 0;
+}
+
+.users > li {
+    margin-top: 15px;
+}
+
+.users > li > a {
+    display: flex;
+    align-items: center;
+    padding: 25px;
+    border-radius: 10px;
+    background: var(--sidebar-discussion-chat-color);
+    /*border-bottom: 2px solid var(--hr-border-color);*/
+}
+
+.users > li img {
+    width: 42px;
+    height: 42px;
+    border-radius: 100%;
+}
+
+.users > li .content {
+    flex-basis: 100%;
+    /* ??? */
+}
+
+.users > li h5 {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.2;
+    /* ??? */
+    color: var(--plain-font-color);
+    margin-right: auto;
+    margin-bottom: 3px;
+}
+
+.users > li span {
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1;
+    /* ??? */
+    white-space: nowrap;
+    color: var(--mute-font-color);
+}
+
+/*.users>li>a>.icon>.eva{
+    fill: var(--icon-color);
+}*/
+
+.users > li > a > .icon > i::before {
+    color: var(--purple);
+}
+
+@media (max-width: 991px) {
+    .users > li:last-of-type {
+        margin-bottom: 40px;
+    }
+}

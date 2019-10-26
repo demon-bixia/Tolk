@@ -1,0 +1,556 @@
+/* apply for all screens */
+
+/*start of chat*/
+.chat {
+    background: var(--chat-background-color);
+}
+
+/* end of chat*/
+
+
+/* start of chat_item */
+.chat .item .content .container {
+    padding-right: 0;
+    padding-left: 0;
+    max-width: 100%;
+}
+
+.chat .item {
+    display: flex;
+}
+
+.chat .item > .content {
+    flex: 1;
+}
+
+/* end of chat_item */
+
+
+/* start of chat top */
+.chat .item .top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 30px 20px;
+    background: #141a28;
+    height: 100px;
+    max-height: 100px;
+    /*border-bottom: 2px solid var(--chat-border-color);*/
+}
+
+.chat .top .headline {
+    display: flex;
+    align-items: center;
+}
+
+.chat .item .top img {
+    width: 42px;
+    height: 42px;
+    border-radius: 100%;
+    margin-right: 15px;
+}
+
+.chat .item .top h5 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+
+.chat .item .top span {
+    display: block;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--form-input-font-color);
+}
+
+
+.chat .item .top ul > li button i::before {
+    color: var(--chat-top-icon-color);
+    font-size: 25px
+}
+
+.chat .item .top ul {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+.chat .item .top ul > li button {
+    outline: none;
+}
+
+.chat .item .top ul > li .eva {
+    width: 28px;
+    height: 28px;
+    fill: var(--icon-color);
+    transition: all 0.3s;
+}
+
+.chat .item .top ul > li button {
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+/* end of chat top */
+
+
+/* start of chat middle */
+.chat .item .middle {
+    display: flex;
+    height: calc(100vh - 185px);
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.chat .item .middle::-webkit-scrollbar {
+    width: 0 !important
+}
+
+/* remove scrollbar chrome*/
+.chat .item .middle {
+    overflow: -moz-scrollbars-none;
+}
+
+/* remove scrollbar firefox */
+.chat .item .middle {
+    scrollbar-width: none
+}
+
+/* remove scroll IE +10 */
+
+
+.chat .item .middle .container {
+    padding: 30px 20px;
+}
+
+.chat .item .middle > div {
+    margin-top: auto;
+}
+
+.chat .item .middle ul {
+    padding: 30px 0;
+    list-style: none;
+    margin-bottom: 0;
+}
+
+.chat .item .middle ul > li.odd {
+    justify-content: flex-start;
+    text-align: left;
+    align-items: flex-start;
+}
+
+.chat .item .middle ul > li {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    text-align: right;
+    margin-top: 30px;
+}
+
+.chat .item .middle ul > li.odd img {
+    margin-right: 15px;
+    margin-left: 0;
+    order: 1;
+}
+
+.chat .item .middle ul > li img {
+    width: 42px;
+    height: 42px;
+    border-radius: 100%;
+    margin-left: 15px;
+    order: 2;
+}
+
+.chat .item .middle ul > li.odd .content {
+    order: 2;
+}
+
+.chat .item .middle ul > li .content {
+    display: flex;
+    flex-direction: column;
+    order: 1;
+}
+
+.chat .item .middle ul > li.odd .bubble {
+    border-radius: 0px 10px 10px 10px;
+    background: linear-gradient(148deg, #ff9b5d, #fe3b56);
+}
+
+.chat .item .middle ul > li .bubble {
+    display: inline-block;
+    max-width: 360px;
+    text-align: left;
+    border-radius: 6px;
+    background: linear-gradient(146deg, #f7305d, #8324ca);
+    border-radius: 10px 0px 10px 10px;
+}
+
+
+.chat .item .middle ul > li.odd p {
+    color: var(--plain-font-color);
+}
+
+.chat .item .middle ul > li p {
+    padding: 15px 20px;
+    color: #fff;
+}
+
+.chat .item .middle ul > li span {
+    display: block;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.2;
+    color: #bdbac2;
+    margin-top: 15px;
+}
+
+/* end of chat middle */
+
+
+/* start of chat bottom */
+.chat .item .bottom {
+    padding: 20px 20px;
+    background: var(--chat-bottom-background);
+}
+
+.chat .item .bottom form {
+    position: relative;
+}
+
+.chat .item .bottom .form-control {
+    padding: 16px 50px 15.5px 20px;
+    height: 55px;
+    resize: none;
+    background: var(--chat-bottom-background);
+    color: var(--plain-font-color);
+}
+
+/* remove scrollbar chrome*/
+.chat .item .bottom .form-control::-webkit-scrollbar {
+    width: 0 !important
+}
+
+/* remove scrollbar firefox */
+.chat .item .bottom .form-control {
+    scrollbar-width: none;
+}
+
+/* remove scroll IE +10 */
+.chat .item .bottom .form-controly {
+    -ms-overflow-style: none;
+}
+
+.chat .item .bottom .prepend {
+    padding: 0 15px;
+    left: auto;
+    right: 0;
+    height: 100%;
+    border: 0;
+
+}
+
+.chat .item .bottom .prepend i::before {
+    color: var(--icon-color);
+    font-size: 20px;
+    transition: all 0.2s ease;
+    -moz-transition: 0.2s ease;
+    -webkit-transition: 0.2s ease;
+    -o-transition: 0.2s ease;
+}
+
+.chat .item .bottom .prepend:focus {
+    border: 0;
+}
+
+.chat .item .bottom .prepend:hover i::before {
+    color: var(--rose);
+}
+
+.chat .item .bottom .prepend:active i::before {
+    color: var(--purple);
+}
+
+/* end of chat bottom */
+
+
+/* start of utility */
+.utility::-webkit-scrollbar {
+    width: 0 !important
+}
+
+/* remove scrollbar chrome*/
+.utility {
+    overflow: -moz-scrollbars-none;
+}
+
+/* remove scrollbar firefox */
+.utility {
+    scrollbar-width: none
+}
+
+/* remove scroll IE +10 */
+
+.utility {
+    width: 336px;
+    height: 100vh;
+    background: var(--utils-background-color);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.utility .container {
+    height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.utility .close {
+    margin-bottom: 30px;
+    align-self: flex-end;
+}
+
+.utility .close .eva {
+    fill: var(--icon-color);
+    width: 32px;
+    height: 32px;
+}
+
+.utility .profile {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.utility h4,
+h5 {
+    color: var(--plain-font-color);
+}
+
+.utility .container::-webkit-scrollbar {
+    width: 0 !important
+}
+
+/* remove scrollbar chrome*/
+.utility .container {
+    overflow: -moz-scrollbars-none;
+}
+
+/* remove scrollbar firefox */
+.utility .container {
+    -ms-overflow-style: none;
+}
+
+/* remove scroll IE +10 */
+
+
+.utility .profile img {
+    width: 160px;
+    height: 160px;
+    border-radius: 100%;
+    margin: 30px 0;
+}
+
+.utility .profile span {
+    color: var(--active-radio-color);
+}
+
+.utility .attachment {
+    width: 100%;
+}
+
+.utility .attachment .headline {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.utility .attachment .headline span {
+    margin-right: auto;
+    color: var(--plain-font-color);
+}
+
+.utility .attachment .headline .button {
+    background: linear-gradient(146deg, #f7305d, #8324ca);
+    border-radius: 50%;
+    padding: 1px 6px;
+}
+
+.utility .attachment .headline .button i::before {
+    color: var(--white);
+    margin: 0;
+    font-size: 15px;
+}
+
+.utility .attachment .headline input {
+    display: none
+}
+
+.utility .attachment .headline label {
+    cursor: pointer;
+}
+
+.utility .attachment .media {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.utility .attachment .media img {
+    width: 75px;
+    height: 75px;
+    border-radius: 10px;
+    margin: 5px;
+}
+
+.utility .attachment .media .file-media {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 75px;
+    height: 75px;
+    border-radius: 10px;
+    margin: 5px;
+}
+
+.utility .attachment .media .file-media:nth-of-type(odd) {
+    background: linear-gradient(148deg, #ff9b5d, #fe3b56);
+}
+
+.utility .attachment .media .file-media {
+    background: linear-gradient(146deg, #f7305d, #8324ca);
+}
+
+.utility .attachment .media .file-media i::before {
+    font-size: 25px;
+    color: var(--white);
+    margin: 0;
+}
+
+/* end of utility */
+
+
+/* apply for a 1300px screen and above */
+@media (min-width: 1300px) {
+    .utility.open {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+
+    .utility {
+        display: none;
+    }
+}
+
+
+/* apply for a 992px screen and above */
+@media (min-width: 992px) {
+    .chat {
+        flex: 1;
+        max-width: calc(100vw - 300px);
+        /**/
+        height: 100vh;
+        overflow: hidden;
+
+    }
+
+    .chat .item .top ul > li:nth-child(2) {
+        display: none;
+    }
+
+    .chat .item .top ul > li:nth-child(3) {
+        display: none;
+    }
+
+    .chat .item .middle ul > li span {
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    .chat .item .middle ul > li.odd span {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .utility .close {
+        display: none;
+    }
+}
+
+/* apply for a 991px screen and below */
+@media (max-width: 991px) {
+    .chat {
+        position: fixed;
+        width: 100%;
+        left: 100%;
+        top: 0;
+        bottom: 0;
+        z-index: 1020;
+        visibility: hidden;
+        transition-timing-function: ease-in-out;
+        transition-duration: .3s;
+        transition-property: left, visibility;
+    }
+
+    .chat.open {
+        visibility: visible;
+        left: 0;
+    }
+
+    .chat .item .top ul > li:nth-child(1) {
+        display: none;
+    }
+
+
+    .chat .item .top ul > li:nth-child(3) {
+        display: none;
+    }
+
+    .chat .item .top ul > li:nth-child(4) {
+        display: none;
+    }
+
+    .utility .attachment .headline {
+        padding: 0 20px;
+    }
+
+
+    .chat .item .top ul > li:nth-child(6) {
+        display: block;
+        margin-left: 15.67px;
+    }
+
+    .chat .item .top ul > li .dropdown-menu .eva {
+        margin: 10px;
+    }
+
+    .utility {
+        position: fixed;
+        width: 100%;
+        left: 100%;
+        top: 0;
+        bottom: 0;
+        z-index: 1020;
+        visibility: hidden;
+        transition-timing-function: ease-in-out;
+        transition-duration: .3s;
+        transition-property: left, visibility;
+    }
+
+    .utility.open {
+        visibility: visible;
+        left: 0;
+    }
+}

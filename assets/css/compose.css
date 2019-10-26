@@ -1,0 +1,372 @@
+/* apply for all screens */
+
+
+.modal-content {
+    border: none;
+    border-radius: 6px;
+}
+
+/* start modal header */
+.modal-header {
+    align-items: center;
+    padding: 25px 30px;
+    background: var(--compose-body-nav-background);
+    border-bottom: none;
+}
+
+.modal-header h5 {
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 0;
+}
+
+.modal-header .round {
+    padding: 0;
+    background: rgba(255, 255, 255, 25);
+}
+
+.modal-header .round {
+    padding: 0;
+    background: rgba(255, 255, 255, .25);
+}
+
+.modal-header .round .eva {
+    fill: white;
+}
+
+/* end modal header */
+
+
+/* start of modal body */
+.modal-body {
+    padding: 0;
+    background: var(--compose-body-nav-background);
+
+}
+
+/* start of modal-body nav */
+.modal-body .nav {
+    flex-wrap: nowrap;
+    padding: 15px 30px;
+    width: 100%;
+    background: var(--compose-body-nav-background);
+}
+
+.modal-body .nav li {
+    width: 100%;
+    text-align: center;
+}
+
+.modal-body .nav li .active {
+    background: var(--rose);
+    color: var(--plain-font-color);
+}
+
+.modal-body .nav li a {
+    display: block;
+    padding: 10px 0;
+    color: var(--compose-link-color);
+}
+
+.modal-body .nav li + li {
+    margin-left: 6px;
+}
+
+.modal-body .nav li a {
+    display: block;
+    padding: 10px 0;
+    color: var(--compose-link-color);
+    border-radius: 6px;
+}
+
+/* end of modal-body nav */
+
+/* start of modal body content*/
+.modal-body .details {
+    padding: 30px 30px 0;
+}
+
+.modal-body .details label {
+    color: var(--plain-font-color);
+}
+
+.modal-body input.form-control {
+    padding: 0 20px;
+    height: 55px;
+}
+
+.modal-body textarea.form-control {
+    padding: 20px;
+    min-height: 100px;
+    max-height: 100px;
+}
+
+.modal-body .participants {
+    padding: 30px 30px 0;
+}
+
+.modal-body .search {
+    margin-bottom: 30px;
+}
+
+.modal-body .search form {
+    padding: 0;
+    position: relative;
+}
+
+.modal-body .search .form-control {
+    padding: 0 10px 0 50px;
+    height: 55px;
+}
+
+.modal-body .search .eva {
+    fill: var(--compose-icon-color);
+}
+
+.modal-body h4 {
+    font-weight: 600;
+    margin-bottom: 0;
+}
+
+.users {
+    flex-basis: 100%;
+    padding-left: 0;
+    list-style: none;
+    margin-bottom: 0;
+}
+
+.modal-body .users > li {
+    display: flex;
+    align-items: center;
+    padding: 25px 0;
+}
+
+.status {
+    position: relative;
+    margin-right: 15px;
+}
+
+.users > li img {
+    width: 42px;
+    height: 42px;
+    border-radius: 100%;
+}
+
+.users > li .content {
+    flex-basis: 100%;
+}
+
+.custom-control-input:checked ~ .custom-control-label::before {
+    color: #fff;
+    border-color: var(--rose);
+    background-color: var(--rose);
+}
+
+.modal-body .custom-control-label::before {
+    background: #f5f5f5;
+    box-shadow: none !important;
+    border: none;
+    outline: none;
+}
+
+/* end of modal body content */
+/* end of modal body*/
+
+/* start of modal footer */
+.modal-footer {
+    padding: 30px;
+    background: var(--compose-body-nav-background);
+    border: none;
+}
+
+.modal-footer button {
+    padding: 14px 0;
+    display: block;
+    width: 100%;
+    background: var(--compose-header-background);
+    border-radius: 6px;
+    color: var(--plain-font-color);
+}
+
+.modal-footer button:hover {
+    background: var(--compose-header-background);
+}
+
+.modal-footer button:focus {
+    background: var(--compose-header-background);
+    box-shadow: none;
+}
+
+/* end of modal footer */
+
+
+/* start of  Custom Modal */
+.modal + .modal {
+    background: var(--chat-top-background);
+    overflow-y: auto;
+    padding-top: 50px;
+}
+
+.modal + .modal::-webkit-scrollbar {
+    width: 0 !important
+}
+
+/* remove scrollbar chrome*/
+.modal + .modal {
+    overflow: -moz-scrollbars-none;
+}
+
+/* remove scrollbar firefox */
+.modal + .modal {
+    -ms-overflow-style: none;
+}
+
+/* remove scroll IE +10 */
+
+.modal.modal.active {
+    display: block;
+    opacity: 1;
+}
+
+.modal + .modal {
+    opacity: 0;
+    display: none;
+}
+
+
+.modal + .modal .modal-content {
+    background: var(--navigation-background)
+}
+
+
+.modal + .modal .modal-header h4 {
+    color: var(--white);
+    width: 100%;
+    text-align: center;
+}
+
+.modal + .modal .modal-header h4 i:before {
+    margin: 0;
+    font-size: 60px;
+    color: var(--form-input-font-color);
+}
+
+.modal + .modal .modal-body label {
+    color: var(--form-input-font-color);
+}
+
+.modal + .modal .modal-body .form-control {
+    background: transparent;
+    border: 1px solid var(--form-input-background-color);
+}
+
+.modal + .modal .modal-body .form-control:focus {
+    border: 1px solid var(--purple);
+}
+
+
+.modal + .modal .modal-body,
+.modal + .modal .modal-footer,
+.modal + .modal .modal-header {
+    background: var(--navigation-background)
+}
+
+.modal + .modal .modal-footer {
+    flex-direction: column;
+}
+
+.modal + .modal .modal-footer .switch-form {
+    margin-top: 30px;
+}
+
+.modal + .modal .modal-footer .switch-form small {
+    color: var(--form-input-font-color);
+}
+
+.modal + .modal .modal-footer .switch-form small a {
+    color: var(--purple);
+}
+
+.modal + .modal .modal-footer button {
+    background: transparent;
+    border: 1px solid var(--form-input-background-color);
+    transition: all 0.3s;
+    box-shadow: none;
+}
+
+.modal + .modal .modal-footer button:hover {
+    background: transparent;
+    border: 1px solid var(--purple);
+}
+
+.modal + .modal .modal-footer button:focus {
+    background: transparent;
+    border: 1px solid var(--purple);
+    box-shadow: none;
+}
+
+.modal + .modal .modal-footer button:active {
+    outline: none;
+    border: 1px solid var(--purple);
+    background: var(--purple);
+    box-shadow: none;
+}
+
+.modal + .modal .modal-footer button:active:focus {
+    outline: none;
+    border: 1px solid var(--purple);
+    background: var(--purple);
+    box-shadow: none;
+}
+
+form .form-group.error .form-control {
+    border: 1px solid var(--danger);
+    color: var(--danger);
+}
+
+form .form-group.error .error-message {
+    color: var(--danger);
+}
+
+form .form-group.error label {
+    color: var(--danger);
+}
+
+#Activate .modal-body {
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#Activate .modal-body i {
+    margin-bottom: 20px;
+}
+
+#Activate .modal-body i:before {
+    margin: 0;
+    font-size: 60px;
+    color: var(--success);
+}
+
+#Activate .modal-body small {
+    color: var(--plain-font-color);
+}
+
+#Activate .modal-body a {
+    color: var(--info);
+}
+
+/* end of custom modal*/
+
+
+/* apply for a 992px screen and above */
+
+@media (min-width: 992px) {
+}
+
+
+/* apply for a 991px screen and below */
+
+@media (max-width: 991px) {
+}

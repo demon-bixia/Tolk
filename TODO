@@ -1,0 +1,16 @@
+TODO:
+    change view to rest_framework api endpoints
+
+TODO:
+    chat offline message queue -- commit
+    implement cookie history -- commit
+    build notifications -- commit 
+    build an add contact endpoint --commit 
+
+TODO: NOW
+    chat offline message queue --commit
+
+done:
+    refactor chat db models
+    online offline user
+

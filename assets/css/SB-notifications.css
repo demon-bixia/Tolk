@@ -1,0 +1,56 @@
+/* Notifications Panel */
+.notifications {
+    flex-basis: 100%;
+    padding: 0;
+    list-style: none;
+    margin-bottom: 0;
+}
+
+.notifications > li {
+    display: flex;
+    align-items: flex-start;
+    flex-basis: 100%;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 15px;
+    padding: 25px;
+    border-radius: 10px;
+    background: var(--sidebar-discussion-chat-color);
+}
+
+.notifications > li > .round {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 42px;
+    margin-right: 15px;
+    background: var(--sidebar-background-color);
+}
+
+/*.notifications>li>.round>.eva {
+    width:20px;
+    height:20px;
+    fill: var(--icon-color);
+}*/
+
+.notifications > li > .round > i:before {
+    font-size: 15px;
+    color: var(--icon-color);
+    margin-left: 3px;
+}
+
+
+.notifications > ul {
+    list-style: none;
+}
+
+.notifications > li > p > strong {
+    color: var(--active-link-color);
+    font-weight: 600;
+}
+
+@media (max-width: 991px) {
+    .notifications > li:last-of-type {
+        margin-bottom: 40px;
+    }
+}

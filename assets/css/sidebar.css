@@ -1,0 +1,125 @@
+/* apply for all screens */
+
+/* sidebar */
+.sidebar {
+    background: var(--sidebar-background-color);
+}
+
+.sidebar .container {
+    padding: 0;
+}
+
+/* end of sidebar */
+
+
+/*start sidebar top*/
+.sidebar .top {
+    height: 100px;
+    max-height: 100px;
+    background: var(--chat-top-background);
+    padding: 30px 20px;
+}
+
+.sidebar .top form {
+    position: relative;
+}
+
+.sidebar .top .form-control {
+    padding: 0 10px 0 50px;
+    height: 55px;
+    border-radius: 30px;
+    background: transparent;
+    color: var(--form-input-font-color);
+}
+
+.sidebar .top form .eva {
+    fill: var(--form-input-font-color);
+}
+
+/*end sidebar top*/
+
+
+/* start sidebar middle */
+
+.sidebar .middle {
+    height: calc(100vh - 110px);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.sidebar .middle::-webkit-scrollbar {
+    width: 0 !important
+}
+
+/* remove scrollbar chrome*/
+.sidebar {
+    overflow: -moz-scrollbars-none;
+}
+
+/* remove scrollbar firefox */
+.sidebar {
+    scrollbar-width: none;
+}
+
+.sidebar .middle {
+    scrollbar-width: none;
+}
+
+/* remove scroll IE +10 */
+
+.sidebar .middle .container {
+    padding: 0 20px;
+}
+
+
+.sidebar .middle h4 {
+    font-weight: 600;
+    margin-bottom: 0;
+    color: var(--plain-font-color);
+    padding: 30px 0;
+}
+
+.sidebar .middle hr {
+    flex-basis: 100%;
+    /* defines the default size of a flex item */
+    margin-bottom: 0;
+}
+
+.sidebar .middle .content {
+    flex-basis: 100%;
+}
+
+/* end sidebar middle */
+
+
+/* apply for a 992px screen and above */
+
+@media (min-width: 992px) {
+    .sidebar {
+        width: 356px;
+        height: 100vh;
+    }
+
+    .sidebar .middle .tab-pane .container h4 {
+        display: none;
+    }
+
+}
+
+
+/* apply for a 991px screen and below */
+
+@media (max-width: 991px) {
+    .sidebar {
+        order: 1;
+        height: calc(100vh - 66px);
+    }
+
+    .sidebar .top {
+        height: 100px;
+    }
+
+    .sidebar .middle {
+        height: calc(100vh - 180px);
+    }
+}

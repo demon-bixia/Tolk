@@ -1,0 +1,20 @@
+/*
+    **** layout ****
+*/
+
+
+/* apply for all screens */
+
+.layout {
+    display: flex;
+}
+
+
+/**
+  Apply this when the width of the screen is below 991px
+**/
+@media (max-width: 991px) {
+    .layout {
+        flex-direction: column;
+    }
+}

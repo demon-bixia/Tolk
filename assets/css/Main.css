@@ -1,0 +1,306 @@
+/****
+   Main styles that affect all the sections
+               ****/
+:root {
+    /* links and icons */
+    --link-color: #fff;
+    --icon-color: #bdbac2;
+
+    /* radio buttons */
+    --active-radio-color: #00f890;
+    --active-link-color: #8725c7;
+
+    /* navigation */
+    --navigation-background: #111620;
+
+    /* sidebar */
+    --sidebar-background-color: #1a202f;
+    --sidebar-discussion-chat-color: #171d2a;
+    /*--circle-status-background:#a30091;*/
+
+    /* forms */
+    --form-input-background-color: #21293c;
+    --form-input-font-color: #4f608a;
+    --form-input-border: #efebeb;
+    --form-input-hover: #f5f5f5;
+
+
+    /* borders*/
+    --hr-border-color: #fbfbfb;
+
+    /* chat */
+    --chat-top-background: #141a28;
+    --chat-background-color: #1a202f;
+    --chat-bottom-background: #161c2a;
+    --chat-border-color: #f9f9f9;
+    --chat-top-icon-color: #7b8ebc;
+
+
+    /* utility */
+    --utils-background-color: #111620;
+
+
+    /* compose */
+    --compose-header-background: #f6305e;
+    --compose-body-nav-background: #1a202f;
+    --compose-active-color: #007bff;
+    --compose-link-color: #bdbac2;
+    --compose-icon-color: #bdbac2;
+    --compose-font-color: #212529;
+    --compose-mute-font-color: #bdbac2;
+
+    /* font colors */
+    --plain-font-color: #ffffff;
+    --mute-font-color: #76839f;
+
+    /* plain colors */
+    --white: #fff;
+    --rose: #f6305e;
+    --purple: #8725c7;
+
+    /* fonts*/
+    --Inter-UI-Bold: 'inter-UI-Bold', sans-serif;
+    --Inter-UI-Medium: 'inter-UI-Medium', sans- serif;
+    --Inter-UI-Regular: 'inter-UI-Regular', sans-serif;
+    --Inter-UI-SemiBold: 'inter-UI-SemiBold', sans-serif;
+}
+
+/* start utils */
+.round {
+    display: inline-block;
+    padding: 0;
+    width: 42px;
+    height: 42px;
+    background: #f5f5f5;
+    text-align: center;
+    border-radius: 100%;
+}
+
+.round .eva {
+    width: 20px;
+    height: 20px;
+}
+
+.button {
+    background: none;
+    border: none;
+    padding: 0 16px;
+}
+
+.form-group {
+    flex-grow: 1;
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.form-group > label {
+    margin-bottom: 10px;
+}
+
+
+.prepend {
+    position: absolute;
+    padding: 15px 0 0 15px;
+    top: 0;
+    left: 0;
+    line-height: 0;
+    margin-bottom: 0 !important;
+}
+
+/* end utils */
+
+
+/* apply for all screens */
+
+/* html base styles modifications */
+body {
+    font-family: var(--Inter-UI-Regular);
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.7;
+    /* The CSS line height property is used to define the minimal height of line boxes within the element */
+}
+
+
+/* remove scrollbar chrome*/
+body::-webkit-scrollbar {
+    width: 0 !important
+}
+
+
+/* remove scrollbar firefox */
+body {
+    overflow: -moz-scrollbars-none;
+}
+
+/* remove scroll IE +10 */
+body {
+    -ms-overflow-style: none;
+}
+
+
+a {
+    color: var(--link-color);
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+a:hover {
+    color: inherit;
+    text-decoration: none;
+}
+
+hr {
+    margin: 30px 0;
+    border-top: 2px solid var(--hr-border-color);
+}
+
+p {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.7;
+    color: var(--plain-font-color);
+    margin-bottom: 0;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+button:focus {
+    box-shadow: none;
+    outline: none;
+    border: none;
+}
+
+label {
+    display: inline-block;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--plain-font-color);
+    letter-spacing: 0.05em;
+}
+
+span {
+    color: var(--mute-font-color);
+    font-weight: 500;
+    font-size: 15px;
+}
+
+/* bootstrap classes modifications */
+.container {
+}
+
+.btn:focus {
+    background: none;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    transition: all 0.3s;
+}
+
+.btn:focus,
+.btn:active {
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+
+.form-control {
+    background: var(--form-input-background-color);
+    color: var(--form-input-font-color);
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 6px;
+    border: none;
+}
+
+.form-control:focus {
+    box-shadow: none;
+    background: var(--form-input-background-color);
+}
+
+
+.form-control::-webkit-input-placeholder {
+    color: var(--form-input-font-color);
+}
+
+.form-control:-moz-placeholder {
+    color: var(--form-input-font-color);
+}
+
+.primary {
+    display: inline-block;
+    padding: 9px 0;
+    width: 100%;
+    background: #007bff;
+    font-weight: 600;
+    line-height: 1.7;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+}
+
+.dropdown-menu {
+    padding: 10px;
+    border: none;
+    box-shadow: 0 0 30px rgba(0, 0, 0, .05);
+    border-radius: 6px;
+}
+
+.dropdown-item {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: 9px 10px;
+    font-weight: 500;
+    color: #bdbac2;
+    border-radius: 6px;
+}
+
+
+/* apply for a 992px screen and above */
+
+@media (min-width: 992px) {
+    .container {
+        padding-right: 30px;
+        padding-left: 30px;
+    }
+}
+
+
+/* apply for a 991px screen and below */
+
+@media (max-width: 991px) {
+}
+
+
+/* Fonts */
+
+@font-face {
+    font-family: 'inter-UI-Bold';
+    src: url("../fonts/Inter-UI-Bold.woff2") format("woff");
+}
+
+@font-face {
+    font-family: 'inter-UI-Medium';
+    src: url("../fonts/Inter-UI-Medium.woff2") format("woff");
+}
+
+@font-face {
+    font-family: 'inter-UI-Regular';
+    src: url("../fonts/Inter-UI-Regular.woff2") format("woff");
+}
+
+@font-face {
+    font-family: 'inter-UI-SemiBold';
+    src: url("../fonts/Inter-UI-SemiBold.woff2") format("woff");
+}
