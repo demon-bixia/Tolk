@@ -18,6 +18,10 @@
     color: var(--plain-font-color);
 }
 
+.settings label.custom-file-label {
+    color: var(--form-input-font-color);
+}
+
 .settings .content .inside {
     padding: 25px 0;
 }

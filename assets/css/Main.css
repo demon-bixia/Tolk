@@ -107,6 +107,10 @@
     margin-bottom: 0 !important;
 }
 
+.alert p {
+    color: inherit;
+}
+
 /* end utils */
 
 
@@ -221,6 +225,34 @@ span {
     border-radius: 6px;
     border: none;
 }
+
+.custom-file {
+    margin-bottom: 30px;
+}
+
+.custom-file .custom-file-label {
+    padding: 15px 20px;
+    height: 55px;
+    color: var(--form-input-font-color);
+    background: var(--form-input-background-color);
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 6px;
+    border: none;
+}
+
+.custom-file .custom-file-label::after {
+    height: calc(1.5em + 1.85rem);
+    padding: 0.875rem .75rem;
+    background: #21293c;
+    color: var(--form-input-font-color);
+    content: " ";
+}
+
+.custom-file-input:lang(en) ~ .custom-file-label::after {
+    content: "";
+}
+
 
 .form-control:focus {
     box-shadow: none;

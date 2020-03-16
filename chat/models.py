@@ -1,5 +1,5 @@
 import datetime
-
+import secrets
 from django.db import models
 
 from accounts.models import Contact
@@ -13,28 +13,30 @@ class Conversation(models.Model):
 
     type = models.CharField(max_length=10, default="couple", choices=type_choices)
     name = models.CharField(max_length=30, blank=True)
-    contacts = models.ManyToManyField(Contact)
+    participants = models.ManyToManyField(Contact, related_name='conversations')
 
     def save(self, **kwargs):
         super(Conversation, self).save(**kwargs)
-        self.name = f"conversation_{self.pk}"
-        super(Conversation, self).save(**kwargs)
+
+        if not self.name:
+            self.name = f"conversation_{self.pk}"
+            super(Conversation, self).save(**kwargs)
 
     def get_last_message_content(self):
-        if self.message_set.count() > 0:
-            return self.message_set.last().content
+        if self.messages.count() > 0:
+            return self.messages.last().content
         return None
 
     def get_other_users(self, email):
-        users = []
-        for contact in self.contacts.all():
-            if not contact.user.email == email:
-                users.append(contact)
+        other_users = []
+        for participant in self.participants.all():
+            if not participant.user.email == email:
+                other_users.append(participant)
 
     def get_last_message_date(self):
-        if self.message_set.count() > 0:
+        if self.messages.count() > 0:
             yesterday = datetime.date.today() - datetime.timedelta(days=1)
-            date_sent = self.message_set.last().date_sent
+            date_sent = self.messages.last().date_sent
             if date_sent == datetime.date.today():
                 return "Today"
             elif date_sent == yesterday:
@@ -46,10 +48,23 @@ class Conversation(models.Model):
         return self.name
 
 
+# functions for uploading files
+def upload_conversation_header(instance, filename):
+    return f"groups/{instance.conversation.name}/{secrets.token_hex(10)}_{filename}"
+
+
+class Header(models.Model):
+    conversation = models.OneToOneField(Conversation, on_delete=models.CASCADE)
+    header = models.ImageField(upload_to=upload_conversation_header, default='default/default.png')
+
+    def __str__(self):
+        return self.conversation.name
+
+
 class Message(models.Model):
     content = models.TextField(verbose_name="content")
-    sender = models.ForeignKey(Contact, on_delete=models.PROTECT)
-    conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE)
+    sender = models.ForeignKey(Contact, on_delete=models.CASCADE)
+    conversation = models.ForeignKey(Conversation, related_name='messages', on_delete=models.CASCADE)
     sent = models.BooleanField(default=True)
     date_sent = models.DateField(auto_now_add=True)
 
@@ -67,8 +82,8 @@ class Message(models.Model):
 
 class Settings(models.Model):
     theme_choices = (
-        ("dark", "night mode"),
-        ("light", "a light theme")
+        (True, "use dark theme"),
+        (False, "use light theme")
     )
 
     history_choices = (
@@ -86,7 +101,7 @@ class Settings(models.Model):
         (False, 'never receive notifications')
     )
 
-    theme = models.CharField(max_length=10, default="dark", choices=theme_choices)
+    night_mode = models.BooleanField(max_length=10, default=True, choices=theme_choices)
     history = models.BooleanField(default=True, choices=history_choices)
     private_mode = models.BooleanField(default=False)
     notifications = models.BooleanField(default=False, )
@@ -99,8 +114,9 @@ class Settings(models.Model):
 class Notification(models.Model):
     type_choices = (
         ('accounts', 'from the accounts app'),
-        ('conversation', 'from a conversation'),
-        ('default', 'default format')
+        ('authentication', 'from the authentication app'),
+        ('chat', 'from the chat app'),
+        ('default', 'default format'),
     )
 
     contact = models.ForeignKey(Contact, on_delete=models.CASCADE)

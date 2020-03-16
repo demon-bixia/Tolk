@@ -9,6 +9,13 @@
     padding: 0;
 }
 
+.empty-section {
+    padding-top: 15px;
+    padding-right: 10px;
+    padding-left: 10px;
+    color: var(--form-input-font-color);
+}
+
 /* end of sidebar */
 
 
@@ -93,7 +100,6 @@
 
 
 /* apply for a 992px screen and above */
-
 @media (min-width: 992px) {
     .sidebar {
         width: 356px;
@@ -108,12 +114,33 @@
 
 
 /* apply for a 991px screen and below */
-
 @media (max-width: 991px) {
     .sidebar {
         order: 1;
         height: calc(100vh - 66px);
     }
+
+    .sidebar .container {
+        margin: 0;
+        max-width: 100%;
+    }
+
+    .sidebar #conversations .container {
+        padding: 30px;
+    }
+
+    .sidebar #friends .container {
+        padding: 30px;
+    }
+
+    .sidebar #notifications .container {
+        padding: 30px;
+    }
+
+    .sidebar #settings .container {
+        padding: 30px;
+    }
+
 
     .sidebar .top {
         height: 100px;

@@ -1,16 +1,31 @@
-TODO:
-    change view to rest_framework api endpoints
+/* Current */
 
-TODO:
-    chat offline message queue -- commit
-    implement cookie history -- commit
-    build notifications -- commit 
-    build an add contact endpoint --commit 
+TODO: commit changes and add development branch
 
-TODO: NOW
-    chat offline message queue --commit
+/* Road Map */
+TODO: chat offline message queue --commit
+TODO: build notifications --commit
+TODO: implement settings
+TODO: implement cookie history --commit
+TODO: conversation, contact, notifications filter --commit
+TODO: make conversation update event --commit
+TODO: fix duplicate conversation --commit
+TODO: fix automated tests for view sets
 
-done:
+/* Done */
     refactor chat db models
     online offline user
 
+/* suggested */
+    group update event
+    move routes to another module
+    friend request system
+    removing contacts
+    remove conversation
+    remove notifications
+
+/* notes */
+    -- add password reset
+    -- add send via enter
+    -- make add to conversation event
+    -- make password min

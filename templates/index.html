@@ -1,5 +1,5 @@
 {% load static %}
-<!doctype html>
+<!Doctype html>
 <html lang="en">
 
 <head>
@@ -43,15 +43,12 @@
             <!-- navigation u-list-->
             <ul class="nav" role="tablist">
                 <li>
-                    <button class="button btn">
-                        <div class="circle-status">
+                    <div class="profile-container">
+                        <div class="circle-status ">
                             <img class="profile-picture" src="{% static 'images/avatars/avatar-male-2.jpg' %}"
                                  alt="avatar">
                         </div>
-                        <input id="fileupload" type="file" name="contact_pic" multiple style="display: none;"
-                               data-url="{% url 'change_contact_pic' %}"
-                               data-form-data='{"csrfmiddlewaretoken": "{{ csrf_token }}"}'>
-                    </button>
+                    </div>
                 </li>
                 <li>
                     <a href="#conversations" class="active" data-toggle="tab" aria-controls="conversation"
@@ -82,7 +79,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="node" id="Logout" data-action="{% url 'logout' %}">
+                    <a href="#" class="node" id="Logout">
                         <i class="flaticon-next-page"></i>
                     </a>
                 </li>
@@ -110,9 +107,7 @@
 
                 <!-- start of conversations -->
                 <div class="tab-pane fade show active" id="conversations" role="tabpanel">
-
                     <div class="container">
-                        <h4>Conversations</h4>
                         <ul class="nav discussion" role="tablist">
                         </ul>
                     </div>
@@ -120,7 +115,7 @@
                 <!-- end of conversation -->
 
                 <!-- start of friends -->
-                <div class="tab-pane fade show   " id="friends" role="tabpanel">
+                <div class="tab-pane fade show" id="friends" role="tabpanel">
                     <div class="container">
                         <h4>Friends</h4>
                         <ul class="users" role="tablist">
@@ -157,7 +152,7 @@
                                 </a>
                                 <div class="content collapse" id="account" data-parent="#preferences">
                                     <div class="inside">
-                                        <form class="account" action="{% url 'update' %}" method="post">
+                                        <form class="account" action="" method="post" id="account-form">
                                             <div class="form-row">
                                                 <div class="col-sm-6">
                                                     <div class="form-group">
@@ -182,6 +177,15 @@
                                                        class="form-control" placeholder="Location">
                                                 <div class="error_container"></div>
                                             </div>
+                                            <div class="form-group">
+                                                <label>Profile Picture</label>
+                                                <div class="custom-file">
+                                                    <input type="file" class="custom-file-input" id="id_contact_pic">
+                                                    <label class="custom-file-label" for="customFile">Choose contact
+                                                        picture file</label>
+                                                </div>
+                                                <div class="error_container"></div>
+                                            </div>
                                             <button type="submit" class="btn btn-block btn-primary primary">Save
                                                 settings
                                             </button>
@@ -204,7 +208,7 @@
                                 <div class="content collapse" id="privacy" data-parent="#preferences">
                                     <div class="inside">
                                         <ul class="options">
-                                            <li>
+                                            <li class="privacy-mode">
                                                 <div class="headline">
                                                     <h5>Privacy Mode</h5>
                                                     <label class="switch">
@@ -214,7 +218,7 @@
                                                 </div>
                                                 <p>let other contacts add you into a conversation or group.</p>
                                             </li>
-                                            <li>
+                                            <li class="history-mode">
                                                 <div class="headline">
                                                     <h5>History</h5>
                                                     <label class="switch">
@@ -243,7 +247,7 @@
                                 <div class="content collapse" id="alerts" data-parent="#preferences">
                                     <div class="inside">
                                         <ul class="options">
-                                            <li>
+                                            <li class="notifications-mode">
                                                 <div class="headline">
                                                     <h5>Turn On Notifications</h5>
                                                     <label class="switch">
@@ -272,7 +276,7 @@
                                 <div class="content collapse" id="appearance" data-parent="#preferences">
                                     <div class="inside">
                                         <ul class="options">
-                                            <li>
+                                            <li class="night-mode">
                                                 <div class="headline">
                                                     <h5>Night Mode</h5>
                                                     <label class="switch">
@@ -309,7 +313,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5>Add</h5>
+                    <h5>Add a conversation</h5>
                     <button type="button" class="button round" data-dismiss="modal" aria-label="close">
                         <i data-eva="close"></i>
                     </button>
@@ -317,9 +321,9 @@
                 <div class="modal-body">
                     <ul class="nav" role="tablist">
                         <li>
-                            <a href="#contact" class="active" data-toggle="tab" aria-controls="details"
+                            <a href="#couple" class="active" data-toggle="tab" aria-controls="details"
                                aria-selected="true">
-                                Contact
+                                couple
                             </a>
                         </li>
                         <li>
@@ -331,15 +335,11 @@
                     </ul>
                     <div class="tab-content">
                         <!-- start of contact -->
-                        <div class="details tab-pane fade show active" id="contact" role="tabpanel">
+                        <div class="details tab-pane fade show active" id="couple" role="tabpanel">
                             <form>
                                 <div class="form-group">
-                                    <label>Name</label>
-                                    <input type="text" class="form-control" placeholder="Your New Contact's Name">
-                                </div>
-                                <div class="form-group">
                                     <label>Email</label>
-                                    <input type="email" placeholder="Email Address" class="form-control">
+                                    <input type="email" placeholder="Email Address" name="email" class="form-control">
                                 </div>
                                 <div class="form-group"></div>
                             </form>
@@ -348,29 +348,42 @@
 
                         <!-- start of participants -->
                         <div class="participants tab-pane fade" id="group" role="tabpanel">
-                            <h4>Contacts</h4>
-                            <hr>
-                            <ul class="users">
-                                <li>
-                                    <div class="status">
-                                        <img src="{% static 'images/avatars/avatar-male-2.jpg' %}" alt="avatar">
+                            <form action="">
+                                <div class="form-group">
+                                    <label for="">Name</label>
+                                    <input type="text" placeholder="Name" name="group_name" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Header</label>
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="customFile">
+                                        <label class="custom-file-label" for="customFile">Choose Header file</label>
                                     </div>
-                                    <div class="content">
-                                        <h5>Jennifer Lisity</h5>
-                                        <span>Florida, US</span>
-                                    </div>
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="user1">
-                                        <label class="custom-control-label" for="user1"></label>
-                                    </div>
-                                </li>
-                            </ul>
+                                </div>
+                                <h4>contacts</h4>
+                                <hr>
+                                <ul class="users">
+                                    <li>
+                                        <div class="status">
+                                            <img src="{% static 'images/avatars/avatar-male-2.jpg' %}" alt="avatar">
+                                        </div>
+                                        <div class="content">
+                                            <h5>Jennifer Lisity</h5>
+                                            <span>Florida, US</span>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="user1">
+                                            <label class="custom-control-label" for="user1"></label>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </form>
                         </div>
                         <!-- end of participants -->
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="button btn-primary">Create</button>
+                    <button type="submit" class="button btn-primary">Compose</button>
                 </div>
             </div>
         </div>
@@ -378,7 +391,7 @@
     <!-- end of create contact modal -->
 
     <!-- start of register modal -->
-    <div class="modal fade" id="Register" tabindex="-1" role="dialog" aria-label="Register" aria-hidden="true">
+    <div class="modal " id="Register" tabindex="-1" role="dialog" aria-label="Register" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -386,7 +399,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="details tab-pane fade show active">
-                        <form action="{% url 'register' %}" method="post" id="register-form"
+                        <form action="" method="post" id="register-form"
                               enctype="multipart/form-data">
                             <div class="row">
                                 <div class="col-12 col-md-6">
@@ -424,7 +437,7 @@
                             </div>
                             <div class="form-group">
                                 <label>password:</label>
-                                <input autocomplete="off" type="password" name="password1" id="id_password1"
+                                <input autocomplete="off" type="password" name="password" id="id_password1"
                                        class="form-control" placeholder="Your Password">
                                 <div class="error_container">
                                 </div>
@@ -435,7 +448,7 @@
                 <div class="modal-footer">
                     <button type="submit" data-target="#register-form" class="button btn-primary">Register</button>
                     <div class="switch-form">
-                        <small>Already have an account ?<a href="#Login" class="switch-login"> Login</a></small>
+                        <small>Already have an account ?<a href="#Login" class="switch-login">Login</a></small>
                     </div>
                 </div>
             </div>
@@ -444,7 +457,7 @@
     <!-- end of register modal -->
 
     <!-- start of login modal -->
-    <div class="modal fade " id="Login" tabindex="-1" role="dialog" aria-label="Login" aria-hidden="true">
+    <div class="modal  " id="Login" tabindex="-1" role="dialog" aria-label="Login" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -481,19 +494,14 @@
         </div>
     </div>
     <!-- end of login modal -->
+
     <!-- start of account activation modal -->
-    <div class="modal fade" id="Activate" tabindex="-1" role="dialog" aria-label="Login" aria-hidden="true">
+    <div class="modal " id="Created" tabindex="-1" role="dialog" aria-label="Created" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-body">
                     <i class="flaticon-check-square"></i>
-                    <small>we sent an activation email to
-                        <a href="#" target="_blank">fake@email.com</a>
-                    </small>
-                    <br>
-                    <small>
-                        or go back to <a href="#">site</a>
-                    </small>
+                    <small>New Account Created you can <a href="#Login" class="switch-login">login</a></small>
                 </div>
             </div>
         </div>
@@ -502,40 +510,34 @@
 </div>
 <!-- end of layout  -->
 
-<!-- start of verndor scripts -->
+<!-- start of vendor scripts -->
 <script src="{% static 'js/vendor/jquery.min.js' %}"></script>
-<script src="{% static 'js/vendor/jquery.ui.widget.js' %}"></script>
-<script src="{% static 'js/vendor/jquery.iframe-transport.js' %}"></script>
-<script src="{% static 'js/vendor/jquery.fileupload.js' %}"></script>
 <script src="{% static 'js/vendor/poper.min.js' %}"></script>
 <script src="{% static 'js/vendor/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/vendor/velocity.min.js' %}"></script>
+<script src="{% static 'js/vendor/velocity.min.js' %}"></script>
 <script src="{% static 'js/vendor/feather.min.js' %}"></script>
 <script src="{% static 'js/vendor/eva.min.js' %}"></script>
+<script src="{% static 'js/vendor/ejs.min.js' %}"></script>
 <script src="{% static 'js/vendor/reconnecting-websocket.min.js' %}"></script>
+<script type="module" src="{% static 'js/vendor/js.cookie.min.mjs' %}"></script>
 <!-- end of vendor scripts -->
 
 <!-- start of apps -->
-<script type="module" src="{% static 'js/apps/main.js' %}"></script>
-<script type="module" src="{% static 'js/apps/authentication.js' %}"></script>
-<script type="module" src="{% static 'js/apps/loader.js' %}"></script>
-<script type="module" src="{% static 'js/apps/csrf_token.js' %}"></script>
-<script type="module" src="{% static 'js/apps/chat.js' %}"></script>
+<script type="module" src="{% static 'js/app/silly/renderer.js' %}"></script>
+<script type="module" src="{% static 'js/app/silly/component_lib.js' %}"></script>
+<script type="module" src="{% static 'js/app/silly/communication.js' %}"></script>
+<script type="module" src="{% static 'js/app/silly/router.js' %}"></script>
+<script type="module" src="{% static 'js/app/load.js' %}"></script>
+<script type="module" src="{% static 'js/app/utility.js' %}"></script>
+<script type="module" src="{% static 'js/app/main.js' %}"></script>
+
 <!-- end of apps -->
 
-<!-- start of utility -->
-<script type="module" src="{% static 'js/utility/base_authenticated.js' %}"></script>
-<script type="module" src="{% static 'js/utility/loader.js' %}"></script>
-<script type="module" src="{% static 'js/utility/form_validation.js' %}"></script>
-<script type="module" src="{% static 'js/utility/screen_switching.js' %}"></script>
-<!-- end of utility -->
-<!-- start of site behavior scripts -->
-<script type="module" src="{% static 'js/EventSetup.js' %}"></script>
-<!-- end of site behavior scripts -->
 <div style="display:none;">Icons made by <a href="https://www.flaticon.com/authors/freepik"
                                             title="Freepik">Freepik</a>
     from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a
             href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0
         BY</a></div>
 </body>
-
 </html>

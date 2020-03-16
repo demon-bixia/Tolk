@@ -27,11 +27,11 @@
     background: var(--sidebar-background-color);
 }
 
-/*.notifications>li>.round>.eva {
-    width:20px;
-    height:20px;
+.notifications > li > .round > .eva {
+    width: 20px;
+    height: 20px;
     fill: var(--icon-color);
-}*/
+}
 
 .notifications > li > .round > i:before {
     font-size: 15px;

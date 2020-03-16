@@ -1,308 +1,226 @@
 import datetime
-
+from asgiref.sync import async_to_sync
 from channels.db import database_sync_to_async
-from channels.generic.websocket import JsonWebsocketConsumer, AsyncJsonWebsocketConsumer
+from channels.generic.websocket import AsyncJsonWebsocketConsumer
 from django.core.cache import caches
 
-from accounts.serializers import ContactSerializer
-from chat.models import (
-    Notification,
-    Settings,
-    Contact,
-    Conversation,
-    Message,
-)
-from chat.serializers import (
-    NotificationSerializer,
-    ConversationSerializer,
-    SettingsSerializer,
-)
+from accounts.models import Contact
+from chat.models import Message
+from chat.utils import get_conversation_or_error
 from .exceptions import ClientError
-from .utils import get_conversation_or_error
 
-LOAD_COMMANDS = [
-    "ALL", "NOTIFICATIONS", "CONTACT",
-    "SETTINGS", "CONVERSATIONS", "FRIENDS",
-    "CHAT"
-]
-
-CHAT_COMMANDS = ["MESSAGE", "JOIN", "LEAVE", "ERROR"]
-
-
-class LoadConsumer(JsonWebsocketConsumer):
-
-    def connect(self):
-        if self.scope['user'].is_authenticated:
-            self.accept()
-        else:
-            self.close()
-
-    def receive_json(self, content, **kwargs):
-        if content['command'] == "ALL":
-            data = self.load_all()
-        elif content['command'] == "NOTIFICATIONS":
-            data = self.load_notifications()
-        elif content['command'] == "CONTACT":
-            data = self.load_contact()
-        elif content['command'] == "SETTINGS":
-            data = self.load_settings_contact()
-        elif content['command'] == "CONVERSATIONS":
-            data = self.load_conversations_contact()
-        elif content['command'] == "FRIENDS":
-            data = self.load_friends()
-        elif content['command'] == "CHAT":
-            name = content['name']
-            data = self.load_conversation_contact(name)
-        else:
-            data = {"success": False, "error": "no such command"}
-
-        self.send_json(data)
-
-    def load_all(self):
-        contact = self.load_contact()
-        notifications = self.load_notifications()
-        conversations = self.load_conversations()
-        settings = self.load_settings()
-        friends = self.load_friends()
-
-        return {
-            "success": True,
-            "contact": contact['contact'],
-            "notifications": notifications['notifications'],
-            "conversations": conversations['conversations'],
-            "settings": settings['settings'],
-            'friends': friends['friends'],
-        }
-
-    def load_conversations_contact(self):
-        conversations = self.load_conversations()
-        contact = self.load_contact()
-        return {
-            "success": True,
-            "conversations": conversations['conversations'],
-            "contact": contact['contact'],
-        }
-
-    def load_conversation_contact(self, name):
-        conversation = self.load_conversation(name)
-        contact = self.load_contact()
-        return {
-            "success": True,
-            "conversation": conversation['conversation'],
-            "contact": contact['contact'],
-        }
-
-    def load_settings_contact(self):
-        settings = self.load_settings()
-        contact = self.load_contact()
-        return {
-            "success": True,
-            "settings": settings['settings'],
-            "contact": contact['contact'],
-        }
-
-    def load_contact(self):
-        user_id = self.scope['user'].id
-
-        try:
-            contact = Contact.objects.get(user_id=user_id)
-        except Contact.DoesNotExist:
-            return {"success": True, "error": "contact dose not exist"}
-
-        serializer = ContactSerializer(contact)
-        data = serializer.data
-        return {"success": True, "contact": data}
-
-    def load_conversations(self):
-        conversations = Conversation.objects.filter(
-            contacts=self.scope['user'].contact)
-        if conversations:
-            serializer = ConversationSerializer(conversations, many=True)
-            data = serializer.data
-            return {"success": True, "conversations": data}
-        else:
-            return {"success": True, "conversations": None}
-
-    def load_conversation(self, name):
-        conversation = Conversation.objects.filter(name=name).first()
-        if conversation:
-            serializer = ConversationSerializer(conversation)
-            data = serializer.data
-            return {"success": True, "conversation": data}
-        return {"success": True, "conversation": None}
-
-    def load_notifications(self):
-        notifications = Notification.objects.filter(
-            contact__user=self.scope['user'])
-
-        if notifications:
-            serializer = NotificationSerializer(notifications, many=True)
-            data = serializer.data
-
-            return {"success": True, "notifications": data}
-        else:
-            return {"success": True, "notifications": None}
-
-    def load_settings(self):
-        settings = Settings.objects.filter(
-            contact__user=self.scope['user']).first()
-
-        if settings:
-            serializer = SettingsSerializer(settings)
-            data = serializer.data
-            return {"success": True, "settings": data}
-        else:
-            return {"success": True, "settings": None}
-
-    def load_friends(self):
-        friends = Contact.objects.filter(friends=self.scope['user'].contact)
-
-        if friends:
-            serializer = ContactSerializer(friends, many=True)
-            data = serializer.data
-            return {"success": True, "friends": data}
-        else:
-            return {"success": True, "friends": None}
+COMMANDS = ["MESSAGE", "JOIN", "LEAVE", "ERROR", "NOTIFICATION", 'STATUSES']
 
 
 # used to receive, send messages and keep
-
 # track of online and offline users
 class ChatConsumer(AsyncJsonWebsocketConsumer):
-    conversations = set()
-    message_queue = list()
+    connected_user = None
 
-    async def connect(self):
+    async def connect(self) -> None:
+        """
+        check id user is authenticated if user is
+        authenticated the connect to channel and sets up
+        a cache db
+        """
+
         if self.scope['user'].is_authenticated:
+            # accept user
             await self.accept()
-            # make a user var that stays even when user disconnect
-            self.user = self.scope['user']
+            # to keep track of user
+            self.connected_user = self.scope['user']
 
-            status_cache = caches['default']
-            status_cache.set(f"{self.user.email}", 'on')
-            status_cache.close()
+            cache = caches['default']
+            cache.set(f"{self.connected_user.email}", "active")  # cache the user status
+            # add a list that will contain all the joined conversations
+            cache.set(f"{self.connected_user.email}_conversations", dict())
+            cache.close()
         else:
-            await self.close()
+            await
+            self.close()  # reject connection
 
-    async def receive_json(self, content, **kwargs):
-        if not content['command'] in CHAT_COMMANDS:
-            await self.send_json({"success": False, "error": "command dose not exist"})
-        elif content['command'] == "JOIN":
-            await self.join_conversation(content['conversation_name'])
-        elif content['command'] == "LEAVE":
-            await self.leave_conversation(content['conversation_name'])
-        elif content['command'] == "MESSAGE":
-            await self.send_message(content['message'], content['conversation_name'])
+    async def disconnect(self, code) -> None:
+        """
+        sets user status to off when disconnected
+        """
+        cache = caches['default']
+        cache.set(f"{self.connected_user.email}", 'offline')
+        status = cache.get(f'{self.connected_user.email}', 'offline')
+        joined_conversations = cache.get(f'{self.connected_user.email}_conversations')
+        cache.close()
 
-    async def disconnect(self, code):
-        # when socket disconnect change status
-        status_cache = caches['default']
-        status_cache.set(f"{self.user.email}", 'off')
-        status_cache.close()
-
-        # when socket disconnect save all messages to db
-        await self.save_messages()
+        # send event to all conversations informing them
+        # that the status has changes
+        for key, value in joined_conversations.items():
+            if value['type'] == 'couple':
+                await
+                self.channel_layer.group_send(
+                    value['name'],
+                    {
+                        'type': 'status.changed',
+                        'user': self.connected_user.id,
+                        'status': status,
+                    }
+                )
 
         # leave all conversations
-        for conversation_name in list(self.conversations):
+        for key, value in joined_conversations.items():
             try:
-                await self.leave_conversation(conversation_name)
+                await
+                self.leave_conversation(key)
             except ClientError:
                 pass
 
+    async def receive_json(self, content, **kwargs) -> None:
+        """
+        receives a command and calls the specific command handler
+        :param content:
+        :param kwargs:
+        :return None:
+        """
+        if content['command'] not in COMMANDS:
+            await
+            self.send_json({'success': False, 'error': 'command dose not exist'})
+        elif content['command'] == 'JOIN':  # if command is for joining a conversation then join the conversation
+            await
+            self.join_conversation(content['conversation_name'])
+        elif content['command'] == 'LEAVE':  # if command is for leaving a conversation then call leave_conversation
+            await
+            self.leave_conversation(content['conversation_name'])
+        elif content['command'] == 'MESSAGE':  # if command is for sending a message then call send message
+            await
+            self.send_message(content['conversation_name'], content['message'])
+        elif content['command'] == 'STATUSES':
+            await
+            self.get_statuses()  # if command is for fetching the statuses for all of the friends
+
     async def join_conversation(self, conversation_name):
+        conversation = await
+        get_conversation_or_error(conversation_name=conversation_name, user=self.connected_user)
+
+        # create a group named with the conversation name and
+        # add this channel to it
         await self.channel_layer.group_add(
-            conversation_name,
-            self.channel_name
+            conversation.name.replace(' ', ''),
+            self.channel_name,
         )
 
+        # send a message to client informing him that the
+        # they joined the conversation
         await self.send_json({
-            "success": True,
-            "command": "JOIN",
-            "conversation_name": conversation_name,
+            'success': True,
+            'command': 'JOIN',
+            'conversation_name': conversation_name,
         })
 
-        self.conversations.add(conversation_name)
+        # add conversation to a list of joined conversations
+        cache = caches['default']
+        joined_conversations = cache.get(f'{self.connected_user.email}_conversations', {})
+        joined_conversations[conversation_name] = {'name': conversation_name.replace(' ', ''),
+                                                   'type': conversation.type}
+        status = cache.get(f'{self.connected_user.email}', 'offline')
+        cache.set(f'{self.connected_user.email}_conversations', joined_conversations)
+        cache.close()
 
-        print(f"joined {conversation_name}")
+        # send event to newly joined conversation telling it
+        # that the user status has changed
+        await
+        self.channel_layer.group_send(
+            joined_conversations[conversation_name]['name'],
+            {
+                'type': 'status.changed',
+                'user': self.connected_user.id,
+                'status': status,
+            }
+        )
+
+        print(f"joined {conversation_name}")  # debug purpose
 
     async def leave_conversation(self, conversation_name):
-        conversation = await get_conversation_or_error(conversation_name, self.scope['user'])
 
-        # remove that we are in the conversation conversation
-        self.conversations.discard(conversation_name)
-
-        # Remove them from the group so they no longer get conversation messages
+        # remove channel from group
         await self.channel_layer.group_discard(
-            conversation.name,
+            conversation_name.replace(' ', ''),
             self.channel_name
         )
 
-        print(f"left {conversation_name}")
+        # send a message to client informing him that the
+        # they left the conversation
+        await
+        self.send_json({
+            'success': True,
+            'command': 'LEAVE',
+            'conversation_name': conversation_name,
+        })
 
-    async def send_message(self, message, conversation_name):
-        message = {
-            "type": "conversation.message",
-            "success": True,
-            "command": "MESSAGE",
-            "conversation_name": conversation_name,
-            "message": message,
-            "contact_pic": self.scope['user'].contact.contact_pic.url,
-            "email": self.scope['user'].email,
+        # remove from cached joined conversation list
+        cache = caches['default']
+        joined_conversations = cache.get(f'{self.connected_user.email}_conversations', {})
+        joined_conversations.pop(conversation_name)
+        cache.set(f'{self.connected_user.email}_conversations', joined_conversations)
+        cache.close()
+
+        print(f"left {conversation_name}")  # debug purpose
+
+    async def send_message(self, conversation_name, message):
+        event = {
+            'type': 'conversation.message',
+            'command': 'MESSAGE',
+            'conversation_name': conversation_name,
+            "content": message,
+            "contact_pic": self.connected_user.contact.contact_pic.url,
+            "sender": self.connected_user.id,
             "time_sent": datetime.datetime.now().strftime("%I:%M %p"),
             "date_sent": datetime.datetime.today().strftime("%d, %b"),
         }
 
+        # send a message event
         await self.channel_layer.group_send(
-            conversation_name,
-            message
+            conversation_name.replace(' ', ''),
+            event
         )
 
-        self.message_queue.append(message)
+        # save message after broad casting it
+        await
+        self.save_message(event)
 
-    # when someone send a message to a conversation
     async def conversation_message(self, event):
-        # if message is sent to conversation that is not joined
-        if event['conversation_name'] not in self.conversations:
-            await self.send_json({
-                "success": False,
-                "error": "conversation is not joined"
-            })
+        # get all the joined conversations
+        cache = caches['default']
+        joined_conversations = cache.get(f'{self.connected_user.email}_conversations')
+        cache.close()
 
-        # cache message for saving when socket disconnect
-        # self.message_queue.append(event)
-
-        # broadcast message
-        await self.send_json(event)
+        # if message is sent to a conversation that user is not joined in it
+        if event['conversation_name'] in joined_conversations:
+            await
+            self.send_json(event)
 
     @database_sync_to_async
-    # save all messages when disconnected
-    def save_messages(self):
-        if self.message_queue:
-            status_cache = caches['default']
-            for queued_message in self.message_queue:
-                # remove message from queue
-                self.message_queue.remove(queued_message)
+    def save_message(self, event):
+        conversation = async_to_sync(get_conversation_or_error)(event['conversation_name'], self.connected_user)
+        contact = Contact.objects.get(user__id=event['sender'])
+        message = Message.objects.create(content=event['content'], sender=contact, conversation=conversation)
+        message.sent = True
+        message.save()
 
-                # make sure message in is sent to an existing conversation
-                if queued_message['conversation_name'] in self.conversations:
-                    conversation_name = queued_message['conversation_name']
+    async def get_statuses(self):
+        friends = self.connected_user.contact.friends.all()
+        cache = caches['default']
+        statuses = dict()
 
-                    # getting the conversation
-                    try:
-                        conversation = Conversation.objects.get(
-                            name=conversation_name)
-                    except Conversation.DoesNotExist:
-                        pass
+        for friend in friends:
+            status = cache.get(f'{friend.user.email}', False)
 
-                    sender = conversation.contacts.filter(
-                        user__email=queued_message['email']).first()
-                    sent = True if status_cache.get(
-                        f"{queued_message['email']}") == "on" else False
-                    message = Message(content=queued_message['message'],
-                                      sender=sender, conversation=conversation,
-                                      sent=sent,
-                                      time_sent=queued_message['time_sent'],
-                                      date_sent=queued_message['date_sent'])
-                    message.save()
-            status_cache.close()
+            if status:
+                statuses[f'{friend.user.id}'] = status
+            else:
+                statuses[f'{friend.user.id}'] = 'offline'
+
+        cache.close()
+
+        await
+        self.send_json({'command': 'STATUSES', 'statuses': statuses})
+
+    async def status_changed(self, event):
+        await
+        self.send_json({'command': 'STATUS', 'user': event['user'], 'status': event['status']})

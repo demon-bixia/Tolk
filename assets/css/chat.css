@@ -5,6 +5,21 @@
     background: var(--chat-background-color);
 }
 
+.chat .empty-chat {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.chat .empty-chat span {
+    color: var(--form-input-font-color);
+    background: var(--chat-top-background);
+    padding: 10px;
+    border-radius: 37px;
+}
+
 /* end of chat*/
 
 
@@ -64,6 +79,11 @@
     line-height: 1;
     color: var(--form-input-font-color);
 }
+
+.chat .item .top span.active {
+    color: var(--active-radio-color);
+}
+
 
 
 .chat .item .top ul > li button i::before {
@@ -332,6 +352,7 @@
     flex-direction: column;
     align-items: center;
     margin-bottom: 30px;
+    text-align: center;
 }
 
 .utility h4,
@@ -364,6 +385,10 @@ h5 {
 }
 
 .utility .profile span {
+    color: var(--form-input-font-color);
+}
+
+.utility .profile span.active {
     color: var(--active-radio-color);
 }
 
@@ -443,7 +468,7 @@ h5 {
 
 /* apply for a 1300px screen and above */
 @media (min-width: 1300px) {
-    .utility.open {
+    .utility.active {
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
@@ -549,7 +574,7 @@ h5 {
         transition-property: left, visibility;
     }
 
-    .utility.open {
+    .utility.active {
         visibility: visible;
         left: 0;
     }

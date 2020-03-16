@@ -38,52 +38,14 @@ class UserChangeForm(forms.ModelForm):
         return self.initial['password']
 
 
-class ContactCreateForm(forms.ModelForm):
-    email = forms.EmailField(max_length=255, required=True, label='Email Address')
-    password1 = forms.CharField(widget=forms.PasswordInput, required=True, label="Password", )
-
+class ContactForm(forms.ModelForm):
     class Meta:
         model = Contact
-        fields = ('first_name', 'last_name', 'email', 'location', 'password1')
+        fields = '__all__'
 
-    def clean_email(self):
-        try:
-            if User.objects.get(email=self.cleaned_data.get('email')):
-                raise forms.ValidationError('email Address is taken')
-        except User.DoesNotExist:
-            pass
-        return self.cleaned_data.get('email')
+    def clean(self):
+        cleaned_data = super(ContactForm, self).clean()
 
-
-class ContactUpdateForm(forms.ModelForm):
-    class Meta:
-        model = Contact
-        fields = ('first_name', 'last_name', 'location',)
-
-
-class LoginForm(forms.Form):
-    email = forms.EmailField(max_length=255, required=True)
-    password = forms.CharField(widget=forms.PasswordInput, max_length=80, required=True)
-
-    def clean_email(self):
-        try:
-            User.objects.get(email=self.cleaned_data.get('email'))
-        except User.DoesNotExist:
-            raise forms.ValidationError('incorrect email address')
-        return self.cleaned_data.get('email')
-
-    def clean_password(self):
-        try:
-            user = User.objects.get(email=self.cleaned_data.get('email'))
-            if not user.check_password(self.cleaned_data.get('password')):
-                raise forms.ValidationError('incorrect password')
-            else:
-                return self.cleaned_data.get('password')
-        except User.DoesNotExist:
-            raise forms.ValidationError('unknown password')
-
-
-class ContactPictureForm(forms.ModelForm):
-    class Meta:
-        model = Contact
-        fields = ('contact_pic',)
+        # will work on update only
+        if self.instance in cleaned_data.get('friends', []):
+            self.add_error('friends', 'you cannot befriend yourself')

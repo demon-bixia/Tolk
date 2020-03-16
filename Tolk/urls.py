@@ -15,23 +15,24 @@ Including another URLconf
 """
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path, include, re_path
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
 
-from accounts import views as auth_views
 from . import settings
 
 urlpatterns = [
+    # admin site
     path('admin/', admin.site.urls),
-    path('', include('chat.urls'), ),
-    path('accounts/authenticated/', auth_views.UserAuthenticated.as_view(), name='authenticated'),
-    path('accounts/login/', auth_views.LoginView.as_view(), name='login'),
-    path('accounts/register/', auth_views.RegisterView.as_view(), name='register'),
-    re_path(r"^active/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$",
-            auth_views.ActivateAccount.as_view(), name="active"),
-    path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
-    path('accounts/update/', auth_views.ContactUpdateView.as_view(), name='update'),
-    path('accounts/update/contact_pic/', auth_views.ChangeContactPicture.as_view(), name='change_contact_pic'),
+    # account urls
+    path("api/", include('accounts.urls')),
+    # authentication urls
+    path("api/", include('Authentication.urls')),
+    # chat urls
+    path("api/", include('chat.urls')),
+    # app web interface
+    path("", include('web_interface.urls')),
 ]
 
+# serve user uploaded media in development
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

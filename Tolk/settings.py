@@ -37,9 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'channels',
     'rest_framework',
-    'chat',
-    'accounts',
-    'settings',
+    'chat.apps.ChatConfig',
+    'accounts.apps.AccountsConfig',
+    'Authentication.apps.AuthenticationConfig',
+    'settings.apps.SettingsConfig',
+    'web_interface.apps.WebInterfaceConfig',
 ]
 
 MIDDLEWARE = [
@@ -141,6 +143,7 @@ EMAIL_HOST_PASSWORD = 'pawergot90'
 
 #  Channels settings
 ASGI_APPLICATION = "Tolk.routing.application"
+
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
@@ -161,4 +164,14 @@ CACHES = {
         },
         "KEY_PREFIX": "chat"
     },
+}
+
+# rest framework
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+        'rest_framework.renderers.AdminRenderer',
+
+    ]
 }

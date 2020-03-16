@@ -1,151 +1,185 @@
-from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import get_user_model
-from django.contrib.auth.decorators import login_required
-from django.contrib.sites.shortcuts import get_current_site
-from django.core.mail import EmailMessage
-from django.http import JsonResponse, HttpResponse
-from django.shortcuts import redirect
-from django.template.loader import render_to_string
-from django.utils.decorators import method_decorator
-from django.utils.encoding import force_text, force_bytes
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.views.generic import View
+from rest_framework import status
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.viewsets import ModelViewSet
 
-from chat.models import Settings
-from .forms import ContactCreateForm, LoginForm, ContactPictureForm, ContactUpdateForm
-from .tokens import account_activation_token
+from chat.models import Conversation
+from chat.serializers import ConversationSerializer
+from .models import Contact
+from .permissions import IsAuthenticatedOrCreateOnly
+from .serializers import UserSerializer, ContactSerializer, AddFriendSerializer
 
-User = get_user_model()
+User = get_user_model()  # contrib.auth User
 
 
-class UserAuthenticated(View):
-
-    def get(self, request):
-        if request.user.is_authenticated:
-            return JsonResponse({"authenticated": True})
-        else:
-            return JsonResponse({"authenticated": False})
-
-
-class LoginView(View):
-    form_class = LoginForm
-
-    def post(self, request):
-        form = self.form_class(request.POST)
-
-        if form.is_valid():
-            email = form.cleaned_data.get('email')
-            password = form.cleaned_data.get('password')
-            self.login_user(request, email, password)
-            return JsonResponse({"success": True, "form_errors": form.errors})
-        else:
-            return JsonResponse({"success": False, "form_errors": form.errors})
-
-    def login_user(self, request, email, password):
-        user = authenticate(request, username=email, password=password)
-        if user:
-            login(request, user)
-        return user
-
-
-class RegisterView(View):
-    form_class = ContactCreateForm
-
-    def post(self, request):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            contact = form.save(commit=False)
-            user = self.create_user(form, contact)
-            self.add_user(user, contact)
-            self.send_activation_token(request, user)
-            self.create_settings(contact)
-            return JsonResponse({"success": True, "email": user.email, "form_errors": form.errors})
-        else:
-            return JsonResponse({"success": False, "form_errors": form.errors})
-
-    def send_activation_token(self, request, user):
-        current_site = get_current_site(request)
-        mail_subject = 'Activate your account'
-        message = render_to_string('partial/account_activation_template.html', {
-            'user': user,
-            'domain': current_site.domain,
-            'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-            'token': account_activation_token.make_token(user),
-        })
-        to_email = user.email
-        email = EmailMessage(
-            mail_subject,
-            message,
-            to=[to_email]
-        )
-        email.send()
-
-    def add_user(self, user, contact):
-        contact.user = user
-        contact.save()
-        return contact
-
-    def create_user(self, form, contact):
-        user = User(email=form.cleaned_data['email'])
-        user.set_password(form.cleaned_data['password1'])
-        user.save()
-        return user
-
-    def create_settings(self, contact):
-        settings = Settings(contact=contact)
-        settings.save()
-        return settings
-
-
-class ActivateAccount(View):
-
-    def get(self, request, uidb64, token):
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def add_friend(request, format=None):
+    serializer = AddFriendSerializer(data=request.data)
+    if serializer.is_valid():
         try:
-            uid = force_text(urlsafe_base64_decode(uidb64))
-            user = User.objects.get(id=uid)
-        except(TypeError, ValueError, OverflowError, User.DoesNotExist):
-            user = None
+            friend_user = User.objects.get(email=serializer.data.get('email'))
 
-        if user is not None and account_activation_token.check_token(user, token):
-            user.is_active = True
+            if friend_user.contact == request.user.contact:
+                return Response({"success": False, "errors": {'email': ['you cannot befriend yourself']}},
+                                status=status.HTTP_400_BAD_REQUEST)
+
+            else:
+                friend_user.contact.friends.add(request.user.contact)  # add  authenticated user contact to friends
+
+                conversation_already_exist = False
+                added_conversation = None
+
+                # search for a conversation couple in common
+                for conversation in friend_user.contact.conversations.filter(type='couple'):
+                    if request.user.contact in conversation.participants.all():
+                        conversation_already_exist = True
+                        added_conversation = conversation
+
+                if not conversation_already_exist:
+                    conversation = Conversation()
+                    conversation.save()
+                    conversation.participants.add(friend_user.contact, request.user.contact)
+                    added_conversation = conversation
+
+                contact_serializer = ContactSerializer(instance=friend_user.contact)
+                conversation_serializer = ConversationSerializer(instance=added_conversation)
+
+                return Response(
+                    {"success": True, "contact": contact_serializer.data, "conversation": conversation_serializer.data})
+
+        except User.DoesNotExist:
+            return Response({'success': False, 'errors': {'email': ['no contact with this email']}},
+                            status=status.HTTP_404_NOT_FOUND)
+    else:
+        return Response({'success': False, 'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class RegisterView(APIView):
+    user_serializer = UserSerializer
+    contact_serializer = ContactSerializer
+
+    def post(self, request):
+        user_serializer = self.user_serializer(data=request.data)
+
+        if user_serializer.is_valid():
+            # create a user
+            user = user_serializer.save()
+            user.set_password(request.data['password'])
             user.save()
-            return redirect('index')
+            # create a contact
+            contact_serializer = self.contact_serializer(data=request.data, context={'user': user.id})
+            if contact_serializer.is_valid():
+                contact = contact_serializer.save(user=user)
+                return Response({'contact': contact_serializer.data}, status=status.HTTP_200_OK)
+            else:
+                # delete user if contact is invalid
+                user.delete()
+                return Response({'errors': contact_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
         else:
-            return HttpResponse('<h1>Failed</h1>')
+            return Response({'errors': user_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
-@method_decorator(login_required, name="dispatch")
-class LogoutView(View):
+class UserViewSet(ModelViewSet):
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticatedOrCreateOnly]
 
-    def get(self, request):
-        logout(request)
-        return JsonResponse({"success": True})
+    def get_queryset(self):
+        contact = self.request.user.contact
+        queryset = User.objects.filter(contact__friends=contact)
+        return queryset
+
+    def create(self, request, *args, **kwargs):
+        """
+        adds operation success boolean for client
+        """
+        response = super(UserViewSet, self).create(request, *args, **kwargs)
+        return Response({'success': True, 'user': response.data}, status=status.HTTP_201_CREATED)
+
+    def perform_create(self, serializer):
+        user = serializer.save()
+        user.set_password(self.request.data['password'])
+        user.save()
+
+    def update(self, request, *args, **kwargs):
+        """
+        adds operation success boolean for client
+        """
+        response = super(UserViewSet, self).update(request, *args, **kwargs)
+        return Response({'success': True, 'user': response.data}, status=status.HTTP_200_OK)
+
+    def destroy(self, request, *args, **kwargs):
+        """
+        adds operation success boolean for client
+        """
+        response = super(UserViewSet, self).destroy(request, *args, **kwargs)
+        return Response({'success': True}, status=status.HTTP_200_OK)
+
+    def retrieve(self, request, *args, **kwargs):
+        """
+        adds operation success boolean for client
+        """
+        response = super(UserViewSet, self).retrieve(request, *args, **kwargs)
+        return Response({'success': True, "user": response.data}, status=status.HTTP_200_OK)
+
+    def list(self, request, *args, **kwargs):
+        """
+        adds operation success boolean for client
+        """
+        response = super(UserViewSet, self).list(request, *args, **kwargs)
+        return Response({'success': True, 'users': response.data}, status=status.HTTP_200_OK)
 
 
-@method_decorator(login_required, name="dispatch")
-class ContactUpdateView(View):
-    form_class = ContactUpdateForm
+class ContactViewSet(ModelViewSet):
+    serializer_class = ContactSerializer
+    permission_classes = [IsAuthenticatedOrCreateOnly]
 
-    def post(self, request):
-        contact = request.user.contact
-        form = self.form_class(instance=contact, data=request.POST)
-        if form.is_valid():
-            contact = form.save(commit=False)
-            contact.save()
-            return JsonResponse({'success': True, 'form_errors': form.errors})
-        else:
-            return JsonResponse({'success': False, 'form_errors': form.errors})
+    def get_queryset(self):
+        contact = self.request.user.contact
+        queryset = Contact.objects.filter(friends=contact) | Contact.objects.filter(id=contact.id)
+        return queryset.distinct()
 
+    def create(self, request, *args, **kwargs):
+        """
+            adds operation success boolean for client
+        """
+        response = super(ContactViewSet, self).create(request, *args, **kwargs)
+        return Response({'success': True, 'contact': response.data}, status=status.HTTP_201_CREATED)
 
-@method_decorator(login_required, name="dispatch")
-class ChangeContactPicture(View):
-    form_class = ContactPictureForm
+    def update(self, request, *args, **kwargs):
+        """
+        adds operation success boolean for client
+        """
+        response = super(ContactViewSet, self).update(request, *args, **kwargs)
+        return Response({'success': True, 'contact': response.data}, status=status.HTTP_200_OK)
 
-    def post(self, request):
-        contact = request.user.contact
-        form = self.form_class(request.POST, request.FILES, instance=contact)
-        if form.is_valid():
-            form.save()
-            return JsonResponse({'success': True})
-        else:
-            return JsonResponse({'success': False})
+    def destroy(self, request, *args, **kwargs):
+        """
+        adds operation success boolean for client
+        """
+        response = super(ContactViewSet, self).destroy(request, *args, **kwargs)
+        return Response({'success': True}, status=status.HTTP_200_OK)
+
+    def perform_destroy(self, instance):
+        for conversation in Conversation.objects.filter(type='couple', participants=instance):
+            # remove all couple conversations that this participant joined
+            conversation.delete()
+
+        instance.delete()
+
+    def retrieve(self, request, *args, **kwargs):
+        """
+        adds operation success boolean for client
+        """
+        response = super(ContactViewSet, self).retrieve(request, *args, **kwargs)
+        return Response({'success': True, "contact": response.data}, status=status.HTTP_200_OK)
+
+    def list(self, request, *args, **kwargs):
+        """
+        adds operation success boolean for client
+        """
+        response = super(ContactViewSet, self).list(request, *args, **kwargs)
+        return Response({'success': True, 'contacts': response.data}, status=status.HTTP_200_OK)

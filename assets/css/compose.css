@@ -90,9 +90,14 @@
     color: var(--plain-font-color);
 }
 
+.modal-body .participants label {
+    color: var(--plain-font-color);
+}
+
 .modal-body input.form-control {
     padding: 0 20px;
     height: 55px;
+    color: var(--white);
 }
 
 .modal-body textarea.form-control {
@@ -101,8 +106,37 @@
     max-height: 100px;
 }
 
+
+.modal-body .custom-file {
+    margin-bottom: 30px;
+
+}
+
+.modal-body .custom-file .custom-file-input {
+
+}
+
+.modal-body .custom-file .custom-file-label {
+    padding: 15px 20px;
+    height: 55px;
+    color: var(--form-input-font-color);
+    background: var(--form-input-background-color);
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 6px;
+    border: none;
+}
+
+.modal-body .custom-file .custom-file-label::after {
+    height: calc(1.5em + 1.85rem);
+    padding: 0.875rem .75rem;
+    background: #21293c;
+    color: var(--form-input-font-color);
+    content: "";
+}
+
 .modal-body .participants {
-    padding: 30px 30px 0;
+    padding: 20px 30px 0;
 }
 
 .modal-body .search {
@@ -223,15 +257,11 @@
 
 /* remove scroll IE +10 */
 
-.modal.modal.active {
+.modal.active {
     display: block;
     opacity: 1;
 }
 
-.modal + .modal {
-    opacity: 0;
-    display: none;
-}
 
 
 .modal + .modal .modal-content {
@@ -332,28 +362,28 @@ form .form-group.error label {
     color: var(--danger);
 }
 
-#Activate .modal-body {
+#Created .modal-body {
     padding: 50px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-#Activate .modal-body i {
+#Created .modal-body i {
     margin-bottom: 20px;
 }
 
-#Activate .modal-body i:before {
+#Created .modal-body i:before {
     margin: 0;
     font-size: 60px;
     color: var(--success);
 }
 
-#Activate .modal-body small {
+#Created .modal-body small {
     color: var(--plain-font-color);
 }
 
-#Activate .modal-body a {
+#Created .modal-body a {
     color: var(--info);
 }
 

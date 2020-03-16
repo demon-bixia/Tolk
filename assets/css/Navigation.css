@@ -93,17 +93,24 @@
 }
 
 
-.navigation .btn img {
+.navigation img {
     width: 50px;
     height: 50px;
     border-radius: 100%;
 }
 
-.navigation .btn .circle-status {
+.navigation .profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.navigation .circle-status {
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 50%;
+    width: 51px;
     box-shadow: 0 2px 12px #4e182e, 2px 0 12px #4E182E, -2px 0 12px #4e182e, 0 -2px 12px #4e182e;
 }
 
@@ -115,10 +122,10 @@
         width: 100px;
     }
 
-    .navigation ul > li > a.active {
+    /*.navigation ul > li > a.active {
         background: var(--sidebar-background-color);
         padding: 15px;
-    }
+    }*/
 
     .navigation .container {
         display: flex;
@@ -196,7 +203,5 @@
     }
 
     .navigation ul > li:nth-child(7) {
-        display: none;
     }
-
 }
