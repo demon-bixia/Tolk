@@ -8,6 +8,7 @@ from rest_framework.viewsets import ModelViewSet
 
 from chat.models import Conversation
 from chat.serializers import ConversationSerializer
+from chat.utils import add_notification
 from .models import Contact
 from .permissions import IsAuthenticatedOrCreateOnly
 from .serializers import UserSerializer, ContactSerializer, AddFriendSerializer
@@ -48,6 +49,15 @@ def add_friend(request, format=None):
                 contact_serializer = ContactSerializer(instance=friend_user.contact)
                 conversation_serializer = ConversationSerializer(instance=added_conversation)
 
+                f_content = f'{request.user.email} started a conversation with you'
+                friend_user_notification = {'type': 'chat',
+                                            'content': f_content}
+
+                add_notification(friend_user_notification, friend_user)
+
+                user_notification = {'type': 'chat', 'content': 'your new chat is ready'}
+                add_notification(user_notification, request.user)
+
                 return Response(
                     {"success": True, "contact": contact_serializer.data, "conversation": conversation_serializer.data})
 
@@ -74,6 +84,12 @@ class RegisterView(APIView):
             contact_serializer = self.contact_serializer(data=request.data, context={'user': user.id})
             if contact_serializer.is_valid():
                 contact = contact_serializer.save(user=user)
+
+                # create a new notifications
+                content = f'hey {contact.first_name} your new account is created'
+                notification = {'type': 'accounts', 'content': content}
+                add_notification(notification, user)
+
                 return Response({'contact': contact_serializer.data}, status=status.HTTP_200_OK)
             else:
                 # delete user if contact is invalid
@@ -155,6 +171,13 @@ class ContactViewSet(ModelViewSet):
         """
         response = super(ContactViewSet, self).update(request, *args, **kwargs)
         return Response({'success': True, 'contact': response.data}, status=status.HTTP_200_OK)
+
+    def perform_update(self, serializer):
+        contact = serializer.save()
+        content = f'hey there {contact.first_name} your account information is updated'
+        notification = {'type': 'accounts',
+                        'content': content}
+        add_notification(notification, contact.user)
 
     def destroy(self, request, *args, **kwargs):
         """

@@ -1,4 +1,5 @@
 import re
+
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -11,6 +12,7 @@ from rest_framework.viewsets import ModelViewSet, GenericViewSet
 
 from accounts.models import Contact
 from accounts.serializers import ContactSerializer
+from chat.utils import add_notification
 from .models import Conversation, Message, Notification, Settings
 from .serializers import ConversationSerializer, MessageSerializer, NotificationSerializer, SettingsSerializer, \
     CreateGroupSerializer
@@ -53,6 +55,17 @@ class CreateGroup(APIView):
                     conversation.participants.add(contact)
 
                 conversation_serializer = ConversationSerializer(instance=conversation)
+
+                creator_notification = {'type': 'chat', 'content': 'your new group has been created'}
+                add_notification(creator_notification, request.user)
+
+                p_content = f'{request.user.email} added you to a new group'
+                participants_notification = {'type': 'chat',
+                                             'content': p_content}
+                for participant in conversation.participants.all():
+                    if participant.user.id != request.user.id:
+                        add_notification(participants_notification, participant.user)
+
                 return Response({'success': True, 'conversation': conversation_serializer.data},
                                 status=status.HTTP_201_CREATED)
             else:

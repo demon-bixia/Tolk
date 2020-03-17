@@ -57,8 +57,21 @@ export function load(command, options) {
             return loadMessage(options);
         case 'bubble-last-message':
             return loadConversationBubbleLastMessage(options);
+        case 'notification':
+            return loadNotification(options);
     }
 }
+
+function loadNotification(options) {
+    return renderer.render({
+        'component_name': 'notification-bubble',
+        'refresh': options['refresh'],
+        'data': {
+            'notification': options['notification'],
+        }
+    })
+}
+
 
 function loadMessage(options) {
     let authenticated_user = document.querySelector('.profile-container img').dataset['user'];

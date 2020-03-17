@@ -90,6 +90,12 @@ function AddEventListeners() {
     document.querySelector('.chat')
         .addEventListener('click', sendMessageEvent);
 
+    for (let chat of document.querySelectorAll('.chat .tab-content .tab-pane')) {
+        // when enter is clicked send button
+        chat.querySelector('.bottom form textarea.form-control')
+            .addEventListener('keyup', sendMessageEnterEvent);
+    }
+
     // when conversation bubble is clicked scroll
     // chat to bottom
     document.querySelector('#conversations .container')
@@ -185,6 +191,10 @@ function updateAccountEvent(event) {
                         wizard.hide(preloader);
                         // empty form
                         emptyForm(form);
+                    }).then(function () {
+                        if (communicator.socket_is_open()) {
+                            getNotifications();
+                        }
                     })
                 })
             })
@@ -261,8 +271,9 @@ function addFriend(form) {
                             // send event if true
                             if (communicator.socket_is_open()) {
                                 // send a STATUSES EVENT
+                                joinConversations(res['conversation']['name']);
                                 getStatuses();
-                                joinConversations(res['conversation']['name'])
+                                getNotifications();
                             }
                         })
                     })
@@ -334,6 +345,7 @@ function createGroup(form) {
                         if (communicator.socket_is_open()) {
                             getStatuses();
                             joinConversation(response['conversation']['name']);
+                            getNotifications();
                         }
                     })
                 })
@@ -421,6 +433,7 @@ function loginEvent(event) {
 
                                     joinConversations();
                                     getStatuses();
+                                    getNotifications();
                                 })
                             })
                     })
@@ -531,14 +544,30 @@ function sendMessageEvent(event) {
     if (event.target.classList.contains('send') || event.target.parentElement.classList.contains('send')) {
         let input = event.target.closest('form')['message'];
         let conversation_name = input.dataset['conversation'];
-        if (input.value !== '') {
-            communicator.send_json_socket({
-                'command': 'MESSAGE',
-                'conversation_name': conversation_name,
-                'message': input.value
-            });
-            input.value = '';
-        }
+        sendMessage(input, conversation_name)
+    }
+}
+
+// send message when enter is clicked
+function sendMessageEnterEvent(event) {
+    event.preventDefault();
+
+    if (event.code === 'Enter' || event.code === 'Return') {
+        let conversation_name = event.target.dataset['conversation'];
+        sendMessage(event.target, conversation_name);
+    }
+}
+
+// send message
+function sendMessage(input, conversation_name) {
+    if (input.value !== '' && input.value.length >= 1 && input.value.trim().length !== 0) {
+        communicator.send_json_socket({
+            'command': 'MESSAGE',
+            'conversation_name': conversation_name,
+            'message': input.value
+        });
+    } else {
+        input.value = '';
     }
 }
 
@@ -547,13 +576,15 @@ function getStatuses() {
     communicator.send_json_socket({'command': 'STATUSES'});
 }
 
+function getNotifications() {
+    communicator.send_json_socket({'command': 'NOTIFICATION'})
+}
+
 /* Websocket Callbacks */
 function receive(data) {
     let json_data = JSON.parse(data);
 
     switch (json_data['command']) {
-        case 'NOTIFICATION':
-            break;
         case 'MESSAGE':
             conversation_message(json_data);
             break;
@@ -569,13 +600,19 @@ function receive(data) {
         case 'STATUS':
             conversation_status(json_data);
             break;
+        case 'NOTIFICATION':
+            conversation_notification(json_data);
+            break;
     }
 }
 
 function conversation_message(data) {
     load('message', data).then(function () {
         return load('bubble-last-message', data);
-    });
+    }).then(function () {
+        let conversation = document.querySelector(`#conversations  a[data-name="${data['conversation_name']}"]`);
+        scrollChat(conversation);
+    })
 }
 
 function conversation_joined(data) {
@@ -651,4 +688,17 @@ function conversation_status(data) {
             bottom_status.classList.remove('active');
         }
     }
+}
+
+function conversation_notification(data) {
+    load('notifications', {'notification': data['notification'], 'refresh': true})
+        .then(function () {
+            let audio = document.querySelector('.notifications-sound');
+            try {
+                audio.play();
+            } catch (e) {
+                console.log('notifications are muted until you interact with the document');
+            }
+            eva.replace();
+        })
 }

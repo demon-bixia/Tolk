@@ -20,7 +20,7 @@ export class Renderer {
             case 'append':
                 // return append
                 return 'append';
-            case 'replace':
+            case 'replaceOrAppend':
                 // search html page for element
                 if (selector) {
                     element = document.querySelector(selector);
@@ -38,6 +38,21 @@ export class Renderer {
             case 'prepend':
                 // return replace
                 return 'prepend';
+            case 'replaceOrPrepend':
+                // search html page for element
+                if (selector) {
+                    element = document.querySelector(selector);
+                } else {
+                    element = document.querySelector(component['selector']);
+                }
+
+                if (element) {
+                    // if element exist replace
+                    return 'replace';
+                } else {
+                    // if element dose not exist append
+                    return 'prepend';
+                }
             default:
                 // if no render mode then component is invalid
                 throw new Error('invalid render mode');

@@ -1,15 +1,11 @@
 /* Current */
 
-TODO: commit changes and add development branch
-
 /* Road Map */
-TODO: chat offline message queue --commit
-TODO: build notifications --commit
 TODO: implement settings
 TODO: implement cookie history --commit
+TODO: chat offline message queue --commit
 TODO: conversation, contact, notifications filter --commit
 TODO: make conversation update event --commit
-TODO: fix duplicate conversation --commit
 TODO: fix automated tests for view sets
 
 /* Done */
@@ -23,9 +19,9 @@ TODO: fix automated tests for view sets
     removing contacts
     remove conversation
     remove notifications
+    remove messages
 
 /* notes */
     -- add password reset
-    -- add send via enter
     -- make add to conversation event
-    -- make password min
+    -- add password min-length

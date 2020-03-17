@@ -130,16 +130,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# Email settings
-EMAIL_HOST = 'smtp.gmail.com'
-
-EMAIL_USE_TLS = True
-
-EMAIL_PORT = 587
-
-EMAIL_HOST_USER = 'mohslahmed100@gmail.com'
-
-EMAIL_HOST_PASSWORD = 'pawergot90'
 
 #  Channels settings
 ASGI_APPLICATION = "Tolk.routing.application"
