@@ -47,12 +47,23 @@ class CreateGroup(APIView):
         if serializer.is_valid():
             conversation = serializer.save()
             participants = self.get_participants(request=request)
+
+            if request.user.contact.settings.private_mode:
+                return Response(
+                    {'success': False, 'errors': {'non_field_errors': ['you cannot create groups in private mode']}})
+
             if participants:
                 conversation.participants.add(request.user.contact)
 
                 for participant in participants:
                     contact = get_object_or_404(Contact, pk=participant)
-                    conversation.participants.add(contact)
+
+                    if not contact.settings.private_mode:
+                        conversation.participants.add(contact)
+                    else:
+                        return Response(
+                            {'success': False, 'errors': {'non_field_errors': ['contact in private mode is added']}},
+                            status=status.HTTP_400_BAD_REQUEST)
 
                 conversation_serializer = ConversationSerializer(instance=conversation)
 
@@ -62,6 +73,7 @@ class CreateGroup(APIView):
                 p_content = f'{request.user.email} added you to a new group'
                 participants_notification = {'type': 'chat',
                                              'content': p_content}
+
                 for participant in conversation.participants.all():
                     if participant.user.id != request.user.id:
                         add_notification(participants_notification, participant.user)
@@ -73,7 +85,8 @@ class CreateGroup(APIView):
                     {'success': False, 'errors': {'non_field_errors': ['group must at least have one participants']}},
                     status=status.HTTP_400_BAD_REQUEST)
         else:
-            return Response({'success': False, 'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'success': False, 'errors': serializer.errors},
+                            status=status.HTTP_400_BAD_REQUEST)
 
     def get_participants(self, request):
         participants = list()
@@ -273,3 +286,34 @@ class SettingsViewSet(ModelViewSet):
         """
         response = super().list(request, *args, **kwargs)
         return Response({'success': True, 'settings': response.data}, status=status.HTTP_200_OK)
+
+
+class ChangeSettings(APIView):
+    """
+        handles changing settings for user
+    """
+    serializer_class = SettingsSerializer
+
+    def post(self, request):
+        if request.data['setting'] == 'private_mode':
+            self.change_private_mode(request.user, request.data['value'])
+        elif request.data['setting'] == 'night_mode':
+            self.change_appearance(request.user, request.data['value'])
+        elif request.data['setting'] == 'notifications':
+            self.change_notifications(request.user, request.data['value'])
+        else:
+            return Response({'success': False, 'error': 'setting not found'}, status=status.HTTP_400_BAD_REQUEST)
+        serializer = self.serializer_class(instance=request.user.contact.settings)
+        return Response({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
+
+    def change_appearance(self, user, value):
+        user.contact.settings.night_mode = value
+        user.contact.settings.save()
+
+    def change_private_mode(self, user, value):
+        user.contact.settings.private_mode = value
+        user.contact.settings.save()
+
+    def change_notifications(self, user, value):
+        user.contact.settings.notifications = value
+        user.contact.settings.save()

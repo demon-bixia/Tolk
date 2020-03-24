@@ -27,10 +27,12 @@ class ConversationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Conversation
-        fields = ('id', 'name', 'type', 'header', 'participants', 'messages', 'last_message', 'last_message_date')
+        fields = ('id', 'name', 'type', 'header', 'participants', 'messages', 'last_message', 'last_message_date',
+                  'history_mode',)
         extra_kwargs = {
             'participants': {'required': False},
-            'messages': {'read_only': True, 'required': False}
+            'messages': {'read_only': True, 'required': False},
+            'history_mode': {'required': False},
         }
 
     def validate(self, attrs):
@@ -88,6 +90,10 @@ class CreateGroupSerializer(serializers.Serializer):
         header_image = validated_data.get('group_header')
 
         conversation = Conversation.objects.create(name=name, type='group')
-        header = Header.objects.create(conversation=conversation, header=header_image)
+
+        if header_image:
+            header = Header.objects.create(conversation=conversation, header=header_image)
+        else:
+            header = Header.objects.create(conversation=conversation)
 
         return conversation

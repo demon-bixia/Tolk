@@ -1,6 +1,3 @@
-import Cookies from '../../vendor/js.cookie.min.mjs'
-
-
 export class Communicator {
     /*
     * facilitates communication between other modules and this

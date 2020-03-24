@@ -15,7 +15,7 @@
     margin-top: 15px;
     padding: 25px;
     border-radius: 10px;
-    background: var(--sidebar-discussion-chat-color);
+    background: var(--sidebar-notifications-color);
 }
 
 .notifications > li > .round {
@@ -44,8 +44,12 @@
     list-style: none;
 }
 
+.notifications > li > p {
+    color: var(--plain-font-color);
+}
+
 .notifications > li > p > strong {
-    color: var(--active-link-color);
+    color: var(--sidebar-notifications-icon-color);
     font-weight: 600;
 }
 

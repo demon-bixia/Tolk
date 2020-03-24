@@ -11,11 +11,12 @@ class ContactSerializer(serializers.ModelSerializer):
     """
     used to serializer contact model
     """
+    private_mode = serializers.BooleanField(source='settings.private_mode', required=False, read_only=True)
 
     class Meta:
         model = Contact
         fields = ('id', 'first_name', 'last_name', 'location',
-                  'contact_pic', 'user', 'conversations', 'friends', 'settings')
+                  'contact_pic', 'user', 'conversations', 'friends', 'settings', 'private_mode')
         extra_kwargs = {
             'location': {'required': True},
             'contact_pic': {'required': False},
@@ -40,7 +41,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id', 'email', 'date_joined', 'is_active', 'password', 'contact')
         extra_kwargs = {
-            "password": {"write_only": True},
+            "password": {"write_only": True, "min_length": 7},
             "date_joined": {"read_only": True, "required": False},
             "is_active": {"read_only": True, "required": False},
             "contact": {"required": False},

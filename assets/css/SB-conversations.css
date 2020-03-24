@@ -27,7 +27,7 @@
 
 
 .discussion > li > a.active {
-    background: linear-gradient(148deg, #f6305e, #8725c7);
+    background: linear-gradient(148deg, var(--sidebar-active-chat-gradient-color-1), var(--sidebar-active-chat-gradient-color-2));
 }
 
 .discussion > li > a.active p {

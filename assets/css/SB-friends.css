@@ -13,7 +13,7 @@
     align-items: center;
     padding: 25px;
     border-radius: 10px;
-    background: var(--sidebar-discussion-chat-color);
+    background: var(--sidebar-friend-color);
     /*border-bottom: 2px solid var(--hr-border-color);*/
 }
 
@@ -52,7 +52,7 @@
 }*/
 
 .users > li > a > .icon > i::before {
-    color: var(--purple);
+    color: var(--sidebar-friend-icon-color);
 }
 
 @media (max-width: 991px) {

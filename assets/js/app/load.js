@@ -15,10 +15,16 @@ export function load(command, options) {
         case 'conversations':
             return loadConversations(options);
 
+        case 'conversation':
+            return loadConversation(options);
+
+        case 'chat':
+            return loadChat(options);
+
         case 'friends':
             return loadFriends(options);
 
-        case 'chat':
+        case 'chats':
             return loadChats(options);
 
         case 'settings':
@@ -51,14 +57,20 @@ export function load(command, options) {
             }).then(function (element) {
                 return loadAccountUpdateForm(options)
             }).then(function (element) {
+                return loadSettings(options)
+            }).then(function (element) {
                 eva.replace();
             });
+
         case 'message':
             return loadMessage(options);
+
         case 'bubble-last-message':
             return loadConversationBubbleLastMessage(options);
+
         case 'notification':
             return loadNotification(options);
+
     }
 }
 
@@ -72,10 +84,9 @@ function loadNotification(options) {
     })
 }
 
-
 function loadMessage(options) {
     let authenticated_user = document.querySelector('.profile-container img').dataset['user'];
-    let conversation = document.querySelector(`#conversations  a[data-name="${options['conversation_name']}"]`);
+    let conversation = document.querySelector(`#conversations  a[data-id="${options['conversation_id']}"]`);
     let chat_id = conversation.getAttribute('href');
 
     return renderer.render({
@@ -88,7 +99,7 @@ function loadMessage(options) {
 function loadConversationBubbleLastMessage(options) {
     return renderer.render({
         'component_name': 'bubble-last-message',
-        'selector': `#conversations a[data-name="${options['conversation_name']}"] .content p`,
+        'selector': `#conversations a[data-id="${options['conversation_id']}"] .content p`,
         'data': {'message': options}
     });
 }
@@ -117,6 +128,40 @@ function loadConversations(options) {
             }
         })
     })
+}
+
+function loadConversation(options) {
+    let container = document.querySelector('#conversations .nav');
+    if (container) {
+        return renderer.render({
+            'component_name': 'conversation-bubble',
+            'container': '#conversations .nav',
+            'data': options,
+        })
+    } else {
+        return renderer.render({
+            'component_name': 'first-conversation-bubble',
+            'data': options,
+        })
+    }
+}
+
+function loadChat(options) {
+    let emptyChat = document.querySelector('.chat .tab-content .empty-chat');
+
+    if (!emptyChat) {
+        return renderer.render({
+            'component_name': 'chat',
+            'container': '.chat .tab-content',
+            'data': options,
+        })
+    } else {
+        return renderer.render({
+            'component_name': 'first-chat',
+            'data': options,
+        })
+    }
+
 }
 
 function loadChats(options) {
@@ -161,14 +206,10 @@ function loadSettings(options) {
     return communicator.send_ajax({
         'route_name': 'settings-detail',
         'args': [options['authenticated_contact']['settings']]
-    }).then(function (data) {
-        return renderer.render({
-            'component_name': 'privacy-switch',
-            'refresh': options['refresh'],
-            'data': {'settings': data['settings']}
-        }).then(function () {
+    })
+        .then(function (data) {
             return renderer.render({
-                'component_name': 'history-switch',
+                'component_name': 'privacy-switch',
                 'refresh': options['refresh'],
                 'data': {'settings': data['settings']}
             }).then(function () {
@@ -177,9 +218,14 @@ function loadSettings(options) {
                     'refresh': options['refresh'],
                     'data': {'settings': data['settings']}
                 });
+            }).then(function () {
+                return renderer.render({
+                    'component_name': 'notifications-switch',
+                    'refresh': options['refresh'],
+                    'data': {'settings': data['settings']}
+                })
             })
         })
-    })
 }
 
 function loadAccountUpdateForm(options) {

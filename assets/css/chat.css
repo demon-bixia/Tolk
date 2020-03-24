@@ -47,7 +47,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 30px 20px;
-    background: #141a28;
+    background: var(--chat-top-background);
     height: 100px;
     max-height: 100px;
     /*border-bottom: 2px solid var(--chat-border-color);*/
@@ -56,6 +56,7 @@
 .chat .top .headline {
     display: flex;
     align-items: center;
+    cursor: pointer;
 }
 
 .chat .item .top img {
@@ -199,7 +200,7 @@
 
 .chat .item .middle ul > li.odd .bubble {
     border-radius: 0px 10px 10px 10px;
-    background: linear-gradient(148deg, #ff9b5d, #fe3b56);
+    background: linear-gradient(148deg, var(--chat-odd-message-gradient-color-1), var(--chat-odd-message-gradient-color-2));
 }
 
 .chat .item .middle ul > li .bubble {
@@ -207,18 +208,18 @@
     max-width: 360px;
     text-align: left;
     border-radius: 6px;
-    background: linear-gradient(146deg, #f7305d, #8324ca);
+    background: linear-gradient(146deg, var(--chat-self-message-gradient-color-1), var(--chat-self-message-gradient-color-2));
     border-radius: 10px 0px 10px 10px;
 }
 
 
 .chat .item .middle ul > li.odd p {
-    color: var(--plain-font-color);
+    color: var(--chat-message-font-color);
 }
 
 .chat .item .middle ul > li p {
     padding: 15px 20px;
-    color: #fff;
+    color: var(--chat-message-font-color);
 }
 
 .chat .item .middle ul > li span {
@@ -289,11 +290,11 @@
 }
 
 .chat .item .bottom .prepend:hover i::before {
-    color: var(--rose);
+    color: var(--navigation-active-icon);
 }
 
 .chat .item .bottom .prepend:active i::before {
-    color: var(--purple);
+    color: var(--navigation-active-icon);
 }
 
 /* end of chat bottom */
@@ -407,7 +408,7 @@ h5 {
 }
 
 .utility .attachment .headline .button {
-    background: linear-gradient(146deg, #f7305d, #8324ca);
+    background: linear-gradient(146deg, var(--chat-self-message-gradient-color-1), var(--chat-self-message-gradient-color-2));
     border-radius: 50%;
     padding: 1px 6px;
 }
@@ -450,11 +451,11 @@ h5 {
 }
 
 .utility .attachment .media .file-media:nth-of-type(odd) {
-    background: linear-gradient(148deg, #ff9b5d, #fe3b56);
+    background: linear-gradient(148deg, var(--chat-odd-message-gradient-color-1), var(--chat-odd-message-gradient-color-2));
 }
 
 .utility .attachment .media .file-media {
-    background: linear-gradient(146deg, #f7305d, #8324ca);
+    background: linear-gradient(146deg, var(--chat-self-message-gradient-color-1), var(--chat-self-message-gradient-color-2));
 }
 
 .utility .attachment .media .file-media i::before {
@@ -577,5 +578,9 @@ h5 {
     .utility.active {
         visibility: visible;
         left: 0;
+    }
+
+    .utility .close {
+        display: block;
     }
 }

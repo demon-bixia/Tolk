@@ -12,6 +12,7 @@ router.register(r'settings', chat_views.SettingsViewSet, basename='settings')
 urlpatterns = [
     path("", chat_views.api_root, name="api-root"),
     path("create-group/", chat_views.CreateGroup.as_view(), name="create-group"),
+    path("change-settings/", chat_views.ChangeSettings.as_view(), name="change-settings"),
 ]
 
 # add router urls

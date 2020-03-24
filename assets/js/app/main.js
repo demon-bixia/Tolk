@@ -2,14 +2,26 @@ import {Router} from "./silly/router.js";
 import {Communicator} from "./silly/communication.js"
 import {Wizard} from './silly/effects.js'
 import {load} from './load.js'
-import {emptyForm, openFirstConversation, removeFormErrorEvent, renderFormErrors, scrollChat} from "./utility.js";
+import {
+    changeTheme,
+    emptyForm,
+    openFirstConversation,
+    removeFormErrorEvent,
+    renderFormErrors,
+    scrollChat
+} from "./utility.js";
 
 
 let communicator = new Communicator(Router);
 let wizard = new Wizard();
 let preloader = document.querySelector('.loader');
+let b_preloader = document.querySelector('.b-preloader');
+let message_audio = document.querySelector('.message-sound');
+let siteLoaded = false;
 
 (function main() {
+    startUp();
+
     eva.replace(); // replace icons no imported
 
     communicator.send_ajax({'route_name': 'authenticated'}).then(function (data) {
@@ -26,12 +38,23 @@ let preloader = document.querySelector('.loader');
                         .then(function () {
                             // attach all events
                             AddEventListeners();
-                            // activate a conversation
-                            let first_conversation = openFirstConversation();
-                            // scroll chat for first conversation
-                            scrollChat(first_conversation);
-                            // hide preoader
+                            // change theme cookie
+                            if (document.querySelector('#appearance-settings .switch input').checked) {
+                                Cookies.set('theme', 'dark');
+                                changeTheme(true);
+                            } else {
+                                Cookies.set('theme', 'light');
+                                changeTheme(false);
+                            }
+                            if (window.screen.width > 991) {
+                                // activate a conversation
+                                let first_conversation = openFirstConversation();
+                                // scroll chat for first conversation
+                                scrollChat(first_conversation);
+                            }
+                            // hide preloader
                             wizard.hide(preloader);
+                            siteLoaded = true;
                         })
                         .then(function () {
                             // connect to chat socket
@@ -45,12 +68,39 @@ let preloader = document.querySelector('.loader');
                 })
         } else {
             AddAuthEventListeners();
+            // change theme
+            let theme = Cookies.get('theme') === 'dark';
+            changeTheme(theme);
             // show login and register logic
             wizard.show(document.querySelector('#Login'));
             wizard.hide(preloader);
+            siteLoaded = true;
         }
     })
 })();
+
+function startUp() {
+    Velocity(document.querySelector('.b-preloader img'), {'display': 'block', "opacity": 1}, {
+        duration: 2500,
+        easing: 'easeInOutQuad'
+    });
+
+    Velocity(document.querySelector('.b-preloader .progress .progress-bar'), {'width': '100%'}, {
+        duration: 2000,
+        delay: 1500,
+        easing: 'easeInOutQuad',
+    }).then(function () {
+        setInterval(hideBPreloader, 1500)
+    });
+}
+
+function hideBPreloader() {
+    if (siteLoaded) {
+        wizard.hide(b_preloader);
+        clearInterval(hideBPreloader);
+    }
+}
+
 
 function AddEventListeners() {
     // when info button is clicked open utility
@@ -100,6 +150,29 @@ function AddEventListeners() {
     // chat to bottom
     document.querySelector('#conversations .container')
         .addEventListener('click', scrollChatEvent);
+
+    // when a setting switch is clicked change settings
+    document.querySelector('.settings #preferences')
+        .addEventListener('click', changeSettings);
+
+    // when inputting any thing to the search form in the top
+    // sidebar section call filter the conversations
+    document.querySelector('.sidebar .top .form-control')
+        .addEventListener('input', filterEvent);
+
+    // when moving away from the current sidebar tab reset filters
+    document.querySelector('.navigation .nav')
+        .addEventListener('click', navigationSwitchEvent);
+
+    // when settings button is clicked in sidebar top
+    // menu open settings tap
+    document.querySelector('.sidebar .top .dropdown-menu button:nth-child(2)')
+        .addEventListener('click', OpenSettingsEvent);
+
+    // when logout button is clicked inside the sidebar top
+    // menu logout of site
+    document.querySelector('.sidebar .top .dropdown-menu button:nth-child(3)')
+        .addEventListener('click', logoutEvent)
 }
 
 function AddAuthEventListeners() {
@@ -214,7 +287,7 @@ function conversationCreateEvent(event) {
     event.preventDefault();
     let form = document.querySelector('#create .modal-body .tab-content .tab-pane.active form');
 
-    if (form.getAttribute('id') === 'account-form') {
+    if (form.getAttribute('id') === 'group-form') {
         addFriend(form);
     } else if (form.getAttribute('id') === 'group-create') {
         createGroup(form);
@@ -257,11 +330,13 @@ function addFriend(form) {
                         }).then(function (element) {
                             return load('friends', {'refresh': true, 'authenticated_contact': data['contact']});
                         }).then(function (element) {
-                            return load('chat', {'refresh': true, 'authenticated_contact': data['contact']});
+                            return load('chats', {'refresh': true, 'authenticated_contact': data['contact']});
                         }).then(function (element) {
                             AddEventListeners();
-                            // open first conversation
-                            openFirstConversation();
+                            if (window.screen.width > 991) {
+                                // open first conversation
+                                openFirstConversation();
+                            }
                             // empty form
                             emptyForm(form);
                             // hide preloader
@@ -271,9 +346,10 @@ function addFriend(form) {
                             // send event if true
                             if (communicator.socket_is_open()) {
                                 // send a STATUSES EVENT
-                                joinConversations(res['conversation']['name']);
+                                joinConversation(res['conversation']['id']);
                                 getStatuses();
                                 getNotifications();
+                                notify_participants(res['conversation']['id'])
                             }
                         })
                     })
@@ -329,29 +405,32 @@ function createGroup(form) {
                     }).then(function (element) {
                         return load('friends', {'refresh': true, 'authenticated_contact': data['contact']});
                     }).then(function (element) {
-                        return load('chat', {
+                        return load('chats', {
                             'refresh': true,
                             'authenticated_contact': data['contact'],
                         })
                     }).then(function (element) {
                         AddEventListeners();
-                        // open the first conversation because chat section is reloaded
-                        openFirstConversation();
+                        if (window.screen.width > 991) {
+                            // open the first conversation because chat section is reloaded
+                            openFirstConversation();
+                        }
                         //empty create group form
                         emptyForm(form);
                         // hide the preloader element
                         wizard.hide(preloader);
                     }).then(function () {
                         if (communicator.socket_is_open()) {
+                            joinConversation(response['conversation']['id']);
                             getStatuses();
-                            joinConversation(response['conversation']['name']);
                             getNotifications();
+                            notify_participants(response['conversation']['id'])
                         }
                     })
                 })
         } else {
             // show form errors
-            renderFormErrors(form, response['data']['errors']);
+            renderFormErrors(form, response['errors']);
             wizard.hide(preloader);
         }
     }, function (response) {
@@ -368,6 +447,35 @@ function createGroup(form) {
         // hide preloader elements
         wizard.hide(preloader);
     })
+}
+
+// when a settings switch is clicked send
+// settings-changed event
+function changeSettings(event) {
+    let element = event.target;
+
+    if (element.classList.contains('slider')) {
+        let input = element.parentElement.querySelector('input[type="checkbox"]');
+        let requestData = {
+            'setting': input.name,
+            'value': !input.checked,
+        };
+
+        communicator.send_ajax({
+            'route_name': 'change-settings',
+            'data': requestData,
+        }).then(function (res_data) {
+            if (input.name === 'night_mode') {
+                if (res_data['data']['night_mode']) {
+                    changeTheme(true);
+                    Cookies.set('theme', 'dark');
+                } else {
+                    changeTheme(false);
+                    Cookies.set('theme', 'light');
+                }
+            }
+        })
+    }
 }
 
 // when logout button is clicked
@@ -415,10 +523,20 @@ function loginEvent(event) {
                             .then(function () {
                                 // attach all events
                                 AddEventListeners();
-                                // activate a conversation
-                                let first_conversation = openFirstConversation();
-                                // scroll chat of first conversation
-                                scrollChat(first_conversation);
+                                if (window.screen.width > 991) {
+                                    // activate a conversation
+                                    let first_conversation = openFirstConversation();
+                                    // scroll chat of first conversation
+                                    scrollChat(first_conversation);
+                                }
+                                // change theme
+                                if (document.querySelector('#appearance-settings .switch input').checked) {
+                                    Cookies.set('theme', 'dark');
+                                    changeTheme(true);
+                                } else {
+                                    Cookies.set('theme', 'light');
+                                    changeTheme(false);
+                                }
                                 // hide login modal
                                 wizard.hide(document.querySelector('#Login'));
                                 // empty the login form
@@ -471,7 +589,6 @@ function registerEvent(event) {
     }, function (response) {
         renderFormErrors(form, response['data']['errors']);
         wizard.hide(preloader);
-
     });
 }
 
@@ -509,6 +626,13 @@ function openUtility(event) {
     }
 }
 
+// when settings button is clicked inside
+// sidebar top menu  open settings
+function OpenSettingsEvent() {
+    let setting_button = document.querySelector('.navigation .nav li:nth-child(5) a');
+    setting_button.click();
+}
+
 // when a chat is opened scroll to
 // bottom of chat
 function scrollChatEvent(event) {
@@ -523,19 +647,222 @@ function scrollChatEvent(event) {
     }
 }
 
+let tab_links = ['#conversation', '#friends', '#notifications', '#settings'];
+
+function navigationSwitchEvent(event) {
+    let element = event.target;
+    if (element.tagName === 'A' || element.parentElement.tagName === 'A' || element.parentElement.parentElement.tagName === 'A') {
+        let opened_nav = document.querySelector('.navigation .nav a.active');
+        let target = opened_nav.getAttribute('href');
+
+        // reset filter for previously opened tab
+        resetSearch(opened_nav);
+
+        if (tab_links.includes(element.getAttribute('href'))) {
+            // add opened to the new active tab
+            if (element.tagName === 'A') {
+                element.classList.add('opened')
+            } else {
+                element.closest('A').classList.add('opened');
+            }
+        }
+    }
+}
+
+function resetSearch(opened_nav) {
+    let openSection = document.querySelector(`${opened_nav.getAttribute('href')}`);
+
+    switch (openSection.getAttribute('id')) {
+        case 'conversations':
+            conversationReset();
+            break;
+        case 'friends':
+            friendsReset();
+            break;
+        case 'notifications':
+            notificationsReset();
+            break;
+        case 'settings':
+            settingsReset();
+            break;
+    }
+}
+
+function conversationReset() {
+    let conversations = document.querySelectorAll('#conversations .nav li');
+    if (conversations) {
+        for (let conversation of conversations) {
+            conversation.style.display = 'list-item';
+        }
+    }
+}
+
+function friendsReset() {
+    let friends = document.querySelectorAll('#friends .users li');
+    if (friends) {
+        for (let friend of friends) {
+            friend.style.display = 'list-item';
+        }
+    }
+}
+
+function notificationsReset() {
+    let notifications = document.querySelectorAll('#notifications .notifications li');
+    if (notifications) {
+        for (let notification of notifications) {
+            notification.style.display = 'flex';
+        }
+    }
+}
+
+function settingsReset() {
+    let settings_tabs = document.querySelectorAll('#settings #preferences li');
+    for (let settings_tab of settings_tabs) {
+        let settings_contents = settings_tab.querySelectorAll('.content.collapse');
+        for (let setting_content of settings_contents) {
+            setting_content.classList.remove('show');
+        }
+    }
+}
+
+function filterEvent(event) {
+    let value = this.value;
+    let openSection = document.querySelector('.sidebar .middle .tab-pane.active');
+
+    switch (openSection.getAttribute('id')) {
+        case 'conversations':
+            filterConversations(value);
+            break;
+        case 'friends':
+            filterFriends(value);
+            break;
+        case 'notifications':
+            filterNotification(value);
+            break;
+        case 'settings':
+            filterSettings(value);
+            break;
+    }
+}
+
+function filterConversations(value) {
+    let conversations = document.querySelectorAll('#conversations .nav li');
+    let regx = new RegExp(`${value}`, 'ig');
+
+    if (conversations) {
+
+        for (let conversation of conversations) {
+            let conversation_name = conversation.querySelector('.headline h5').innerHTML;
+
+
+            if (value.trim().length !== 0) {
+                if (conversation_name.match(regx)) {
+                    conversation.style.display = 'list-item';
+                } else {
+                    conversation.style.display = 'none';
+                }
+            } else {
+                conversation.style.display = 'list-item';
+            }
+        }
+    }
+}
+
+function filterFriends(value) {
+    let friends = document.querySelectorAll('#friends .users li');
+    let regx = new RegExp(`${value}`, 'ig');
+
+    if (friends) {
+        for (let friend of friends) {
+            let friend_name = friend.querySelector('.content h5');
+            let friend_location = friend.querySelector('.content span');
+
+            if (value.trim().length !== 0) {
+                if (friend_name.innerText.match(regx) || friend_location.innerText.match(regx)) {
+                    friend.style.display = 'list-item';
+                } else {
+                    friend.style.display = 'none';
+                }
+            } else {
+                friend.style.display = 'list-item';
+            }
+        }
+    }
+}
+
+function filterNotification(value) {
+    let notifications = document.querySelectorAll('#notifications .notifications li');
+    let regx = new RegExp(`${value}`, 'ig');
+
+    if (notifications) {
+        for (let notification of notifications) {
+            let notification_content = notification.querySelector('p').innerText;
+
+            if (value.trim().length !== 0) {
+                if (notification_content.match(regx)) {
+                    notification.style.display = 'flex';
+                } else {
+                    notification.style.display = 'none';
+                }
+            } else {
+                notification.style.display = 'flex';
+            }
+        }
+    }
+}
+
+function filterSettings(value) {
+    let settings_tabs = document.querySelectorAll('#settings #preferences li');
+    let regx = new RegExp(`${value}`, 'ig');
+    let opened = false;
+
+    if (settings_tabs) {
+        for (let settings_tab of settings_tabs) {
+            let settings_contents = settings_tab.querySelectorAll('.content.collapse');
+            for (let setting_content of settings_contents) {
+                if (setting_content.getAttribute('id') !== 'account') {
+                    let options = setting_content.querySelectorAll('.options li');
+                    for (let option of options) {
+                        let name = option.querySelector('.headline h5');
+                        if (value.trim().length !== 0) {
+                            if (name.innerText.match(regx)) {
+                                name.classList.add('highlight');
+
+                                if (!opened) {
+                                    setting_content.classList.add('show');
+                                } else {
+                                    setting_content.classList.remove('show');
+                                }
+
+                            } else {
+                                name.classList.remove('highlight');
+                                setting_content.classList.remove('show');
+                            }
+                        } else {
+                            name.classList.remove('highlight');
+                            setting_content.classList.remove('show');
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
 // join all conversations
 function joinConversations() {
     let conversations = document.querySelectorAll('#conversations .discussion li');
 
     for (let conversation of conversations) {
-        let conversation_name = conversation.querySelector('a').dataset['name'];
-        communicator.send_json_socket({'command': 'JOIN', 'conversation_name': conversation_name});
+        let conversation_id = conversation.querySelector('a').dataset['id'];
+        communicator.send_json_socket({'command': 'JOIN', 'id': conversation_id});
     }
 }
 
 // join a conversation
-function joinConversation(conversation_name) {
-    communicator.send_json_socket({'command': 'JOIN', 'conversation_name': conversation_name});
+function joinConversation(conversation_id) {
+    communicator.send_json_socket({'command': 'JOIN', 'id': conversation_id});
 }
 
 // when send button is clicked
@@ -543,8 +870,8 @@ function joinConversation(conversation_name) {
 function sendMessageEvent(event) {
     if (event.target.classList.contains('send') || event.target.parentElement.classList.contains('send')) {
         let input = event.target.closest('form')['message'];
-        let conversation_name = input.dataset['conversation'];
-        sendMessage(input, conversation_name)
+        let conversation_id = input.dataset['conversation'];
+        sendMessage(input, conversation_id)
     }
 }
 
@@ -553,19 +880,20 @@ function sendMessageEnterEvent(event) {
     event.preventDefault();
 
     if (event.code === 'Enter' || event.code === 'Return') {
-        let conversation_name = event.target.dataset['conversation'];
-        sendMessage(event.target, conversation_name);
+        let conversation_id = event.target.dataset['conversation'];
+        sendMessage(event.target, conversation_id);
     }
 }
 
 // send message
-function sendMessage(input, conversation_name) {
+function sendMessage(input, conversation_id) {
     if (input.value !== '' && input.value.length >= 1 && input.value.trim().length !== 0) {
         communicator.send_json_socket({
             'command': 'MESSAGE',
-            'conversation_name': conversation_name,
+            'id': conversation_id,
             'message': input.value
         });
+        input.value = '';
     } else {
         input.value = '';
     }
@@ -578,6 +906,14 @@ function getStatuses() {
 
 function getNotifications() {
     communicator.send_json_socket({'command': 'NOTIFICATION'})
+}
+
+// called when
+function notify_participants(conversation_id) {
+    communicator.send_json_socket({
+        'command': 'CONVERSATION',
+        'id': conversation_id,
+    })
 }
 
 /* Websocket Callbacks */
@@ -603,6 +939,9 @@ function receive(data) {
         case 'NOTIFICATION':
             conversation_notification(json_data);
             break;
+        case 'CONVERSATION':
+            conversation_added(json_data);
+            break;
     }
 }
 
@@ -610,18 +949,20 @@ function conversation_message(data) {
     load('message', data).then(function () {
         return load('bubble-last-message', data);
     }).then(function () {
-        let conversation = document.querySelector(`#conversations  a[data-name="${data['conversation_name']}"]`);
+        let conversation = document.querySelector(`#conversations  a[data-id="${data['conversation_id']}"]`);
         scrollChat(conversation);
+    }).then(function () {
+        message_audio.play();
     })
 }
 
 function conversation_joined(data) {
-    console.info(`${data['conversation_name']} joined`);
+    console.info(`conversations_${data['conversation_id']} joined`);
 }
 
 function conversation_left(data) {
 
-    console.info(`${data['conversation_name']} left`);
+    console.info(`conversation_${data['conversation_id']} left`);
 }
 
 function conversation_statuses(data) {
@@ -701,4 +1042,34 @@ function conversation_notification(data) {
             }
             eva.replace();
         })
+}
+
+function conversation_added(data) {
+    let emptyChat = document.querySelector('.chat .tab-content .empty-chat');
+    let open_first = false;
+
+    if (emptyChat) {
+        open_first = true
+    }
+
+    load('conversation', data).then(function (element) {
+        return load('chat', data)
+
+    }).then(function () {
+            AddEventListeners();
+            if (open_first) {
+                if (window.screen.width > 991) {
+                    openFirstConversation();
+                }
+            }
+        }
+    ).then(function (element) {
+        // join new conversation
+        // and get statuses
+        if (communicator.socket_is_open()) {
+            joinConversation(data['conversation']['id']);
+            getStatuses();
+            getNotifications();
+        }
+    })
 }

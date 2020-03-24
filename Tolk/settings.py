@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'chat.apps.ChatConfig',
     'accounts.apps.AccountsConfig',
     'Authentication.apps.AuthenticationConfig',
-    'settings.apps.SettingsConfig',
     'web_interface.apps.WebInterfaceConfig',
 ]
 

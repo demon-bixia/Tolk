@@ -183,7 +183,6 @@ let routes = {
     },
 
     // authentication routes
-
     'login': {
         'protocol': 'http',
         'method': 'POST',
@@ -201,7 +200,6 @@ let routes = {
         'method': 'GET',
         'url_pattern': '/api/authenticated/'
     },
-
 
     // chat app routes
     // conversations
@@ -283,7 +281,6 @@ let routes = {
         'method': 'DELETE',
         'url_pattern': '/api/notifications/<pk>/'
     },
-
     // messages
     'message-list': {
         'protocol': 'http',
@@ -322,12 +319,6 @@ let routes = {
     },
 
     // settings
-    'settings-list': {
-        'protocol': 'http',
-        'method': 'GET',
-        'url_pattern': '/api/settings/'
-    },
-
     'settings-detail': {
         'protocol': 'http',
         'method': 'GET',
@@ -340,22 +331,10 @@ let routes = {
         'url_pattern': '/api/settings/'
     },
 
-    'settings-update': {
+    'change-settings': {
         'protocol': 'http',
-        'method': 'PUT',
-        'url_pattern': '/api/settings/<pk>/'
-    },
-
-    'settings-partial-update': {
-        'protocol': 'http',
-        'method': 'PATCH',
-        'url_pattern': '/api/settings/<pk>/'
-    },
-
-    'settings-delete': {
-        'protocol': 'http',
-        'method': 'DELETE',
-        'url_pattern': '/api/settings/<pk>/'
+        'method': 'POST',
+        'url_pattern': '/api/change-settings/',
     },
 
     'chat-socket': {

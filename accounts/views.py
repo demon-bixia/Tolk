@@ -24,13 +24,21 @@ def add_friend(request, format=None):
         try:
             friend_user = User.objects.get(email=serializer.data.get('email'))
 
+            if request.user.contact.settings.private_mode:
+                return Response(
+                    {'success': False, 'errors': {'non_field_errors': ['you cannot add contacts in private mode']}},
+                    status=status.HTTP_400_BAD_REQUEST)
+
             if friend_user.contact == request.user.contact:
                 return Response({"success": False, "errors": {'email': ['you cannot befriend yourself']}},
                                 status=status.HTTP_400_BAD_REQUEST)
 
+            if friend_user.contact.settings.private_mode:
+                return Response({'success': False, "errors": {'email': ['this contact is in private']}},
+                                status=status.HTTP_400_BAD_REQUEST)
+
             else:
                 friend_user.contact.friends.add(request.user.contact)  # add  authenticated user contact to friends
-
                 conversation_already_exist = False
                 added_conversation = None
 
@@ -46,17 +54,17 @@ def add_friend(request, format=None):
                     conversation.participants.add(friend_user.contact, request.user.contact)
                     added_conversation = conversation
 
+                    f_content = f'{request.user.email} started a conversation with you'
+                    friend_user_notification = {'type': 'chat',
+                                                'content': f_content}
+
+                    add_notification(friend_user_notification, friend_user)
+
+                    user_notification = {'type': 'chat', 'content': 'your new chat is ready'}
+                    add_notification(user_notification, request.user)
+
                 contact_serializer = ContactSerializer(instance=friend_user.contact)
                 conversation_serializer = ConversationSerializer(instance=added_conversation)
-
-                f_content = f'{request.user.email} started a conversation with you'
-                friend_user_notification = {'type': 'chat',
-                                            'content': f_content}
-
-                add_notification(friend_user_notification, friend_user)
-
-                user_notification = {'type': 'chat', 'content': 'your new chat is ready'}
-                add_notification(user_notification, request.user)
 
                 return Response(
                     {"success": True, "contact": contact_serializer.data, "conversation": conversation_serializer.data})

@@ -1,5 +1,6 @@
 import datetime
 import secrets
+
 from django.db import models
 
 from accounts.models import Contact
@@ -11,9 +12,15 @@ class Conversation(models.Model):
         ('couple', 'only two users allowed'),
     )
 
+    history_choices = (
+        (True, 'save messages in db'),
+        (False, 'save messages in browser cookies'),
+    )
+
     type = models.CharField(max_length=10, default="couple", choices=type_choices)
     name = models.CharField(max_length=30, blank=True)
     participants = models.ManyToManyField(Contact, related_name='conversations')
+    history_mode = models.BooleanField(default=True, choices=history_choices, blank=True)
 
     def save(self, **kwargs):
         super(Conversation, self).save(**kwargs)
@@ -55,7 +62,7 @@ def upload_conversation_header(instance, filename):
 
 class Header(models.Model):
     conversation = models.OneToOneField(Conversation, on_delete=models.CASCADE)
-    header = models.ImageField(upload_to=upload_conversation_header, default='default/default.png')
+    header = models.ImageField(upload_to=upload_conversation_header, default='groups/default/default.png')
 
     def __str__(self):
         return self.conversation.name
@@ -86,11 +93,6 @@ class Settings(models.Model):
         (False, "use light theme")
     )
 
-    history_choices = (
-        (True, "save chat history in db"),
-        (False, "don't save history in db")
-    )
-
     private_mode_choices = (
         (True, "other contacts cannot add you to a conversation"),
         (False, "other contacts can add you to a conversation"),
@@ -102,9 +104,8 @@ class Settings(models.Model):
     )
 
     night_mode = models.BooleanField(max_length=10, default=True, choices=theme_choices)
-    history = models.BooleanField(default=True, choices=history_choices)
     private_mode = models.BooleanField(default=False)
-    notifications = models.BooleanField(default=False, )
+    notifications = models.BooleanField(default=True)
     contact = models.OneToOneField(Contact, on_delete=models.CASCADE)
 
     def __str__(self):

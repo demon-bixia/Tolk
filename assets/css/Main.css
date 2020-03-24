@@ -5,6 +5,12 @@
     /* links and icons */
     --link-color: #fff;
     --icon-color: #bdbac2;
+    --b-preloader-background-color: #111620;
+    --b-preloader-progress-background-color: #111620;
+    --b-preloader-progress-bar-background-color-1: #f7305d;
+    --b-preloader-progress-bar-background-color-2: #8725c7;
+    --b-preloader-attribute-background-color: #1a202f;
+
 
     /* radio buttons */
     --active-radio-color: #00f890;
@@ -12,18 +18,39 @@
 
     /* navigation */
     --navigation-background: #111620;
+    --navigation-circle-box-shadow: #4e182e;
+    --navigation-active-icon: #f6305e;
 
     /* sidebar */
     --sidebar-background-color: #1a202f;
     --sidebar-discussion-chat-color: #171d2a;
-    /*--circle-status-background:#a30091;*/
+    --sidebar-active-chat-gradient-color-1: #f6305e;
+    --sidebar-active-chat-gradient-color-2: #8725c7;
+    --sidebar-friend-color: #171d2a;
+    --sidebar-friend-icon-color: #8725c7;
+    --sidebar-notifications-color: #171d2a;
+    --sidebar-notifications-icon-color: #8725c7;
+    --sidebar-settings-highlight-color: #8725c7;
+
+    --sidebar-mobile-menu-icon-color: #4f608a;
+    --sidebar-mobile-menu-background: #1a202f;
+    --sidebar-mobile-menu-font-color: #fff;
+    --sidebar-mobile-menu-icons-color: #fff;
+
+    /* search form */
+    --search-form-input-background-color: #141a28;
+    --search-form-input-font-color: #4f608a;
+    --search-form-input-hover-color: #efebeb;
+    --search-form-input-border-color: #f5f5f5;
 
     /* forms */
     --form-input-background-color: #21293c;
     --form-input-font-color: #4f608a;
     --form-input-border: #efebeb;
     --form-input-hover: #f5f5f5;
-
+    --form-input-focus-color: #8725c7;
+    --checked-input-color: #8725c7;
+    --submit-button-color: #8725c7;
 
     /* borders*/
     --hr-border-color: #fbfbfb;
@@ -34,6 +61,11 @@
     --chat-bottom-background: #161c2a;
     --chat-border-color: #f9f9f9;
     --chat-top-icon-color: #7b8ebc;
+    --chat-odd-message-gradient-color-1: #ff9b5d;
+    --chat-odd-message-gradient-color-2: #fe3b56;
+    --chat-self-message-gradient-color-1: #f7305d;
+    --chat-self-message-gradient-color-2: #8324ca;
+    --chat-message-font-color: #ffffff;
 
 
     /* utility */
@@ -48,6 +80,35 @@
     --compose-icon-color: #bdbac2;
     --compose-font-color: #212529;
     --compose-mute-font-color: #bdbac2;
+    --compose-input-background-color: #21293c;
+    --compose-input-font-color: #fff;
+    --compose-header-color: #fff;
+    --compose-tab-background-color: #f6305e;
+    --compose-tab-font-color: #fff;
+    --compose-submit-button-color: #f6305e;
+    --compose-submit-button-color-2: transparent;
+    --compose-submit-button-border-color-2: #21293c;
+    --compose-active-submit-button-color-2: #8725c7;
+    --compose-active-submit-button-border-color-2: #8725c7;
+    --compose-active-submit-button-color: #f6305e;
+    --compose-input-background-color-2: transparent;
+    --compose-active-input-border-color: #8725c7;
+
+    /* auth modals */
+    --auth-modal-background-color: #1a202f;
+    --auth-background-color: #111620;
+    --auth-box-shadow: none;
+    --auth-header-font-color: #fff;
+    --auth-input-font-color: #4f608a;
+    --auth-input-background-color: transparent;
+    --auth-input-active-border-color: #8725c7;
+    --auth-switch-modal-font-color: #8725c7;
+    --auth-submit-button-color: #111620;
+    --auth-submit-button-border-color: #4f608a;
+    --auth-active-submit-button-color: #8725c7;
+    --auth-active-submit-button-border-color: #8725c7;
+
+    --auth-mobile-modal-background-color: #111620;
 
     /* font colors */
     --plain-font-color: #ffffff;
@@ -239,6 +300,7 @@ span {
     font-weight: 500;
     border-radius: 6px;
     border: none;
+    cursor: pointer;
 }
 
 .custom-file .custom-file-label::after {
@@ -247,6 +309,7 @@ span {
     background: #21293c;
     color: var(--form-input-font-color);
     content: " ";
+    display: none;
 }
 
 .custom-file-input:lang(en) ~ .custom-file-label::after {

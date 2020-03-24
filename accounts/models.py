@@ -57,7 +57,7 @@ class Contact(models.Model):
     contact_pic = models.ImageField(
         verbose_name="Profile Picture",
         upload_to=upload_contact_pic,
-        default="default/default.png"
+        default="users/default/default.png"
     )
 
     class Meta:
