@@ -75,13 +75,23 @@ export function load(command, options) {
 }
 
 function loadNotification(options) {
-    return renderer.render({
-        'component_name': 'notification-bubble',
-        'refresh': options['refresh'],
-        'data': {
-            'notification': options['notification'],
-        }
-    })
+    let container = document.querySelector('.sidebar .middle #notifications .notifications');
+
+    if (container) {
+        return renderer.render({
+            'component_name': 'notification-bubble',
+            'refresh': options['refresh'],
+            'data': options
+        })
+    } else {
+        return renderer.render({
+            'component_name': 'first-notification-bubble',
+            'refresh': options['refresh'],
+            'data': {
+                'notification': options['notification'],
+            }
+        })
+    }
 }
 
 function loadMessage(options) {
@@ -92,7 +102,10 @@ function loadMessage(options) {
     return renderer.render({
         'component_name': 'message',
         'container': `${chat_id} .middle ul`,
-        'data': {'message': options, 'authenticated_user': authenticated_user}
+        'data': {
+            'message': options['message'],
+            'authenticated_user': authenticated_user,
+        }
     });
 }
 
@@ -100,7 +113,7 @@ function loadConversationBubbleLastMessage(options) {
     return renderer.render({
         'component_name': 'bubble-last-message',
         'selector': `#conversations a[data-id="${options['conversation_id']}"] .content p`,
-        'data': {'message': options}
+        'data': {'message': options['message']}
     });
 }
 
@@ -161,7 +174,6 @@ function loadChat(options) {
             'data': options,
         })
     }
-
 }
 
 function loadChats(options) {
@@ -221,6 +233,12 @@ function loadSettings(options) {
             }).then(function () {
                 return renderer.render({
                     'component_name': 'notifications-switch',
+                    'refresh': options['refresh'],
+                    'data': {'settings': data['settings']}
+                })
+            }).then(function () {
+                return renderer.render({
+                    'component_name': 'save-notifications-switch',
                     'refresh': options['refresh'],
                     'data': {'settings': data['settings']}
                 })

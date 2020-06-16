@@ -28,7 +28,7 @@
     <link rel="stylesheet" href="{% static 'css/lib/eva-setup.css' %}">
 </head>
 
-<body>
+<body ondragstart="return false;" ondrop="return false;">
 <!-- start of beginning preloader-->
 <div class="b-preloader">
     <img src="{% static 'images/logo/TolkProjectIcon.ai.svg' %}" alt="Tolk_Icon">
@@ -265,6 +265,16 @@
                                                     </label>
                                                 </div>
                                                 <p>get notifications from conversations and accounts.</p>
+                                            </li>
+                                            <li class="save-notifications-mode">
+                                                <div class="headline">
+                                                    <h5>save Notifications</h5>
+                                                    <label class="switch">
+                                                        <input type="checkbox" checked>
+                                                        <span class="slider round"></span>
+                                                    </label>
+                                                </div>
+                                                <p>don't delete notifications after they are viewed.</p>
                                             </li>
                                         </ul>
                                     </div>

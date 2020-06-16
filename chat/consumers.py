@@ -12,7 +12,17 @@ from chat.serializers import ConversationSerializer
 from chat.utils import get_conversation_or_error
 from .exceptions import ClientError
 
-COMMANDS = ["MESSAGE", "JOIN", "LEAVE", "ERROR", "NOTIFICATION", 'STATUSES', 'CONVERSATION']
+COMMANDS = [
+    "MESSAGE",
+    "JOIN",
+    "LEAVE",
+    "ERROR",
+    "NOTIFICATION",
+    'STATUSES',
+    'CONVERSATION',
+    'ATTACHMENT_SENT',
+    'FRIEND_ADDED',
+]
 
 
 # used to receive, send messages and keep
@@ -121,13 +131,17 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
         elif content['command'] == 'LEAVE':  # if command is for leaving a conversation then call leave_conversation
             await self.leave_conversation(content['id'])
         elif content['command'] == 'MESSAGE':  # if command is for sending a message then call send message
-            await self.send_message(content['id'], content['message'])
+            await self.send_message(content['id'], content['message'], content['contact_pic'])
         elif content['command'] == 'STATUSES':
             await self.get_statuses()  # if command is for fetching the statuses for all of the friends
         elif content['command'] == 'NOTIFICATION':
             await self.send_notifications()
         elif content['command'] == 'CONVERSATION':
             await self.add_conversation(content['id'])
+        elif content['command'] == "ATTACHMENT_SENT":
+            await self.send_attachment(content['message'])
+        elif content['command'] == 'FRIEND_ADDED':
+            await self.add_friend(content['contact'])
 
     async def join_conversation(self, conversation_id) -> None:
         conversation_id = int(conversation_id)
@@ -199,7 +213,7 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
 
         print(f"left {group_name}")  # debug purpose
 
-    async def send_message(self, conversation_id, message) -> None:
+    async def send_message(self, conversation_id, message, contact_pic) -> None:
         conversation_id = int(conversation_id)
         group_name = f'conversation_{conversation_id}'
 
@@ -207,11 +221,15 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
             'type': 'conversation.message',
             'command': 'MESSAGE',
             'conversation_id': conversation_id,
-            "content": message,
-            "contact_pic": self.connected_user.contact.contact_pic.url,
-            "sender": self.connected_user.id,
-            "time_sent": datetime.datetime.now().strftime("%I:%M %p"),
-            "date_sent": datetime.datetime.today().strftime("%d, %b"),
+            "message": {
+                "content": message,
+                "sender": {
+                    'user': self.connected_user.id,
+                    "contact_pic": contact_pic,
+                },
+                "time_sent": datetime.datetime.now().strftime("%I:%M %p"),
+                "date_sent": datetime.datetime.today().strftime("%d, %b"),
+            },
         }
 
         # send a message event
@@ -236,8 +254,8 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
     @database_sync_to_async
     def save_message(self, data) -> None:
         conversation = async_to_sync(get_conversation_or_error)(data['conversation_id'], self.connected_user)
-        contact = Contact.objects.get(user__id=data['sender'])
-        message = Message.objects.create(content=data['content'], sender=contact, conversation=conversation)
+        contact = Contact.objects.get(user__id=data['message']['sender']['user'])
+        message = Message.objects.create(content=data['message']['content'], sender=contact, conversation=conversation)
         message.sent = True
         message.save()
 
@@ -271,7 +289,10 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
                 try:
                     notification = notification_queue.pop(0)
                     await self.send_json({'command': 'NOTIFICATION', 'notification': notification})
-                    await self.save_notification(notification)
+
+                    if self.connected_user.contact.settings.save_notifications:
+                        await self.save_notification(notification)
+
                 except IndexError:
                     break
 
@@ -322,3 +343,60 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
                 'authenticated_contact': authenticated_contact,
                 'creator': event['creator'],
             })
+
+    async def add_friend(self, friend):
+        # get the new friend contact
+        friend_contact = self.connected_user.contact.friends.get(pk=friend['id'])
+        # access the cached friend list and added this user to it
+        group_name = f"{friend_contact.user.id}_friends"
+        # add connected user to the new friend list
+        await self.channel_layer.group_add(
+            group_name,
+            self.channel_name,
+        )
+
+        await self.channel_layer.group_send(
+            group_name,
+            {
+                'type': 'new_friend_added',
+                'group_name': f'{self.connected_user.id}_friends',
+                'target_user': friend_contact.user.id,
+            }
+        )
+
+    async def send_attachment(self, message):
+        group_name = f'{self.connected_user.id}_friends'
+
+        conversation = await get_conversation_or_error(conversation_id=message['conversation_id'],
+                                                       user=self.connected_user)
+        conversation_serializer = ConversationSerializer(instance=conversation)
+
+        await self.channel_layer.group_send(
+            group_name,
+            {
+                'type': 'attachment.sent',
+                'message': message,
+                'conversation': conversation_serializer.data,
+            }
+        )
+
+    async def attachment_sent(self, event):
+        user_is_participant = False
+
+        for participant in event['conversation']['participants']:
+            if participant == self.connected_user.contact.id and participant is not event['message']['sender_contact']:
+                user_is_participant = True
+
+        if user_is_participant:
+            await self.send_json({
+                'command': 'MESSAGE',
+                'conversation_id': event['conversation']['id'],
+                'message': event['message']['message'],
+            })
+
+    async def new_friend_added(self, event):
+        if self.connected_user.id == int(event['target_user']):
+            await self.channel_layer.group_add(
+                event['group_name'],
+                self.channel_name
+            )

@@ -1,12 +1,40 @@
+import os
+
 from rest_framework import serializers
 
 from accounts.serializers import ContactSerializer
-from .models import Conversation, Message, Settings, Notification, Header
+from .models import Conversation, Message, Settings, Notification, Header, Attachment
+
+
+class AttachmentsSerializer(serializers.ModelSerializer):
+    conversation = serializers.IntegerField(write_only=True)
+    message = serializers.PrimaryKeyRelatedField(required=False, queryset=Message.objects.all())
+    file_name = serializers.CharField(max_length=200, required=False, read_only=True)
+
+    class Meta:
+        model = Attachment
+        fields = "__all__"
+
+    def validate_conversation(self, attrs):
+        try:
+            Conversation.objects.get(pk=self.initial_data['conversation'])
+        except Conversation.DoesNotExist:
+            raise serializers.ValidationError
+
+    def create(self, validated_data):
+        message = Message.objects.create(conversation_id=self.initial_data['conversation'],
+                                         sender=self.context['contact'],
+                                         is_file=True)
+        attachment = Attachment.objects.create(file=validated_data['file'], message=message)
+        attachment.file_name = os.path.basename(attachment.file.name)[21:len(os.path.basename(attachment.file.name))]
+        attachment.save()
+        return attachment
 
 
 class MessageSerializer(serializers.ModelSerializer):
     sender = ContactSerializer()
     time_sent = serializers.TimeField(read_only=True, required=False, format="%I: %M %p", )
+    attachments = AttachmentsSerializer(required=False, read_only=True, many=True)
 
     class Meta:
         model = Message
@@ -22,8 +50,8 @@ class MessageSerializer(serializers.ModelSerializer):
 class ConversationSerializer(serializers.ModelSerializer):
     last_message = serializers.CharField(source="get_last_message_content", default=None, read_only=True)
     last_message_date = serializers.DateField(source="get_last_message_date", default=None, read_only=True)
-    header = serializers.ImageField(source='header.header')
-    messages = MessageSerializer(many=True)
+    header = serializers.ImageField(source='header.header', read_only=True, required=False)
+    messages = MessageSerializer(many=True, required=False)
 
     class Meta:
         model = Conversation
@@ -47,7 +75,10 @@ class ConversationSerializer(serializers.ModelSerializer):
         return attrs
 
     def create(self, validated_data):
-        conversation = Conversation(name=validated_data.get('name'), type=validated_data.get('type'))
+        if validated_data.get('name', None):
+            conversation = Conversation(name=validated_data.get('name'), type=validated_data.get('type'))
+        else:
+            conversation = Conversation(type=validated_data.get('type'))
         conversation.save()
 
         for participant in validated_data.get('participants'):
@@ -81,6 +112,16 @@ class SettingsSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class CreateConversationSerializer(serializers.Serializer):
+    contact_id = serializers.IntegerField(required=True)
+
+    def create(self, validated_data):
+        pass
+
+    def update(self, instance, validated_data):
+        pass
+
+
 class CreateGroupSerializer(serializers.Serializer):
     group_name = serializers.CharField(max_length=30)
     group_header = serializers.ImageField(required=False)
@@ -97,3 +138,6 @@ class CreateGroupSerializer(serializers.Serializer):
             header = Header.objects.create(conversation=conversation)
 
         return conversation
+
+    def update(self, instance, validated_data):
+        pass

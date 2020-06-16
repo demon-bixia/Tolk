@@ -67,7 +67,6 @@
     --chat-self-message-gradient-color-2: #8324ca;
     --chat-message-font-color: #ffffff;
 
-
     /* utility */
     --utils-background-color: #111620;
 
@@ -93,6 +92,7 @@
     --compose-active-submit-button-color: #f6305e;
     --compose-input-background-color-2: transparent;
     --compose-active-input-border-color: #8725c7;
+    --compose-contacts-hover-background-color: #21283a;
 
     /* auth modals */
     --auth-modal-background-color: #1a202f;
@@ -105,10 +105,22 @@
     --auth-switch-modal-font-color: #8725c7;
     --auth-submit-button-color: #111620;
     --auth-submit-button-border-color: #4f608a;
+    --auth-submit-font-color: #fff;
     --auth-active-submit-button-color: #8725c7;
+    --auth-active-submit-button-font-color: #fff;
     --auth-active-submit-button-border-color: #8725c7;
 
+
     --auth-mobile-modal-background-color: #111620;
+
+    /* scrollbars */
+    --chat-scrollbar-track-color: #111620;
+    --chat-scrollbar-thumb-color: #f6305e;
+    --chat-scrollbar-color: transparent;
+
+    --compose-scrollbar-track-color: transparent;
+    --compose-scrollbar-thumb-color: #f6305e;
+    --compose-scrollbar-color: transparent;
 
     /* font colors */
     --plain-font-color: #ffffff;
@@ -124,6 +136,16 @@
     --Inter-UI-Medium: 'inter-UI-Medium', sans- serif;
     --Inter-UI-Regular: 'inter-UI-Regular', sans-serif;
     --Inter-UI-SemiBold: 'inter-UI-SemiBold', sans-serif;
+}
+
+*::selection {
+    background: none;
+    color: none;
+}
+
+*::-moz-selection {
+    color: none;
+    background: none;
 }
 
 /* start utils */

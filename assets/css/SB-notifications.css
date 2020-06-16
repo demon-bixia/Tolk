@@ -18,6 +18,7 @@
     background: var(--sidebar-notifications-color);
 }
 
+
 .notifications > li > .round {
     display: flex;
     align-items: center;
@@ -26,6 +27,7 @@
     margin-right: 15px;
     background: var(--sidebar-background-color);
 }
+
 
 .notifications > li > .round > .eva {
     width: 20px;

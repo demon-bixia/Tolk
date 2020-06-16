@@ -101,7 +101,6 @@ function hideBPreloader() {
     }
 }
 
-
 function AddEventListeners() {
     // when info button is clicked open utility
     document.querySelector('.chat .tab-content')
@@ -111,9 +110,18 @@ function AddEventListeners() {
     document.querySelector('#account form.account')
         .addEventListener('submit', updateAccountEvent);
 
-    // when clicking create button in modal submit form
-    document.querySelector('#create .modal-footer button')
-        .addEventListener('click', conversationCreateEvent);
+    // when contact add form submits
+    document.querySelector('#create #contact-form')
+        .addEventListener('submit', addFriendEvent);
+
+    // when group create form submits
+    document.querySelector('#create #group-create')
+        .addEventListener('submit', createGroupEvent);
+
+
+    // when a contact link is clicked
+    document.querySelector('#create .contacts')
+        .addEventListener('click', createConversationEvent);
 
     // when writing in and input element remove error class from form-group
     document.querySelector('body')
@@ -172,7 +180,25 @@ function AddEventListeners() {
     // when logout button is clicked inside the sidebar top
     // menu logout of site
     document.querySelector('.sidebar .top .dropdown-menu button:nth-child(3)')
-        .addEventListener('click', logoutEvent)
+        .addEventListener('click', logoutEvent);
+
+    // when add contact link is clicked inside
+    // the add conversation modal click add contact tab
+    document.querySelector('#create .contacts-footer a:nth-child(1)')
+        .addEventListener('click', openContactTabEvent);
+
+    // when a file is selected  in the attachment input send it using sockets
+    document.querySelector('.chat')
+        .addEventListener('change', sendAttachmentEvent);
+
+    // when label button for attachment file input is clicked
+    // click the button
+    document.querySelector('.chat')
+        .addEventListener('click', openAttachmentFile);
+
+    // when a file message is clicked call downloadFileEvent
+    document.querySelector('.chat')
+        .addEventListener('click', downloadFileEvent)
 }
 
 function AddAuthEventListeners() {
@@ -258,10 +284,14 @@ function updateAccountEvent(event) {
                         'authenticated_contact': data['contact']
                     }).then(function (element) {
                         return load('contact-picture', {'refresh': true, 'authenticated_contact': data['contact']});
+                    }).then(function (element) {
+                        return load('chats', {'refresh': true, 'authenticated_contact': data['contact']});
                     }).then(function () {
                         AddEventListeners();
                         // remove preloader
                         wizard.hide(preloader);
+                        // open the first conversation
+                        openFirstConversation();
                         // empty form
                         emptyForm(form);
                     }).then(function () {
@@ -283,21 +313,14 @@ function updateAccountEvent(event) {
     });
 }
 
-function conversationCreateEvent(event) {
-    event.preventDefault();
-    let form = document.querySelector('#create .modal-body .tab-content .tab-pane.active form');
-
-    if (form.getAttribute('id') === 'group-form') {
-        addFriend(form);
-    } else if (form.getAttribute('id') === 'group-create') {
-        createGroup(form);
-    }
-}
-
 // when create button is clicked and
 // group create is open send create
 // conversation event
-function addFriend(form) {
+function addFriendEvent(event) {
+    event.preventDefault();
+
+
+    let form = event.target;
     let formData = new FormData(form);
     let data = {
         'email': formData.get('email'),
@@ -310,8 +333,8 @@ function addFriend(form) {
     wizard.show(preloader);
 
     communicator.send_ajax({'route_name': 'add-friend', 'data': data})
-        .then(function (res) {
-            if (res['success']) {
+        .then(function (response) {
+            if (response['success']) {
                 // send notification to user
                 // update parts affected
                 communicator.send_ajax({'route_name': 'contact-detail', 'args': [contact_id]})
@@ -346,16 +369,14 @@ function addFriend(form) {
                             // send event if true
                             if (communicator.socket_is_open()) {
                                 // send a STATUSES EVENT
-                                joinConversation(res['conversation']['id']);
-                                getStatuses();
-                                getNotifications();
-                                notify_participants(res['conversation']['id'])
+                                joinConversation(response['conversation']['id']);
+                                addFriend(response['contact']);
                             }
                         })
                     })
             } else {
                 // render errors
-                renderFormErrors(form, res['data']['errors']);
+                renderFormErrors(form, response['data']['errors']);
                 wizard.hide(preloader);
             }
         }, function (response) {
@@ -366,10 +387,75 @@ function addFriend(form) {
         })
 }
 
+// when a contact is clicked inside
+// the conversation create list
+// send conversation create event
+function createConversationEvent(event) {
+    event.preventDefault();
+
+    let element = event.target.closest('a');
+
+    if (element.classList.contains('contact')) {
+
+        let requestData = {
+            "type": "couple",
+            "participants": [
+                element.dataset['authenticatedContact'],
+                element.dataset['contact']
+            ],
+            "history_mode": true
+        };
+
+        $('#create').modal('hide');
+
+        let conversation = document.querySelector(`#conversations .nav  li a[data-user="${element.dataset['user']}"]`);
+
+        if (!conversation) {
+            wizard.show(preloader);
+
+            communicator.send_ajax({'route_name': 'conversation-create', 'data': requestData})
+                .then(function (response) {
+                    if (response['success']) {
+                        load('conversation', response)
+                            .then(function (element) {
+                                return load('chat', response);
+                            })
+                            .then(function (element) {
+                                AddEventListeners();
+                                if (window.screen.width > 991) {
+                                    // open first conversation
+                                    openFirstConversation();
+                                }
+                                // hide preloader
+                                wizard.hide(preloader);
+                            })
+                            .then(function () {
+                                // check if socket is connected
+                                // send event if true
+                                if (communicator.socket_is_open()) {
+                                    // send a STATUSES EVENT
+                                    joinConversation(response['conversation']['id']);
+                                    getStatuses();
+                                    getNotifications();
+                                    notify_participants(response['conversation']['id'])
+                                }
+                            })
+                    }
+                }, function (response) {
+                    console.log(response)
+                })
+        }
+    }
+}
+
 // when create button is clicked and
 // group create is open send create
 // group event
-function createGroup(form) {
+function createGroupEvent(event) {
+    event.preventDefault();
+
+    let form = event.target;
+
     let formData = new FormData(form);
     let file = form['group_header'].files[0]; // get file inside html input
 
@@ -616,13 +702,21 @@ function closeChat(event) {
 // when profile picture is clicked
 // open utility section
 function openUtility(event) {
-    let element = event.target;
+    let element = event.target.closest('.headline');
 
-    if (element.classList.contains('headline') ||
-        element.parentElement.classList.contains('headline') ||
-        element.parentElement.parentElement.classList.contains('headline')) {
+    if (element && element.dataset['conversation'] !== undefined) {
         let headline = element.closest('.headline');
         wizard.toggle(document.querySelector(`#conversation_${headline.dataset['conversation']} .utility`));
+    }
+}
+
+function openAttachmentFile(event) {
+    let element = event.target.closest('label');
+
+    if (element) {
+        if (element.getAttribute('for') === 'attachments') {
+            element.parentElement.querySelector('.attachments').click();
+        }
     }
 }
 
@@ -631,6 +725,12 @@ function openUtility(event) {
 function OpenSettingsEvent() {
     let setting_button = document.querySelector('.navigation .nav li:nth-child(5) a');
     setting_button.click();
+}
+
+// when add contact is clicked inside
+// the add conversations modal opened the add contact tab
+function openContactTabEvent() {
+    document.querySelector('#create .modal-body .nav li:nth-child(1) a').click()
 }
 
 // when a chat is opened scroll to
@@ -814,7 +914,7 @@ function filterNotification(value) {
 function filterSettings(value) {
     let settings_tabs = document.querySelectorAll('#settings #preferences li');
     let regx = new RegExp(`${value}`, 'ig');
-    let opened = false;
+    let opened;
 
     if (settings_tabs) {
         for (let settings_tab of settings_tabs) {
@@ -827,16 +927,17 @@ function filterSettings(value) {
                         if (value.trim().length !== 0) {
                             if (name.innerText.match(regx)) {
                                 name.classList.add('highlight');
-
-                                if (!opened) {
-                                    setting_content.classList.add('show');
+                                setting_content.classList.add('show');
+                                opened = setting_content;
+                            } else {
+                                name.classList.remove('highlight');
+                                if (opened) {
+                                    if (setting_content.getAttribute('id') !== opened.getAttribute('id')) {
+                                        setting_content.classList.remove('show');
+                                    }
                                 } else {
                                     setting_content.classList.remove('show');
                                 }
-
-                            } else {
-                                name.classList.remove('highlight');
-                                setting_content.classList.remove('show');
                             }
                         } else {
                             name.classList.remove('highlight');
@@ -848,7 +949,6 @@ function filterSettings(value) {
         }
     }
 }
-
 
 // join all conversations
 function joinConversations() {
@@ -875,6 +975,40 @@ function sendMessageEvent(event) {
     }
 }
 
+// send file
+function sendAttachmentEvent(event) {
+    let element = event.target;
+
+    if (element.classList.contains('attachments')) {
+        let file = element.files[0];
+        if (file.size !== 0) {
+            let form_data = new FormData();
+            form_data.append('file', file);
+            form_data.append('conversation', element.dataset['conversation']);
+
+            communicator.send_ajax({
+                'route_name': 'send-attachment',
+                'type': false,
+                'data': form_data,
+            }).then(function (response) {
+                return load('message', response)
+                    .then(function () {
+                        return load('bubble-last-message', response);
+                    }).then(function () {
+                        if (communicator.socket_is_open()) {
+                            communicator.send_json_socket({
+                                'command': 'ATTACHMENT_SENT',
+                                'message': response,
+                            })
+                        }
+                    }).then(function (element) {
+                        eva.replace();
+                    })
+            })
+        }
+    }
+}
+
 // send message when enter is clicked
 function sendMessageEnterEvent(event) {
     event.preventDefault();
@@ -885,13 +1019,34 @@ function sendMessageEnterEvent(event) {
     }
 }
 
+// when a file download icon is clicked download file
+function downloadFileEvent(event) {
+    let element = event.target.closest('.message');
+
+    if (element.classList.contains('downloadable')) {
+        // download file
+        let download_anchor = document.createElement('a');
+        download_anchor.setAttribute('href', element.dataset['url']);
+        download_anchor.setAttribute('download', element.querySelector('p').innerText);
+        download_anchor.style.display = 'none';
+        document.body.appendChild(download_anchor);
+        download_anchor.click();
+        document.body.removeChild(download_anchor);
+    }
+}
+
 // send message
 function sendMessage(input, conversation_id) {
     if (input.value !== '' && input.value.length >= 1 && input.value.trim().length !== 0) {
+
+        let contact_pic = document.querySelector('.profile-container img').getAttribute('src');
+
+
         communicator.send_json_socket({
             'command': 'MESSAGE',
             'id': conversation_id,
-            'message': input.value
+            'message': input.value,
+            'contact_pic': contact_pic,
         });
         input.value = '';
     } else {
@@ -914,6 +1069,11 @@ function notify_participants(conversation_id) {
         'command': 'CONVERSATION',
         'id': conversation_id,
     })
+}
+
+// added a friend to you cached friend list
+function addFriend(contact) {
+    communicator.send_json_socket({'command': 'FRIEND_ADDED', 'contact': contact})
 }
 
 /* Websocket Callbacks */
@@ -949,6 +1109,7 @@ function conversation_message(data) {
     load('message', data).then(function () {
         return load('bubble-last-message', data);
     }).then(function () {
+        eva.replace();
         let conversation = document.querySelector(`#conversations  a[data-id="${data['conversation_id']}"]`);
         scrollChat(conversation);
     }).then(function () {
@@ -1032,7 +1193,7 @@ function conversation_status(data) {
 }
 
 function conversation_notification(data) {
-    load('notifications', {'notification': data['notification'], 'refresh': true})
+    load('notification', {'notification': data['notification'], 'refresh': true})
         .then(function () {
             let audio = document.querySelector('.notifications-sound');
             try {

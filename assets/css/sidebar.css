@@ -90,10 +90,6 @@
     scrollbar-width: none;
 }
 
-.sidebar .middle {
-    scrollbar-width: none;
-}
-
 /* remove scroll IE +10 */
 
 .sidebar .middle .container {

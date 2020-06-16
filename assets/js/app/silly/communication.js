@@ -225,6 +225,7 @@ class SocketCommunicator {
             let ws_scheme = window.location.protocol === "https:" ? "wss" : "ws";  // figure out the correct scheme
             let ws_path = ws_scheme + '://' + window.location.host + url; // create the connection url path
             let socket = new ReconnectingWebSocket(ws_path); // make sure you change this to module imports
+            socket.binaryType = "arraybuffer"; // set the the binary type to array buffer (used to represent fixed length raw binary data)
 
             // add reference to socket object
             this.socket = socket;
@@ -253,10 +254,12 @@ class SocketCommunicator {
     }
 
     disconnect(socket) {
+        // disconnect web socket object
         this.socket.close();
     }
 
     is_open() {
+        // returns true is a socket connection is opened
         return this.socket.readyState === WebSocket.OPEN;
     }
 }

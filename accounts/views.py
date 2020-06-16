@@ -7,7 +7,6 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
 from chat.models import Conversation
-from chat.serializers import ConversationSerializer
 from chat.utils import add_notification
 from .models import Contact
 from .permissions import IsAuthenticatedOrCreateOnly
@@ -39,6 +38,11 @@ def add_friend(request, format=None):
 
             else:
                 friend_user.contact.friends.add(request.user.contact)  # add  authenticated user contact to friends
+                notification = {'type': 'chat', 'content': 'your new contact is added'}
+                add_notification(notification=notification, user=request.user)
+
+                # create a conversation
+                """                
                 conversation_already_exist = False
                 added_conversation = None
 
@@ -68,6 +72,9 @@ def add_friend(request, format=None):
 
                 return Response(
                     {"success": True, "contact": contact_serializer.data, "conversation": conversation_serializer.data})
+                """
+
+                return Response({"success": True})
 
         except User.DoesNotExist:
             return Response({'success': False, 'errors': {'email': ['no contact with this email']}},

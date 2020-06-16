@@ -281,6 +281,7 @@ let routes = {
         'method': 'DELETE',
         'url_pattern': '/api/notifications/<pk>/'
     },
+
     // messages
     'message-list': {
         'protocol': 'http',
@@ -316,6 +317,12 @@ let routes = {
         'protocol': 'http',
         'method': 'DELETE',
         'url_pattern': '/api/messages/<pk>/'
+    },
+
+    'send-attachment': {
+        'protocol': 'http',
+        'method': 'POST',
+        'url_pattern': '/api/send-attachments/',
     },
 
     // settings

@@ -1,34 +1,16 @@
 /* Current */
-TODO: test everything
-TODO: fix errors
-TODO: test everything
+TODO: deploy version 1.0
 
 /* Road Map */
+TODO: Tests view sets
 TODO: implement cookie history --commit
 TODO: chat offline message queue --commit
-TODO: conversation, contact, notifications filter --commit
 TODO: make conversation update event --commit
-TODO: fix automated tests for viewsets
-
-/* suggested */
-    group update event
-    move routes to another module
-    friend request system
-    removing contacts
-    remove conversation
-    remove notifications
-    remove messages
-
-/* final test */
-    --mess with register and login
 
 /* notes */
     -- group update
-    -- add a add conversation tab in create modal
-    -- image update event
     -- add password reset
     -- history mode
     -- save notifications using id's
-    -- fix preloader color
-    -- clear notifications
-    -- prevent site from hightlighting
+    -- add contact updated event
+    -- make a friend added event

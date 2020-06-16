@@ -168,6 +168,22 @@
     max-height: 200px;
 }
 
+#create .modal-body .users::-webkit-scrollbar {
+    background: var(--compose-scrollbar-color);
+    width: 4px;
+}
+
+#create .modal-body .users::-webkit-scrollbar-track {
+    background: var(--compose-scrollbar-track-color);
+}
+
+#create .modal-body .users::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: var(--compose-scrollbar-thumb-color);
+}
+
+
+
 
 .modal-body .users > li {
     display: flex;
@@ -176,6 +192,7 @@
     margin-left: 15px;
     margin-right: 15px;
 }
+
 
 .status {
     position: relative;
@@ -192,6 +209,85 @@
     flex-basis: 100%;
 }
 
+#create .modal-body .contacts {
+    flex-basis: 100%;
+    list-style: none;
+    max-height: 200px;
+    margin: 5px 10px 5px 10px;
+    background: transparent;
+    overflow-y: scroll;
+}
+
+#create .modal-body .contacts::-webkit-scrollbar {
+    background: var(--compose-scrollbar-color);
+    width: 4px;
+}
+
+#create .modal-body .contacts::-webkit-scrollbar-track {
+    background: var(--compose-scrollbar-track-color);
+}
+
+#create .modal-body .contacts::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: var(--compose-scrollbar-thumb-color);
+}
+
+
+#create .modal-body .contacts > a {
+    display: flex;
+    align-items: center;
+    padding: 25px 10px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+}
+
+#create .modal-body .contacts > a:hover {
+    background: var(--compose-contacts-hover-background-color);
+}
+
+#create .modal-body .contacts-footer {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    margin-top: 10px;
+    padding: 15px 15px;
+    background: var(--compose-tab-background-color);
+    border-radius: 5px;
+}
+
+#create .modal-body .contacts-footer a {
+    padding: 5px;
+    border-radius: 3px;
+}
+
+
+#create .modal-body .contacts-footer a:nth-child(1) {
+    margin-right: auto;
+}
+
+#create .modal-body .contacts-footer a:nth-child(2) {
+    justify-self: flex-end;
+
+}
+
+#create .modal-body .contacts-footer a:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.07);
+}
+
+#create .modal-body .contacts-footer a:focus {
+    border: none;
+}
+
+
+.contacts > a img {
+    width: 42px;
+    height: 42px;
+    border-radius: 100%;
+}
+
+
 .custom-control-input:checked ~ .custom-control-label::before {
     color: #fff;
     border-color: var(--compose-tab-background-color);
@@ -205,17 +301,7 @@
     outline: none;
 }
 
-/* end of modal body content */
-/* end of modal body*/
-
-/* start of modal footer */
-.modal-footer {
-    padding: 30px;
-    background: var(--compose-body-nav-background);
-    border: none;
-}
-
-.modal-footer button {
+.modal-body .form-group button {
     padding: 14px 0;
     display: block;
     width: 100%;
@@ -224,13 +310,39 @@
     color: var(--plain-font-color);
 }
 
-.modal-footer button:hover {
+.modal-body .form-group button.btn:hover {
     background: var(--compose-submit-button-color);
 }
 
-.modal-footer button:focus {
+.modal-body .form-group button.btn:focus {
     background: var(--compose-submit-button-color);
     box-shadow: none;
+}
+
+.modal-body .form-group button.btn:active {
+    background-color: var(--compose-submit-button-color);
+    box-shadow: none;
+}
+
+#create .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show > .btn-primary.dropdown-toggle {
+    color: #fff;
+    background-color: var(--compose-submit-button-color);
+    border-color: var(--compose-submit-button-color);
+}
+
+#create .modal-body .btn-primary.focus, .btn-primary:focus {
+    box-shadow: 0 0 0 0.2rem var(--compose-submit-button-color);
+}
+
+
+/* end of modal body content */
+/* end of modal body*/
+
+/* start of modal footer */
+.modal-footer {
+    padding: 30px;
+    background: var(--compose-body-nav-background);
+    border: none;
 }
 
 /* end of modal footer */
@@ -322,12 +434,16 @@
 .modal + .modal .modal-footer button {
     background: var(--auth-submit-button-color);
     border: 1px solid var(--auth-submit-button-border-color);
+    color: var(--auth-submit-font-color);
+    padding: 10px 50px;
+    border-radius: 5px;
     transition: all 0.3s;
     box-shadow: none;
 }
 
 .modal + .modal .modal-footer button:hover {
     background: var(--auth-active-submit-button-color);
+    color: var(--auth-active-submit-button-font-color);
     border: 1px solid var(--auth-active-submit-button-border-color);
 }
 
@@ -340,6 +456,7 @@
 .modal + .modal .modal-footer button:active {
     outline: none;
     border: 1px solid var(--auth-active-submit-button-color);
+    color: var(--auth-active-submit-button-font-color);
     background: var(--auth-input-active-border-color);
     box-shadow: none;
 }
@@ -347,6 +464,7 @@
 .modal + .modal .modal-footer button:active:focus {
     outline: none;
     border: 1px solid var(--compose-active-submit-button-border-color-2);
+    color: var(--auth-active-submit-button-font-color);
     background: var(--compose-active-submit-button-color-2);
     box-shadow: none;
 }

@@ -163,7 +163,7 @@ let light_theme_colors = {
     '--chat-odd-message-gradient-color-2': '#e1e2e4',
     '--chat-self-message-gradient-color-1': '#e1e2e4',
     '--chat-self-message-gradient-color-2': '#e1e2e4',
-    '--chat-message-font-color': '##252525',
+    '--chat-message-font-color': '#252525',
 
     '--compose-header-background': '#e1e2e4',
     '--compose-body-nav-background': '#e1e2e4',
@@ -186,6 +186,17 @@ let light_theme_colors = {
     '--compose-active-submit-button-border-color-2': '#007bff',
     '--compose-input-background-color-2': '#fff',
     '--compose-active-input-border-color': '#007bff',
+    '--compose-contacts-hover-background-color': '#f1f1f1',
+
+    /* scrollbars */
+    '--chat-scrollbar-track-color': '#bdbac2',
+    '--chat-scrollbar-thumb-color': '#007bff',
+    '--chat-scrollbar-color': 'transparent',
+
+    '--compose-scrollbar-track-color': '#bdbac2',
+    '--compose-scrollbar-thumb-color': '#007bff',
+    '--compose-scrollbar-color': 'transparent',
+
 
     '--auth-modal-background-color': '#fff',
     '--auth-background-color': '#fff',
@@ -197,9 +208,10 @@ let light_theme_colors = {
     '--auth-switch-modal-font-color': '#007bff',
     '--auth-submit-button-color': '#fff',
     '--auth-submit-button-border-color': '#4f608a',
+    '--auth-submit-font-color': '#4f608a',
     '--auth-active-submit-button-color': '#007bff',
     '--auth-active-submit-button-border-color': '#007bff',
-
+    '--auth-active-submit-button-font-color': '#fff',
     '--auth-mobile-modal-background-color': '#fff',
 
 };
@@ -291,6 +303,17 @@ let dark_theme_colors = {
     '--compose-active-submit-button-color': '#f6305e',
     '--compose-input-background-color-2': 'transparent',
     '--compose-active-input-border-color': '#8725c7',
+    '--compose-contacts-hover-background-color': '#21283a',
+
+    /* scrollbars */
+    '--chat-scrollbar-track-color': '#111620',
+    '--chat-scrollbar-thumb-color': '#f6305e',
+    '--chat-scrollbar-color': 'transparent',
+
+    '--compose-scrollbar-track-color': 'transparent',
+    '--compose-scrollbar-thumb-color': '#f6305e',
+    '--compose-scrollbar-color': 'transparent',
+
 
     /* auth modals */
     '--auth-modal-background-color': '#1a202f',
@@ -303,9 +326,10 @@ let dark_theme_colors = {
     '--auth-switch-modal-font-color': '#8725c7',
     '--auth-submit-button-color': '#111620',
     '--auth-submit-button-border-color': '#4f608a',
+    '--auth-submit-font-color': '#4f608a',
     '--auth-active-submit-button-color': '#8725c7',
     '--auth-active-submit-button-border-color': '#8725c7',
-
+    '--auth-active-submit-button-font-color': '#fff',
     '--auth-mobile-modal-background-color': '#111620',
 
     /* font colors */

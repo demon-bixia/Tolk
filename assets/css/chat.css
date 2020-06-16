@@ -86,7 +86,6 @@
 }
 
 
-
 .chat .item .top ul > li button i::before {
     color: var(--chat-top-icon-color);
     font-size: 25px
@@ -130,7 +129,17 @@
 }
 
 .chat .item .middle::-webkit-scrollbar {
-    width: 0 !important
+    background: var(--chat-scrollbar-color);
+    width: 4px;
+}
+
+.chat .item .middle::-webkit-scrollbar-track {
+    background: var(--chat-scrollbar-track-color);
+}
+
+.chat .item .middle::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: var(--chat-scrollbar-thumb-color);
 }
 
 /* remove scrollbar chrome*/
@@ -138,13 +147,10 @@
     overflow: -moz-scrollbars-none;
 }
 
-/* remove scrollbar firefox */
-.chat .item .middle {
-    scrollbar-width: none
-}
-
 /* remove scroll IE +10 */
-
+.chat .item .middle {
+    scrollbar-width: none;
+}
 
 .chat .item .middle .container {
     padding: 30px 20px;
@@ -198,8 +204,12 @@
     order: 1;
 }
 
+.chat .item .middle ul > li .message.downloadable {
+    cursor: pointer;
+}
+
 .chat .item .middle ul > li.odd .bubble {
-    border-radius: 0px 10px 10px 10px;
+    border-radius: 0px 15px 15px 15px;
     background: linear-gradient(148deg, var(--chat-odd-message-gradient-color-1), var(--chat-odd-message-gradient-color-2));
 }
 
@@ -207,9 +217,8 @@
     display: inline-block;
     max-width: 360px;
     text-align: left;
-    border-radius: 6px;
     background: linear-gradient(146deg, var(--chat-self-message-gradient-color-1), var(--chat-self-message-gradient-color-2));
-    border-radius: 10px 0px 10px 10px;
+    border-radius: 15px 0px 15px 15px;
 }
 
 
@@ -220,6 +229,21 @@
 .chat .item .middle ul > li p {
     padding: 15px 20px;
     color: var(--chat-message-font-color);
+}
+
+.chat .item .middle ul > li p span {
+    text-align: center;
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    border: 2px solid var(--chat-message-font-color);
+    margin-top: 0;
+    margin-right: 10px;
+}
+
+.chat .item .middle ul > li p .eva {
+    fill: var(--chat-message-font-color);
 }
 
 .chat .item .middle ul > li span {
@@ -501,13 +525,11 @@ h5 {
     }
 
     .chat .item .middle ul > li span {
-        display: flex;
-        justify-content: flex-start;
+        display: inline-block;
     }
 
     .chat .item .middle ul > li.odd span {
-        display: flex;
-        justify-content: flex-end;
+        display: inline-block;
     }
 
     .utility .close {

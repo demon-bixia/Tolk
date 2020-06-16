@@ -23,7 +23,7 @@ class Conversation(models.Model):
     history_mode = models.BooleanField(default=True, choices=history_choices, blank=True)
 
     def save(self, **kwargs):
-        super(Conversation, self).save(**kwargs)
+        super(Conv1ersation, self).save(**kwargs)
 
         if not self.name:
             self.name = f"conversation_{self.pk}"
@@ -31,7 +31,10 @@ class Conversation(models.Model):
 
     def get_last_message_content(self):
         if self.messages.count() > 0:
-            return self.messages.last().content
+            if self.messages.last().is_file:
+                return self.messages.last().attachments.first().file_name
+            else:
+                return self.messages.last().content
         return None
 
     def get_other_users(self, email):
@@ -69,13 +72,13 @@ class Header(models.Model):
 
 
 class Message(models.Model):
-    content = models.TextField(verbose_name="content")
+    content = models.TextField(verbose_name="content", blank=True)
     sender = models.ForeignKey(Contact, on_delete=models.CASCADE)
     conversation = models.ForeignKey(Conversation, related_name='messages', on_delete=models.CASCADE)
     sent = models.BooleanField(default=True)
     date_sent = models.DateField(auto_now_add=True)
-
     time_sent = models.TimeField(auto_now_add=True)
+    is_file = models.BooleanField(default=False)
 
     class Meta:
         ordering = ('date_sent', 'time_sent')
@@ -85,6 +88,19 @@ class Message(models.Model):
 
     def get_time_sent(self):
         return self.time_sent.strftime("%I:%M %p")
+
+
+def upload_attachment(instance, filename):
+    return f"conversations/{instance.message.conversation.id}/attachments/{secrets.token_hex(10)}_{filename}"
+
+
+class Attachment(models.Model):
+    message = models.ForeignKey(Message, related_name='attachments', on_delete=models.CASCADE)
+    file = models.FileField(upload_to=upload_attachment)
+    file_name = models.CharField(max_length=200, blank=True)
+
+    def __str__(self):
+        return f"file:{self.file.name} in {self.message.conversation.name}"
 
 
 class Settings(models.Model):
@@ -103,9 +119,15 @@ class Settings(models.Model):
         (False, 'never receive notifications')
     )
 
+    save_notifications_choices = (
+        (True, 'save notifications'),
+        (False, 'delete notifications')
+    )
+
     night_mode = models.BooleanField(max_length=10, default=True, choices=theme_choices)
-    private_mode = models.BooleanField(default=False)
-    notifications = models.BooleanField(default=True)
+    private_mode = models.BooleanField(default=False, choices=private_mode_choices)
+    notifications = models.BooleanField(default=True, choices=notifications_choices)
+    save_notifications = models.BooleanField(default=False, choices=save_notifications_choices)
     contact = models.OneToOneField(Contact, on_delete=models.CASCADE)
 
     def __str__(self):
