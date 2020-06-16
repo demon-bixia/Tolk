@@ -23,7 +23,7 @@ class Conversation(models.Model):
     history_mode = models.BooleanField(default=True, choices=history_choices, blank=True)
 
     def save(self, **kwargs):
-        super(Conv1ersation, self).save(**kwargs)
+        super(Conversation, self).save(**kwargs)
 
         if not self.name:
             self.name = f"conversation_{self.pk}"
