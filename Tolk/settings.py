@@ -20,13 +20,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = "os.environ.get('SECRET_KEY')"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'https://tolk-project.herokuapp.com',
+    'https://tolk-project.herokuapp.com/',
 ]
 
 # Application definition
@@ -154,7 +154,7 @@ CHANNEL_LAYERS = {
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": 'redis://' + os.environ.get('REDIS_HOST_2'),
+        "LOCATION": f"redis://{os.environ.get('REDIS_HOST_2')}",
         'TIMEOUT': 60 * 60 * 24,
         "OPTIONS": {
             'PASSWORD': os.environ.get('REDIS_PASSWORD_2'),
