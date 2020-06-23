@@ -80,8 +80,7 @@ WSGI_APPLICATION = 'Tolk.wsgi.application'
 
 # ******** Database ********
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
-DATABASES['default'] = dj_database_url.config(conn_max_age=0, ssl_require=False)
+DATABASES = {'default': dj_database_url.config(conn_max_age=0, ssl_require=False)}
 
 # ******** Internationalization ********
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
