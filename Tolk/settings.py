@@ -174,6 +174,8 @@ REST_FRAMEWORK = {
 # Activate Django-Heroku.
 django_heroku.settings(locals())
 
+del DATABASES['default']['OPTIONS']['sslmode']
+
 # **** dropbox settings ****
 DEFAULT_FILE_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
 DROPBOX_OAUTH2_TOKEN = os.environ.get('DROPBOX_OAUTH2_TOKEN')
