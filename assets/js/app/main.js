@@ -1022,16 +1022,17 @@ function sendMessageEnterEvent(event) {
 // when a file download icon is clicked download file
 function downloadFileEvent(event) {
     let element = event.target.closest('.message');
-
-    if (element.classList.contains('downloadable')) {
-        // download file
-        let download_anchor = document.createElement('a');
-        download_anchor.setAttribute('href', element.dataset['url']);
-        download_anchor.setAttribute('download', element.querySelector('p').innerText);
-        download_anchor.style.display = 'none';
-        document.body.appendChild(download_anchor);
-        download_anchor.click();
-        document.body.removeChild(download_anchor);
+    if (element) {
+        if (element.classList.contains('downloadable')) {
+            // download file
+            let download_anchor = document.createElement('a');
+            download_anchor.setAttribute('href', element.dataset['url']);
+            download_anchor.setAttribute('download', element.querySelector('p').innerText);
+            download_anchor.style.display = 'none';
+            document.body.appendChild(download_anchor);
+            download_anchor.click();
+            document.body.removeChild(download_anchor);
+        }
     }
 }
 
