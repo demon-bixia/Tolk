@@ -80,13 +80,7 @@ WSGI_APPLICATION = 'Tolk.wsgi.application'
 
 # ******** Database ********
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-#DATABASES = {'default': dj_database_url.config(ssl_require=False)}
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+DATABASES = {'default': dj_database_url.config(ssl_require=False)}
 
 # ******** Internationalization ********
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
@@ -106,7 +100,7 @@ USE_TZ = True
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (
@@ -146,40 +140,14 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("localhost", 6379)],
-        },
-    },
-}
-
-# Redis Cache
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
-        'TIMEOUT': 60 * 60 * 24,
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        },
-        "KEY_PREFIX": "chat"
-    },
-}
-
-"""
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
             "hosts": [
                 f"redis://:{os.environ.get('REDIS_PASSWORD_1')}@{os.environ.get('REDIS_HOST_1')}",
             ],
         },
     },
 }
-"""
 
 # Redis Cache
-
-"""
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
@@ -192,7 +160,6 @@ CACHES = {
         "KEY_PREFIX": "chat"
     },
 }
-"""
 
 # rest framework
 REST_FRAMEWORK = {
@@ -207,8 +174,8 @@ REST_FRAMEWORK = {
 # Activate Django-Heroku.
 django_heroku.settings(locals())
 
-#del DATABASES['default']['OPTIONS']['sslmode']
+del DATABASES['default']['OPTIONS']['sslmode']
 
 # **** dropbox settings ****
-#DEFAULT_FILE_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
-#DROPBOX_OAUTH2_TOKEN = os.environ.get('DROPBOX_OAUTH2_TOKEN')
+DEFAULT_FILE_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
+DROPBOX_OAUTH2_TOKEN = os.environ.get('DROPBOX_OAUTH2_TOKEN')
