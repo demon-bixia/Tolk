@@ -209,6 +209,7 @@ class AjaxCommunicator {
 
 
 class SocketCommunicator {
+
     socket;
 
     set socket(value) {

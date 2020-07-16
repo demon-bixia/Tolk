@@ -108,7 +108,7 @@
 
 .chat .item .middle {
     display: flex;
-    flex: 1 0;
+    flex: 1  0;
     overflow-x: hidden;
     overflow-y: auto
 }
@@ -239,6 +239,7 @@
 
 .chat .item .bottom {
     padding: 20px 20px;
+    flex: 1;
     background: var(--chat-bottom-background)
 }
 
