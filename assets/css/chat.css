@@ -108,7 +108,7 @@
 
 .chat .item .middle {
     display: flex;
-    flex: 1  0;
+    height: calc(100vh - 194px);
     overflow-x: hidden;
     overflow-y: auto
 }
@@ -239,7 +239,6 @@
 
 .chat .item .bottom {
     padding: 20px 20px;
-    flex: 1;
     background: var(--chat-bottom-background)
 }
 
@@ -534,6 +533,11 @@ h5 {
     .chat .item .top ul>li .dropdown-menu .eva {
         margin: 10px
     }
+
+    .chat .item .middle {
+        height: calc(100vh - 211px);
+    }
+
 
     .utility {
         position: fixed;
