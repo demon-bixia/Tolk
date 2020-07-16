@@ -108,7 +108,7 @@
 
 .chat .item .middle {
     display: flex;
-    height: calc(100vh - 194px);
+    height: calc(100vh - 204px);
     overflow-x: hidden;
     overflow-y: auto
 }
@@ -535,7 +535,7 @@ h5 {
     }
 
     .chat .item .middle {
-        height: calc(100vh - 211px);
+        height: calc(100vh - 220px);
     }
 
 
