@@ -207,6 +207,7 @@ class AjaxCommunicator {
     }
 }
 
+
 class SocketCommunicator {
     socket;
 

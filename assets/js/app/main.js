@@ -17,8 +17,8 @@ let wizard = new Wizard();
 let preloader = document.querySelector('.loader');
 let b_preloader = document.querySelector('.b-preloader');
 let message_audio = document.querySelector('.message-sound');
-let siteLoaded = false;
 
+let siteLoaded = false;
 (function main() {
     startUp();
 
@@ -69,7 +69,15 @@ let siteLoaded = false;
         } else {
             AddAuthEventListeners();
             // change theme
-            let theme = Cookies.get('theme') === 'dark';
+            let theme;
+             
+            if(Cookies.get('theme')) {
+                // if the theme exist set that theme
+                theme = Cookies.get('theme') === 'dark';
+            }else{
+                // otherwise enable dark mode
+                theme = true;
+            }
             changeTheme(theme);
             // show login and register logic
             wizard.show(document.querySelector('#Login'));

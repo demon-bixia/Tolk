@@ -1,114 +1,95 @@
-/* apply for all screens */
-
-
 .modal-content {
     border: none;
-    border-radius: 6px;
+    border-radius: 6px
 }
 
-/* start modal header */
 .modal-header {
     align-items: center;
     padding: 25px 30px;
     background: var(--compose-body-nav-background);
-    border-bottom: none;
+    border-bottom: none
 }
 
 .modal-header h5 {
     font-weight: 600;
     color: var(--compose-header-color);
-    margin-bottom: 0;
+    margin-bottom: 0
 }
 
 .modal-header .round {
     padding: 0;
-    background: rgba(255, 255, 255, 25);
+    background: #fff
 }
 
 .modal-header .round {
     padding: 0;
-    background: rgba(255, 255, 255, .25);
+    background: rgba(255, 255, 255, .25)
 }
 
 .modal-header .round .eva {
-    fill: white;
+    fill: #fff
 }
 
-/* end modal header */
-
-
-/* start of modal body */
 .modal-body {
     padding: 0;
-    background: var(--compose-body-nav-background);
-
+    background: var(--compose-body-nav-background)
 }
 
-/* start of modal-body nav */
 .modal-body .nav {
     flex-wrap: nowrap;
     padding: 15px 30px;
     width: 100%;
-    background: var(--compose-body-nav-background);
+    background: var(--compose-body-nav-background)
 }
 
 .modal-body .nav li {
     width: 100%;
-    text-align: center;
+    text-align: center
 }
 
 .modal-body .nav li .active {
     background: var(--compose-tab-background-color);
-    color: var(--compose-tab-font-color);
+    color: var(--compose-tab-font-color)
+}
+
+.modal-body .nav li a {
+    display: block;
+    padding: 10px 0;
+    color: var(--compose-link-color)
+}
+
+.modal-body .nav li+li {
+    margin-left: 6px
 }
 
 .modal-body .nav li a {
     display: block;
     padding: 10px 0;
     color: var(--compose-link-color);
+    border-radius: 6px
 }
 
-.modal-body .nav li + li {
-    margin-left: 6px;
-}
-
-.modal-body .nav li a {
-    display: block;
-    padding: 10px 0;
-    color: var(--compose-link-color);
-    border-radius: 6px;
-}
-
-/* end of modal-body nav */
-
-/* start of modal body content*/
 .modal-body .details {
-    padding: 30px 30px 0;
+    padding: 30px 30px 0
 }
 
 .modal-body .details label {
-    color: var(--plain-font-color);
+    color: var(--plain-font-color)
 }
 
 .modal-body .participants label {
-    color: var(--plain-font-color);
+    color: var(--plain-font-color)
 }
 
 .modal-body input.form-control {
     padding: 0 20px;
     height: 55px;
     color: var(--compose-input-font-color);
-    background: var(--compose-input-background-color);
+    background: var(--compose-input-background-color)
 }
-
 
 .modal-body .custom-file {
-    margin-bottom: 30px;
-
-}
-
-.modal-body .custom-file .custom-file-input {
-
+    margin-bottom: 30px
 }
 
 .modal-body .custom-file .custom-file-label {
@@ -119,43 +100,43 @@
     font-size: 16px;
     font-weight: 500;
     border-radius: 6px;
-    border: none;
+    border: none
 }
 
 .modal-body .custom-file .custom-file-label::after {
     height: calc(1.5em + 1.85rem);
-    padding: 0.875rem .75rem;
+    padding: .875rem .75rem;
     background: #21293c;
     color: var(--form-input-font-color);
-    content: "";
+    content: ""
 }
 
 .modal-body .participants {
-    padding: 20px 30px 0;
+    padding: 20px 30px 0
 }
 
 .modal-body .search {
-    margin-bottom: 30px;
+    margin-bottom: 30px
 }
 
 .modal-body .search form {
     padding: 0;
-    position: relative;
+    position: relative
 }
 
 .modal-body .search .form-control {
     padding: 0 10px 0 50px;
     height: 55px;
-    background: var(--compose-input-background-color);
+    background: var(--compose-input-background-color)
 }
 
 .modal-body .search .eva {
-    fill: var(--compose-icon-color);
+    fill: var(--compose-icon-color)
 }
 
 .modal-body h4 {
     font-weight: 600;
-    margin-bottom: 0;
+    margin-bottom: 0
 }
 
 .modal-body .users {
@@ -165,48 +146,44 @@
     margin-bottom: 0;
     overflow-x: hidden;
     overflow-y: scroll;
-    max-height: 200px;
+    max-height: 200px
 }
 
 #create .modal-body .users::-webkit-scrollbar {
     background: var(--compose-scrollbar-color);
-    width: 4px;
+    width: 4px
 }
 
 #create .modal-body .users::-webkit-scrollbar-track {
-    background: var(--compose-scrollbar-track-color);
+    background: var(--compose-scrollbar-track-color)
 }
 
 #create .modal-body .users::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    background: var(--compose-scrollbar-thumb-color);
+    background: var(--compose-scrollbar-thumb-color)
 }
 
-
-
-
-.modal-body .users > li {
+.modal-body .users>li {
     display: flex;
     align-items: center;
     padding: 25px 0;
     margin-left: 15px;
-    margin-right: 15px;
+    margin-right: 15px
 }
-
 
 .status {
     position: relative;
-    margin-right: 15px;
+    margin-right: 15px
 }
 
-.users > li img {
+.users>li img {
     width: 42px;
     height: 42px;
-    border-radius: 100%;
+    border-radius: 100%
 }
 
-.users > li .content {
-    flex-basis: 100%;
+.users>li .content {
+    flex-basis: 100%
 }
 
 #create .modal-body .contacts {
@@ -214,36 +191,35 @@
     list-style: none;
     max-height: 200px;
     margin: 5px 10px 5px 10px;
-    background: transparent;
-    overflow-y: scroll;
+    background: 0 0;
+    overflow-y: scroll
 }
 
 #create .modal-body .contacts::-webkit-scrollbar {
     background: var(--compose-scrollbar-color);
-    width: 4px;
+    width: 4px
 }
 
 #create .modal-body .contacts::-webkit-scrollbar-track {
-    background: var(--compose-scrollbar-track-color);
+    background: var(--compose-scrollbar-track-color)
 }
 
 #create .modal-body .contacts::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    background: var(--compose-scrollbar-thumb-color);
+    background: var(--compose-scrollbar-thumb-color)
 }
 
-
-#create .modal-body .contacts > a {
+#create .modal-body .contacts>a {
     display: flex;
     align-items: center;
     padding: 25px 10px;
     cursor: pointer;
-    background: transparent;
-    border: none;
+    background: 0 0;
+    border: none
 }
 
-#create .modal-body .contacts > a:hover {
-    background: var(--compose-contacts-hover-background-color);
+#create .modal-body .contacts>a:hover {
+    background: var(--compose-contacts-hover-background-color)
 }
 
 #create .modal-body .contacts-footer {
@@ -253,52 +229,48 @@
     margin-top: 10px;
     padding: 15px 15px;
     background: var(--compose-tab-background-color);
-    border-radius: 5px;
+    border-radius: 5px
 }
 
 #create .modal-body .contacts-footer a {
     padding: 5px;
-    border-radius: 3px;
+    border-radius: 3px
 }
 
-
 #create .modal-body .contacts-footer a:nth-child(1) {
-    margin-right: auto;
+    margin-right: auto
 }
 
 #create .modal-body .contacts-footer a:nth-child(2) {
-    justify-self: flex-end;
-
+    justify-self: flex-end
 }
 
 #create .modal-body .contacts-footer a:hover {
     color: #fff;
-    background: rgba(255, 255, 255, 0.07);
+    background: rgba(255, 255, 255, .07)
 }
 
 #create .modal-body .contacts-footer a:focus {
-    border: none;
+    border: none
 }
 
-
-.contacts > a img {
+.contacts>a img {
     width: 42px;
     height: 42px;
-    border-radius: 100%;
+    border-radius: 100%
 }
 
-
-.custom-control-input:checked ~ .custom-control-label::before {
+.custom-control-input:checked~.custom-control-label::before {
     color: #fff;
     border-color: var(--compose-tab-background-color);
-    background-color: var(--compose-tab-background-color);
+    background-color: var(--compose-tab-background-color)
 }
 
 .modal-body .custom-control-label::before {
     background: #f5f5f5;
     box-shadow: none !important;
     border: none;
-    outline: none;
+    outline: 0
 }
 
 .modal-body .form-group button {
@@ -307,221 +279,199 @@
     width: 100%;
     background: var(--compose-submit-button-color);
     border-radius: 6px;
-    color: var(--plain-font-color);
+    color: var(--compose-tab-font-color)
 }
 
 .modal-body .form-group button.btn:hover {
-    background: var(--compose-submit-button-color);
+    background: var(--compose-submit-button-color)
 }
 
 .modal-body .form-group button.btn:focus {
     background: var(--compose-submit-button-color);
-    box-shadow: none;
+    box-shadow: none
 }
 
 .modal-body .form-group button.btn:active {
     background-color: var(--compose-submit-button-color);
-    box-shadow: none;
+    box-shadow: none
 }
 
-#create .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show > .btn-primary.dropdown-toggle {
+#create .btn-primary:not(:disabled):not(.disabled).active,
+.btn-primary:not(:disabled):not(.disabled):active,
+.show>.btn-primary.dropdown-toggle {
     color: #fff;
     background-color: var(--compose-submit-button-color);
-    border-color: var(--compose-submit-button-color);
+    border-color: var(--compose-submit-button-color)
 }
 
-#create .modal-body .btn-primary.focus, .btn-primary:focus {
-    box-shadow: 0 0 0 0.2rem var(--compose-submit-button-color);
+#create .modal-body .btn-primary.focus,
+.btn-primary:focus {
+    box-shadow: 0 0 0 .2rem var(--compose-submit-button-color)
 }
 
-
-/* end of modal body content */
-/* end of modal body*/
-
-/* start of modal footer */
 .modal-footer {
     padding: 30px;
     background: var(--compose-body-nav-background);
-    border: none;
+    border: none
 }
 
-/* end of modal footer */
-
-
-/* start of  Custom Modal */
-.modal + .modal {
+.modal+.modal {
     background: var(--auth-modal-background-color);
     overflow-y: auto;
-    padding-top: 50px;
+    padding-top: 50px
 }
 
-.modal + .modal::-webkit-scrollbar {
+.modal+.modal::-webkit-scrollbar {
     width: 0 !important
 }
 
-/* remove scrollbar chrome*/
-.modal + .modal {
-    overflow: -moz-scrollbars-none;
+.modal+.modal {
+    overflow: -moz-scrollbars-none
 }
 
-/* remove scrollbar firefox */
-.modal + .modal {
-    -ms-overflow-style: none;
+.modal+.modal {
+    -ms-overflow-style: none
 }
-
-/* remove scroll IE +10 */
 
 .modal.active {
     display: block;
-    opacity: 1;
+    opacity: 1
 }
 
-
-.modal + .modal .modal-content {
+.modal+.modal .modal-content {
     background: var(--auth-background-color);
-    box-shadow: var(--auth-box-shadow);
+    box-shadow: var(--auth-box-shadow)
 }
 
-
-.modal + .modal .modal-header h4 {
+.modal+.modal .modal-header h4 {
     color: var(--auth-header-font-color);
     width: 100%;
-    text-align: center;
+    text-align: center
 }
 
-.modal + .modal .modal-header h4 i:before {
+.modal+.modal .modal-header h4 i:before {
     margin: 0;
     font-size: 60px;
-    color: var(--auth-input-font-color);
+    color: var(--auth-input-font-color)
 }
 
-.modal + .modal .modal-body label {
-    color: var(--auth-input-font-color);
+.modal+.modal .modal-body label {
+    color: var(--auth-input-font-color)
 }
 
-.modal + .modal .modal-body .form-control {
+.modal+.modal .modal-body .form-control {
     background: var(--auth-input-background-color);
-    border: 1px solid var(--auth-input-font-color);
+    border: 1px solid var(--auth-input-font-color)
 }
 
-.modal + .modal .modal-body .form-control:focus {
-    border: 1px solid var(--auth-input-active-border-color);
+.modal+.modal .modal-body .form-control:focus {
+    border: 1px solid var(--auth-input-active-border-color)
 }
 
-
-.modal + .modal .modal-body,
-.modal + .modal .modal-footer,
-.modal + .modal .modal-header {
+.modal+.modal .modal-body,
+.modal+.modal .modal-footer,
+.modal+.modal .modal-header {
     background: var(--auth-background-color)
 }
 
-.modal + .modal .modal-footer {
-    flex-direction: column;
+.modal+.modal .modal-footer {
+    flex-direction: column
 }
 
-.modal + .modal .modal-footer .switch-form {
-    margin-top: 30px;
+.modal+.modal .modal-footer .switch-form {
+    margin-top: 30px
 }
 
-.modal + .modal .modal-footer .switch-form small {
-    color: var(--auth-input-font-color);
+.modal+.modal .modal-footer .switch-form small {
+    color: var(--auth-input-font-color)
 }
 
-.modal + .modal .modal-footer .switch-form small a {
-    color: var(--auth-switch-modal-font-color);
+.modal+.modal .modal-footer .switch-form small a {
+    color: var(--auth-switch-modal-font-color)
 }
 
-.modal + .modal .modal-footer button {
+.modal+.modal .modal-footer button {
     background: var(--auth-submit-button-color);
     border: 1px solid var(--auth-submit-button-border-color);
     color: var(--auth-submit-font-color);
     padding: 10px 50px;
     border-radius: 5px;
-    transition: all 0.3s;
-    box-shadow: none;
+    transition: all .3s;
+    box-shadow: none
 }
 
-.modal + .modal .modal-footer button:hover {
+.modal+.modal .modal-footer button:hover {
     background: var(--auth-active-submit-button-color);
     color: var(--auth-active-submit-button-font-color);
-    border: 1px solid var(--auth-active-submit-button-border-color);
+    border: 1px solid var(--auth-active-submit-button-border-color)
 }
 
-.modal + .modal .modal-footer button:focus {
-    background: transparent;
+.modal+.modal .modal-footer button:focus {
+    background: 0 0;
     border: 1px solid var(--auth-active-submit-button-border-color);
-    box-shadow: none;
+    box-shadow: none
 }
 
-.modal + .modal .modal-footer button:active {
-    outline: none;
+.modal+.modal .modal-footer button:active {
+    outline: 0;
     border: 1px solid var(--auth-active-submit-button-color);
     color: var(--auth-active-submit-button-font-color);
     background: var(--auth-input-active-border-color);
-    box-shadow: none;
+    box-shadow: none
 }
 
-.modal + .modal .modal-footer button:active:focus {
-    outline: none;
+.modal+.modal .modal-footer button:active:focus {
+    outline: 0;
     border: 1px solid var(--compose-active-submit-button-border-color-2);
     color: var(--auth-active-submit-button-font-color);
     background: var(--compose-active-submit-button-color-2);
-    box-shadow: none;
+    box-shadow: none
 }
 
 form .form-group.error .form-control {
     border: 1px solid var(--danger);
-    color: var(--danger);
+    color: var(--danger)
 }
 
 form .form-group.error .error-message {
-    color: var(--danger);
+    color: var(--danger)
 }
 
 form .form-group.error label {
-    color: var(--danger);
+    color: var(--danger)
 }
 
 #Created .modal-body {
     padding: 50px;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: center
 }
 
 #Created .modal-body i {
-    margin-bottom: 20px;
+    margin-bottom: 20px
 }
 
 #Created .modal-body i:before {
     margin: 0;
     font-size: 60px;
-    color: var(--success);
+    color: var(--success)
 }
 
 #Created .modal-body small {
-    color: var(--plain-font-color);
+    color: var(--plain-font-color)
 }
 
 #Created .modal-body a {
-    color: var(--info);
+    color: var(--info)
 }
 
-/* end of custom modal*/
-
-
-/* apply for a 992px screen and above */
-@media (min-width: 992px) {
-}
-
-
-/* apply for a 991px screen and below */
-@media (max-width: 991px) {
-    .modal + .modal {
-        background-color: var(--auth-mobile-modal-background-color);
+@media (max-width:991px) {
+    .modal+.modal {
+        background-color: var(--auth-mobile-modal-background-color)
     }
 
-    .modal + .modal .modal-content {
-        box-shadow: none;
+    .modal+.modal .modal-content {
+        box-shadow: none
     }
 }

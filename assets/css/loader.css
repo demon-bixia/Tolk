@@ -1,4 +1,3 @@
-/* apply for all screens */
 .loader {
     display: none;
     position: absolute;
@@ -7,10 +6,7 @@
     z-index: 2000;
     justify-content: center;
     align-items: center;
-    background: var(--chat-top-background);
-}
-
-.loader i {
+    background: var(--chat-top-background)
 }
 
 .loader .m-spinner--swirl {
@@ -18,41 +14,39 @@
     height: 170px;
     color: var(--compose-active-submit-button-color-2);
     max-width: unset;
-    max-height: unset;
+    max-height: unset
 }
 
 .loader.active {
-    display: flex;
+    display: flex
 }
 
 .b-preloader {
     width: 100%;
     height: 100%;
     background: var(--b-preloader-background-color);
-
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
     position: absolute;
-    z-index: 2000;
+    z-index: 2000
 }
 
 .b-preloader img {
     display: none;
-    opacity: 0;
+    opacity: 0
 }
 
 .b-preloader .progress {
     width: 50%;
     margin-top: 50px;
-    background: var(--b-preloader-progress-background-color);
+    background: var(--b-preloader-progress-background-color)
 }
 
 .b-preloader .progress .progress-bar {
     background: linear-gradient(90deg, var(--b-preloader-progress-bar-background-color-1), var(--b-preloader-progress-bar-background-color-2));
-    transition: none;
+    transition: none
 }
 
 .b-preloader a {
@@ -61,16 +55,5 @@
     padding: 10px;
     border-radius: 20px;
     position: fixed;
-    top: 900px;
-}
-
-
-
-/* apply for a 992px screen and above */
-@media (min-width: 992px) {
-}
-
-
-/* apply for a 991px screen and below */
-@media (max-width: 991px) {
+    top: 900px
 }

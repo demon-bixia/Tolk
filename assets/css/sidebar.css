@@ -1,193 +1,335 @@
-/* apply for all screens */
-
-/* sidebar */
 .sidebar {
-    background: var(--sidebar-background-color);
+    background: var(--sidebar-background-color)
 }
 
 .sidebar .container {
-    padding: 0;
+    padding: 0
 }
 
 .empty-section {
     padding-top: 15px;
     padding-right: 10px;
     padding-left: 10px;
-    color: var(--form-input-font-color);
+    color: var(--form-input-font-color)
 }
 
-/* end of sidebar */
+.sidebar {
+    background: var(--sidebar-background-color)
+}
 
+.sidebar .container {
+    padding: 0
+}
 
-/*start sidebar top*/
+.empty-section {
+    padding-top: 15px;
+    padding-right: 10px;
+    padding-left: 10px;
+    color: var(--form-input-font-color)
+}
+
 .sidebar .top {
     height: 100px;
     max-height: 100px;
     background: var(--search-form-input-background-color);
-    padding: 30px 20px;
+    padding: 30px 20px
 }
 
 .sidebar .top form {
-    position: relative;
+    position: relative
 }
 
 .sidebar .top .form-control {
     padding: 0 10px 0 50px;
     height: 55px;
     border-radius: 30px;
-    background: transparent;
-    color: var(--search-form-input-font-color);
+    background: 0 0;
+    color: var(--search-form-input-font-color)
 }
 
 .sidebar .top form .eva {
-    fill: var(--search-form-input-font-color);
+    fill: var(--search-form-input-font-color)
 }
 
-.sidebar .top .btn[data-toggle="dropdown"] {
-    display: none;
+.sidebar .top .btn[data-toggle=dropdown] {
+    display: none
 }
 
 .sidebar .top .dropdown-menu {
     background: var(--sidebar-mobile-menu-background);
-    color: var(--sidebar-mobile-menu-font-color);
+    color: var(--sidebar-mobile-menu-font-color)
+}
+
+.sidebar .top .dropdown button:hover {
+    background: var(--sidebar-mobile-menu-background);
+    color: var(--sidebar-mobile-menu-font-color)
 }
 
 .sidebar .top .dropdown-menu button {
-    color: var(--sidebar-mobile-menu-font-color);
-
+    color: var(--sidebar-mobile-menu-font-color)
 }
 
 .sidebar .top .dropdown-menu .eva {
     margin-right: 9px;
-    fill: var(--sidebar-mobile-menu-icons-color);
+    fill: var(--sidebar-mobile-menu-icons-color)
 }
-
-
-
-
-/*end sidebar top*/
-
-
-/* start sidebar middle */
 
 .sidebar .middle {
     height: calc(100vh - 110px);
     overflow-y: auto;
-    overflow-x: hidden;
+    overflow-x: hidden
 }
 
 .sidebar .middle::-webkit-scrollbar {
     width: 0 !important
 }
 
-/* remove scrollbar chrome*/
 .sidebar {
-    overflow: -moz-scrollbars-none;
+    overflow: -moz-scrollbars-none
 }
 
-/* remove scrollbar firefox */
 .sidebar {
-    scrollbar-width: none;
+    scrollbar-width: none
 }
-
-/* remove scroll IE +10 */
 
 .sidebar .middle .container {
-    padding: 0 20px;
+    padding: 0 20px
 }
-
 
 .sidebar .middle hr {
     flex-basis: 100%;
-    /* defines the default size of a flex item */
-    margin-bottom: 0;
+    margin-bottom: 0
 }
 
 .sidebar .middle .content {
-    flex-basis: 100%;
+    flex-basis: 100%
 }
 
-/* end sidebar middle */
-
-
-/* apply for a 992px screen and above */
-@media (min-width: 992px) {
+@media (min-width:992px) {
     .sidebar {
         width: 356px;
-        height: 100vh;
+        height: 100vh
     }
 
     .sidebar .middle .tab-pane .container h4 {
-        display: none;
+        display: none
     }
-
 }
 
-
-/* apply for a 991px screen and below */
-@media (max-width: 991px) {
+@media (max-width:991px) {
     .sidebar {
         order: 1;
-        height: calc(100vh - 66px);
+        height: calc(100vh - 66px)
     }
 
     .sidebar .container {
         margin: 0;
-        max-width: 100%;
+        max-width: 100%
     }
 
     .sidebar #conversations .container {
-        padding: 30px;
+        padding: 30px
     }
 
     .sidebar #friends .container {
-        padding: 30px;
+        padding: 30px
     }
 
     .sidebar #notifications .container {
-        padding: 30px;
+        padding: 30px
     }
 
     .sidebar #settings .container {
-        padding: 30px;
+        padding: 30px
     }
 
     .sidebar .top {
         height: 100px;
-        display: flex;
+        display: flex
     }
 
     .sidebar .top form {
-        flex-grow: 2;
+        flex-grow: 2
     }
 
-    .sidebar .top .btn[data-toggle="dropdown"] {
+    .sidebar .top .btn[data-toggle=dropdown] {
         display: initial;
         margin-top: 5px;
-        flex-grow: 1;
+        flex-grow: 1
     }
 
-    .sidebar .top .btn[data-toggle="dropdown"]:active {
+    .sidebar .top .btn[data-toggle=dropdown]:active {
         border: none;
-        outline: none;
+        outline: 0
     }
 
-    .sidebar .top .btn[data-toggle="dropdown"]:focus {
+    .sidebar .top .btn[data-toggle=dropdown]:focus {
         border: none;
-        outline: none;
+        outline: 0
     }
 
-
-    .sidebar .top .btn[data-toggle="dropdown"] i {
-        fill: var(--sidebar-mobile-menu-icon-color);
+    .sidebar .top .btn[data-toggle=dropdown] i {
+        fill: var(--sidebar-mobile-menu-icon-color)
     }
-
 
     .sidebar .middle {
-        height: calc(100vh - 180px);
+        height: calc(100vh - 180px)
     }
 
     .empty-section {
-        text-align: center;
+        text-align: center
+    }
+}
+
+.sidebar .top {
+    height: 100px;
+    max-height: 100px;
+    background: var(--search-form-input-background-color);
+    padding: 30px 20px
+}
+
+.sidebar .top form {
+    position: relative
+}
+
+.sidebar .top .form-control {
+    padding: 0 10px 0 50px;
+    height: 55px;
+    border-radius: 30px;
+    background: 0 0;
+    color: var(--search-form-input-font-color)
+}
+
+.sidebar .top form .eva {
+    fill: var(--search-form-input-font-color)
+}
+
+.sidebar .top .btn[data-toggle=dropdown] {
+    display: none
+}
+
+.sidebar .top .dropdown-menu {
+    background: var(--sidebar-mobile-menu-background);
+    color: var(--sidebar-mobile-menu-font-color)
+}
+
+.sidebar .top .dropdown button:hover {
+    background: var(--sidebar-mobile-menu-background);
+    color: var(--sidebar-mobile-menu-font-color)
+}
+
+.sidebar .top .dropdown-menu button {
+    color: var(--sidebar-mobile-menu-font-color)
+}
+
+.sidebar .top .dropdown-menu .eva {
+    margin-right: 9px;
+    fill: var(--sidebar-mobile-menu-icons-color)
+}
+
+.sidebar .middle {
+    height: calc(100vh - 110px);
+    overflow-y: auto;
+    overflow-x: hidden
+}
+
+.sidebar .middle::-webkit-scrollbar {
+    width: 0 !important
+}
+
+.sidebar {
+    overflow: -moz-scrollbars-none
+}
+
+.sidebar {
+    scrollbar-width: none
+}
+
+.sidebar .middle .container {
+    padding: 0 20px
+}
+
+.sidebar .middle hr {
+    flex-basis: 100%;
+    margin-bottom: 0
+}
+
+.sidebar .middle .content {
+    flex-basis: 100%
+}
+
+@media (min-width:992px) {
+    .sidebar {
+        width: 356px;
+        height: 100vh
+    }
+
+    .sidebar .middle .tab-pane .container h4 {
+        display: none
+    }
+}
+
+@media (max-width:991px) {
+    .sidebar {
+        order: 1;
+        height: calc(100vh - 66px)
+    }
+
+    .sidebar .container {
+        margin: 0;
+        max-width: 100%
+    }
+
+    .sidebar #conversations .container {
+        padding: 30px
+    }
+
+    .sidebar #friends .container {
+        padding: 30px
+    }
+
+    .sidebar #notifications .container {
+        padding: 30px
+    }
+
+    .sidebar #settings .container {
+        padding: 30px
+    }
+
+    .sidebar .top {
+        height: 100px;
+        display: flex
+    }
+
+    .sidebar .top form {
+        flex-grow: 2
+    }
+
+    .sidebar .top .btn[data-toggle=dropdown] {
+        display: initial;
+        margin-top: 5px;
+        flex-grow: 1
+    }
+
+    .sidebar .top .btn[data-toggle=dropdown]:active {
+        border: none;
+        outline: 0
+    }
+
+    .sidebar .top .btn[data-toggle=dropdown]:focus {
+        border: none;
+        outline: 0
+    }
+
+    .sidebar .top .btn[data-toggle=dropdown] i {
+        fill: var(--sidebar-mobile-menu-icon-color)
+    }
+
+    .sidebar .middle {
+        height: calc(100vh - 180px)
+    }
+
+    .empty-section {
+        text-align: center
     }
 }

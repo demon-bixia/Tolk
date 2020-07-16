@@ -1,107 +1,96 @@
-/* Settings panel */
-
 .settings h4 {
     font-weight: 600;
     margin-bottom: 0;
     padding: 30px 0;
-    color: var(--plain-font-color);
+    color: var(--plain-font-color)
 }
-
 
 .settings ul {
     padding-left: 0;
     list-style: none;
-    margin-bottom: 0;
+    margin-bottom: 0
 }
 
 .settings .inside label {
-    color: var(--plain-font-color);
+    color: var(--plain-font-color)
 }
 
 .settings label.custom-file-label {
-    color: var(--form-input-font-color);
+    color: var(--form-input-font-color)
 }
 
 .settings .content .inside {
-    padding: 25px 0;
+    padding: 25px 0
 }
 
-
-.settings ul > li {
-}
-
-.settings ul > li > .headline {
+.settings ul>li>.headline {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 30px 0;
+    padding: 30px 0
 }
 
-
-.settings ul > li > .headline h5 {
+.settings ul>li>.headline h5 {
     font-size: 16px;
     font-weight: 600;
     margin-bottom: 7px;
-    transition: all 0.3s;
-    color: var(--plain-font-color);
+    transition: all .3s;
+    color: var(--plain-font-color)
 }
 
-.settings ul > li > .headline .eva {
+.settings ul>li>.headline .eva {
     fill: var(--icon-color);
-    transition: all 0.3s ease;
+    transition: all .3s ease
 }
 
-.settings ul > li > .headline[data-toggle="collapse"][aria-expanded="true"] .eva-arrow-ios-forward {
-    /* select the icon when the headline data-toggle="collapse" and aria-expanded="true" */
-    display: none;
+.settings ul>li>.headline[data-toggle=collapse][aria-expanded=true] .eva-arrow-ios-forward {
+    display: none
 }
 
-.settings ul > li > .headline[data-toggle="collapse"][aria-expanded="true"] .eva-arrow-ios-downward {
-    /* ??? */
+.settings ul>li>.headline[data-toggle=collapse][aria-expanded=true] .eva-arrow-ios-downward {
     display: inline-block;
-    fill: var(--checked-input-color);
+    fill: var(--checked-input-color)
 }
 
-.settings ul > li > .headline .eva-arrow-ios-downward {
-    display: none;
+.settings ul>li>.headline .eva-arrow-ios-downward {
+    display: none
 }
 
 .settings .account .primary {
     padding: 14px 0;
     background: var(--submit-button-color);
-    border: none;
+    border: none
 }
 
 .settings .account .form-control {
-    border: 1px solid transparent;
+    border: 1px solid transparent
 }
 
 .settings .account .form-control:focus {
-    border: 1px solid var(--form-input-focus-color);
+    border: 1px solid var(--form-input-focus-color)
 }
 
-.settings .options > li .headline {
+.settings .options>li .headline {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-between
 }
 
 .settings .options li .headline h5.highlight {
     background: var(--sidebar-settings-highlight-color);
-    padding: 0 1px;
+    padding: 0 1px
 }
 
-
-.settings .options > li:first-of-type {
-    padding-top: 0;
+.settings .options>li:first-of-type {
+    padding-top: 0
 }
 
 .settings .options li {
-    padding: 25px 0;
+    padding: 25px 0
 }
 
-.settings .options > li .switch {
-    margin-left: 30px;
+.settings .options>li .switch {
+    margin-left: 30px
 }
 
 .switch {
@@ -111,13 +100,13 @@
     min-width: 42px;
     max-width: 42px;
     height: 20px;
-    margin-bottom: 0;
+    margin-bottom: 0
 }
 
 .switch .round {
     width: 42px;
     height: 20px;
-    border: 34px;
+    border: 34px
 }
 
 .switch .slider {
@@ -128,17 +117,17 @@
     left: 0;
     right: 0;
     background: var(--form-input-background-color);
-    transition: .4s;
+    transition: .4s
 }
 
 .switch .slider.round {
     border-radius: 34px;
     width: 42px;
-    height: 20px;
+    height: 20px
 }
 
 .switch .slider.round:before {
-    border-radius: 50%;
+    border-radius: 50%
 }
 
 .switch .slider:before {
@@ -149,24 +138,21 @@
     left: 3px;
     bottom: 3px;
     background: #fff;
-    transition: .4s;
+    transition: .4s
 }
 
-.switch input:checked + .slider {
-    /* :checked means the checked input radio */
-    background-color: var(--checked-input-color) !important;
+.switch input:checked+.slider {
+    background-color: var(--checked-input-color) !important
 }
 
-.switch input:checked + .slider:before {
-    /* pseudo Element that add content before */
+.switch input:checked+.slider:before {
     -webkit-transform: translateX(22px);
     -ms-transform: translateX(22px);
-    transform: translateX(22px);
+    transform: translateX(22px)
 }
 
 .switch input {
     opacity: 0;
     width: 0;
-    height: 0;
+    height: 0
 }
-
