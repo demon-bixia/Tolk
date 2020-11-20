@@ -16,7 +16,8 @@ import {
     filterFriends,
     filterNotification,
     filterSettings,
-    resetSearch,
+    switchTabs,
+    toggleSettings,
 } from "./interface.js";
 
 import {
@@ -30,6 +31,7 @@ import {
 } from "./chat.js";
 
 let message_audio = document.querySelector('.message-sound');
+let preloader = document.querySelector('.loader');
 
 // setup event callbacks for authenticated users
 export function AddEventListeners() {
@@ -99,10 +101,6 @@ export function AddEventListeners() {
     document.querySelector('.sidebar .top .form-control')
         .addEventListener('input', filterEvent);
 
-    // when moving away from the current sidebar tab reset filters
-    document.querySelector('.navigation .nav')
-        .addEventListener('click', navigationSwitchEvent);
-
     // when settings button is clicked in sidebar top
     // menu open settings tap
     document.querySelector('.sidebar .top .dropdown-menu button:nth-child(2)')
@@ -129,11 +127,34 @@ export function AddEventListeners() {
 
     // when a file message is clicked call downloadFileEvent
     document.querySelector('.chat')
-        .addEventListener('click', downloadFileEvent)
+        .addEventListener('click', downloadFileEvent);
 
     // when a contact is clicked create conversation
     document.querySelector('.users')
-        .addEventListener('click', createConversationEvent)
+        .addEventListener('click', createConversationEvent);
+
+    // when a navigation tab link is clicked switch the current tab
+    document.querySelector('.nav')
+        .addEventListener('click', switchTabEvent);
+
+    // when create button is clicked open create modal
+    document.querySelector('.nav a[href="#create"]')
+        .addEventListener('click', openCreateModalEvent);
+
+    // when the close button is clicked clode modal
+    document.querySelector('#create .modal-header .button')
+        .addEventListener('click', closeCreateModalEvent);
+
+    document.querySelector('#create .modal-body .nav')
+        .addEventListener('click', switchTabEvent);
+
+    // when a setting tab is clicked toggle settings
+    document.querySelector('.middle ')
+        .addEventListener('click', toggleSettingsEvent);
+
+    // when a chat tab link is clicked switch to that tab
+    document.querySelector('.middle .nav')
+        .addEventListener('click', switchChatTabs);
 }
 
 // setup event callbacks for un-authenticated users
@@ -177,8 +198,10 @@ export function AddAuthEventListeners() {
     // when writing in and input element remove error class from form-group
     document.querySelector('body')
         .addEventListener('input', removeFormErrorEvent);
+
 }
 
+/* app events */
 function toggleUtilityEvent(event) {
     let target = event.target;
     let button = target.closest('button');
@@ -268,7 +291,7 @@ function addFriendEvent(event) {
     // show preloader
     wizard.show(preloader);
 
-    communicator.send_ajax({'route_name': 'add-friend', 'data': data})
+        communicator.send_ajax({'route_name': 'add-friend', 'data': data})
         .then(function (response) {
             if (response['success']) {
                 // send notification to user
@@ -276,7 +299,7 @@ function addFriendEvent(event) {
                 communicator.send_ajax({'route_name': 'contact-detail', 'args': [contact_id]})
                     .then(function (data) {
                         // close modal
-                        $('#create').modal('hide');
+                        wizard.hide(document.querySelector('#create'));
 
                         load('conversation-create-form', {
                             'refresh': true,
@@ -303,9 +326,8 @@ function addFriendEvent(event) {
                         }).then(function () {
                             // check if socket is connected
                             // send event if true
-                            if (communicator.socket_is_open()) {
+                            if (communicator.socket_is_open() && response['contact']['id'] !== data['contact']['id']) {
                                 // send a STATUSES EVENT
-                                joinConversation(response['conversation']['id']);
                                 addFriend(response['contact']);
                             }
                         })
@@ -342,7 +364,7 @@ function createConversationEvent(event) {
             "history_mode": true
         };
 
-        $('#create').modal('hide');
+        wizard.hide(document.querySelector('#create'))
 
         let conversation = document.querySelector(`#conversations .nav  li a[data-user="${element.dataset['user']}"]`);
 
@@ -411,7 +433,8 @@ function createGroupEvent(event) {
         // check if success is true
 
         if (response['success'] === true) {
-            $('#create').modal('hide');
+
+            wizard.hide(document.querySelector('#create'));
 
             let contact_id = form.dataset['contact'];
             communicator.send_ajax({'route_name': 'contact-detail', 'args': [contact_id]})
@@ -754,28 +777,48 @@ function downloadFileEvent(event) {
     }
 }
 
-function navigationSwitchEvent(event) {
-    let element = event.target;
-    if (element.tagName === 'A' || element.parentElement.tagName === 'A' || element.parentElement.parentElement.tagName === 'A') {
-        let opened_nav = document.querySelector('.navigation .nav a.active');
-        let target = opened_nav.getAttribute('href');
+// when a tab-link is clicked close tab
+function switchTabEvent(event) {
+    let tab_link = event.target.closest('.tab-link');
 
-        // reset filter for previously opened tab
-        resetSearch(opened_nav);
+    if(tab_link) {
+        switchTabs(tab_link);
+    }
+}
 
-        if (['#conversation', '#friends', '#notifications', '#settings'].includes(element.getAttribute('href'))) {
-            // add opened to the new active tab
-            if (element.tagName === 'A') {
-                element.classList.add('opened')
-            } else {
-                element.closest('A').classList.add('opened');
-            }
-        }
+// when add button in nav is clicked open create modal
+function openCreateModalEvent(event) {
+    let create_modal = document.querySelector('#create');
+    wizard.show(create_modal);
+}
+
+// when create modal close button is clicked close modal
+function closeCreateModalEvent(event) {
+    let create_modal = document.querySelector('#create');
+    wizard.hide(create_modal);
+}
+
+// when a setting dropdown is clicked toggle settings
+function toggleSettingsEvent(event) {
+    let element = event.target.closest('.headline');
+
+    if (element && element.parentElement.parentElement.getAttribute('id') === 'preferences') {
+        toggleSettings(element);
+    }
+}
+
+// when a chat is tab is clicked switch to it
+function switchChatTabs(event) {
+    let element = event.target.closest('.tab-link');
+
+    if (element && !document.querySelector(element.getAttribute('href')).classList.contains('active')){
+            switchTabs(element);
     }
 }
 
 
 /* Websocket receive callback */
+// setup callbacks for websockets
 export function receive(data) {
     let json_data = JSON.parse(data);
 

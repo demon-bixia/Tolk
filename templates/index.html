@@ -42,22 +42,44 @@
             <ul class="nav" role="tablist">
                 <li>
                     <div class="profile-container">
-                        <div class="circle-status "><img class="profile-picture"
-                                                         src="{% static 'images/avatars/avatar-male-2.jpg' %}"
-                                                         alt="avatar"></div>
+                        <div class="circle-status ">
+                            <img class="profile-picture" src="{% static 'images/avatars/avatar-male-2.jpg' %}"
+                                 alt="avatar">
+                        </div>
                     </div>
                 </li>
-                <li><a href="#conversations" class="active" data-toggle="tab" aria-controls="conversation"
-                       aria-selected="true"> <i class="flaticon-menu-button"></i> </a></li>
-                <li><a href="#friends" data-toggle="tab" aria-controls="friends" aria-selected="true"> <i
-                        class="flaticon-user"></i> </a></li>
-                <li><a href="#notifications" data-toggle="tab" aria-controls="notifications" aria-selected="true"> <i
-                        class="eva-hover"> <i class="flaticon-notification"></i> </i> </a></li>
-                <li><a href="#settings" data-toggle="tab" aria-controls="settings" aria-selected="true"> <i
-                        class="flaticon-settings"></i> </a></li>
-                <li><a href="#" class="node" data-toggle="modal" data-target="#create"> <i
-                        class="flaticon-add-button"></i> </a></li>
-                <li><a href="#" class="node" id="Logout"> <i class="flaticon-next-page"></i> </a></li>
+
+                <li>
+                    <a href="#conversations" class="active tab-link">
+                        <i class="flaticon-menu-button"></i>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#friends" class="tab-link">
+                        <i class="flaticon-user"></i>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#notifications" class="tab-link">
+                        <i class="flaticon-notification"></i>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#settings" class="tab-link">
+                        <i class="flaticon-settings"></i>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#create" class="node" >
+                        <i class="flaticon-add-button"></i>
+                    </a>
+                </li>
+
+                <li><a href="#logout" class="node" id="Logout"> <i class="flaticon-next-page"></i> </a></li>
             </ul>
         </div>
     </nav>
@@ -85,17 +107,17 @@
                         <ul class="nav discussion" role="tablist"></ul>
                     </div>
                 </div>
-                <div class="tab-pane fade show" id="friends" role="tabpanel">
+                <div class="tab-pane fade " id="friends" role="tabpanel">
                     <div class="container">
                         <ul class="users" role="tablist"></ul>
                     </div>
                 </div>
-                <div class="tab-pane fade show" id="notifications" role="tabpanel">
+                <div class="tab-pane fade " id="notifications" role="tabpanel">
                     <div class="container">
                         <ul class="notifications"></ul>
                     </div>
                 </div>
-                <div class="settings tab-pane fade show" id="settings" role="tabpanel">
+                <div class="settings tab-pane fade" id="settings" role="tabpanel">
                     <div class="container">
                         <ul id="preferences">
                             <li><a href="#" class="headline collapsed" data-toggle="collapse" aria-expanded="false"
@@ -211,64 +233,7 @@
     <div class="chat">
         <div class="tab-content"></div>
     </div>
-    <div class="modal fade" id="create" tabindex="-1" role="dialog" aria-label="create" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header"><h5>Add a conversation</h5>
-                    <button type="button" class="button round" data-dismiss="modal" aria-label="close"><i
-                            data-eva="close"></i></button>
-                </div>
-                <div class="modal-body">
-                    <ul class="nav" role="tablist">
-                        <li><a href="#couple" class="active" data-toggle="tab" aria-controls="details"
-                               aria-selected="true"> couple </a></li>
-                        <li><a href="#group" data-toggle="tab" role="tab" aria-controls="participants"
-                               aria-selected="false"> Group </a></li>
-                    </ul>
-                    <div class="tab-content">
-                        <div class="details tab-pane fade show active" id="couple" role="tabpanel">
-                            <form>
-                                <div class="form-group"><label>Email</label> <input type="email"
-                                                                                    placeholder="Email Address"
-                                                                                    name="email" class="form-control">
-                                </div>
-                                <div class="form-group"></div>
-                            </form>
-                        </div>
-                        <div class="participants tab-pane fade" id="group" role="tabpanel">
-                            <form action="">
-                                <div class="form-group"><label for="">Name</label> <input type="text" placeholder="Name"
-                                                                                          name="group_name"
-                                                                                          class="form-control"></div>
-                                <div class="form-group"><label for="">Header</label>
-                                    <div class="custom-file"><input type="file" class="custom-file-input"
-                                                                    id="customFile"> <label class="custom-file-label"
-                                                                                            for="customFile">Choose
-                                        Header file</label></div>
-                                </div>
-                                <h4>contacts</h4>
-                                <hr>
-                                <ul class="users">
-                                    <li>
-                                        <div class="status"><img src="{% static 'images/avatars/avatar-male-2.jpg' %}"
-                                                                 alt="avatar"></div>
-                                        <div class="content"><h5>Jennifer Lisity</h5> <span>Florida, US</span></div>
-                                        <div class="custom-control custom-checkbox"><input type="checkbox"
-                                                                                           class="custom-control-input"
-                                                                                           id="user1"> <label
-                                                class="custom-control-label" for="user1"></label></div>
-                                    </li>
-                                </ul>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="button btn-primary">Compose</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div class="modal fade" id="create" tabindex="-1" role="dialog" aria-label="create" aria-hidden="true"></div>
     <div class="modal " id="Register" tabindex="-1" role="dialog" aria-label="Register" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -360,7 +325,7 @@
             </div>
         </div>
     </div>
-    <div class="modal " id="Created" tabindex="-1" role="dialog" aria-label="Created" aria-hidden="true">
+        <div class="modal" id="Created" tabindex="-1" role="dialog" aria-label="Created" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-body"><i class="flaticon-check-square"></i> <small>New Account Created you can <a
@@ -373,8 +338,6 @@
 <audio style="display: none;" src="{% static 'sounds/message_bubble_sound.ogg' %}" class="message-sound"></audio>
 
 <!-- vendor javascript scripts -->
-<script src="{% static 'js/vendor/jquery.min.js' %}"></script>
-<script src="{% static 'js/vendor/bootstrap.min.js  ' %}"></script>
 <script src="{% static 'js/vendor/eva.min.js' %}"></script>
 <script src="{% static 'js/vendor/ejs.min.js' %}"></script>
 <script src="{% static 'js/vendor/reconnecting-websocket.min.js' %}"></script>
@@ -388,11 +351,12 @@
 <script type="module" src="{% static 'js/app/silly/router.js' %}"></script>
 <script type="module" src="{% static 'js/app/silly/effects.js' %}"></script>
 
-<!-- app -->
+<!-- app modules -->
 <script type="module" src="{% static 'js/app/init.js' %}"></script>
 <script type="module" src="{% static 'js/app/load.js' %}"></script>
 <script type="module" src="{% static 'js/app/interface.js' %}"></script>
 <script type="module" src="{% static 'js/app/main.js' %}"></script>
+<script type="module" src="{% static 'js/app/chat.js' %}"></script>
 <script type="module" src="{% static 'js/app/events.js' %}"></script>
 <script type="module" src="{% static 'js/app/routes.js' %}"></script>
 <script type="module" src="{% static 'js/app/components.js' %}"></script>

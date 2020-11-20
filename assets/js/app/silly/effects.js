@@ -5,7 +5,6 @@
 * also used for animation
 *
 * */
-
 export class Wizard {
     /*
     * adds basic animation and screen effects
@@ -68,6 +67,7 @@ export class Wizard {
         htmlElement.classList.remove('active'); // removes class active
         htmlElement.style.display = 'none';
     }
+
 
     toggle(htmlElement) {
         if (htmlElement.classList.contains('active')) {

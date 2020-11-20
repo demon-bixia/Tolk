@@ -333,6 +333,10 @@
     -ms-overflow-style: none
 }
 
+#create.active{
+    background: rgba(0, 0, 0, 0.50);
+}
+
 .modal.active {
     display: block;
     opacity: 1

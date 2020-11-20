@@ -5,7 +5,7 @@ export let template = `
     </div><% }else{ %>
     <div class="tab-content">
         <% for (let conversation of conversations){ %> <% if (conversation.type === 'couple'){ %> <% for (let participant of conversation.participants){ %> <% if (participant.id !== authenticated_contact.id){ %> <% let friend_contact = participant %>
-        <div class="tab-pane fade show" id="conversation_<%= conversation.id %>" data-id="<%= conversation.id %>"
+        <div class="tab-pane fade" id="conversation_<%= conversation.id %>" data-id="<%= conversation.id %>"
              role="tabpanel" data-user='<%= friend_contact.user %>'>
             <div class="item">
                 <div class="content">
@@ -91,7 +91,7 @@ export let template = `
                 </div>
             </div>
         </div><% } %> <% } %> <% } %> <% if (conversation.type === 'group'){ %>
-        <div class="tab-pane fade show" id="conversation_<%= conversation.id %>" data-id="<%= conversation.id %>"
+        <div class="tab-pane fade" id="conversation_<%= conversation.id %>" data-id="<%= conversation.id %>"
              role="tabpanel">
             <div class="item">
                 <div class="content">

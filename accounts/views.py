@@ -73,8 +73,9 @@ def add_friend(request, format=None):
                 return Response(
                     {"success": True, "contact": contact_serializer.data, "conversation": conversation_serializer.data})
                 """
+                contact_serializer = ContactSerializer(instance=friend_user.contact)
 
-                return Response({"success": True})
+                return Response({"success": True, "contact": contact_serializer.data})
 
         except User.DoesNotExist:
             return Response({'success': False, 'errors': {'email': ['no contact with this email']}},

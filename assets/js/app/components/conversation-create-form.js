@@ -1,18 +1,16 @@
-export let template = `<div class="modal fade" id="create" tabindex="-1" role="dialog" aria-label="create" aria-hidden="true">
+export let template = `<div class="modal fade" id="create">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header"><h5>Compose</h5>
-                <button type="button" class="button round" data-dismiss="modal" aria-label="close"><i
+                <button type="button" class="button round" ><i
                             data-eva="close"></i></button>
             </div>
             <div class="modal-body">
                 <ul class="nav" role="tablist">
-                    <li><a href="#contact" class="active" data-toggle="tab" aria-controls="details"
-                           aria-selected="true">contact </a></li>
-                    <li><a href="#couple" class="" data-toggle="tab" aria-controls="details" aria-selected="false">conversation </a>
+                    <li><a href="#contact" class="active tab-link">contact </a></li>
+                    <li><a href="#couple" class="tab-link" >conversation </a>
                     </li>
-                    <li><a href="#group" data-toggle="tab" role="tab" aria-controls="participants"
-                           aria-selected="false"> Group </a></li>
+                    <li><a href="#group"  class="tab-link"> Group </a></li>
                 </ul>
                 <div class="tab-content">
                     <div class="details tab-pane fade show active" id="contact" role="tabpanel">

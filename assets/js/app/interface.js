@@ -3,9 +3,91 @@
 * the behavior of the user interface
 * */
 
+// switch between settings dropdown
+export function toggleSettings(selected_dropdown_headline) {
+    let same = false;
+    // get the selected dropdown
+    let selected_dropdown = selected_dropdown_headline.nextElementSibling;
+    // find the opened dropdown
+    let dropdown_containers_list = selected_dropdown_headline.parentElement.parentElement;
+    // loop through dropdown containers and find the opened dropdown
+    for (let dropdown_container of dropdown_containers_list.children) {
+        let dropdown = dropdown_container.querySelector('.content');
+        // if dropdown is opened
+        if (!dropdown.classList.contains('collapse')) {
+            if (dropdown.getAttribute('id') === selected_dropdown.closest('.content').getAttribute('id')) {
+                same = true;
+                selected_dropdown.classList.add('collapse')
+
+                // switch arrows
+                selected_dropdown_headline.querySelector('.eva-arrow-ios-forward').style.display = 'block';
+                selected_dropdown_headline.querySelector('.eva-arrow-ios-downward').style.display = 'none';
+            } else {
+                dropdown.classList.add('collapse')
+                // switch arrows
+                dropdown.previousElementSibling.querySelector('.eva-arrow-ios-forward').style.display = 'block';
+                dropdown.previousElementSibling.querySelector('.eva-arrow-ios-downward').style.display = 'none';
+            }
+        }
+    }
+
+    if (!same) {
+        selected_dropdown.classList.remove('collapse');
+
+        // switch arrows
+        selected_dropdown_headline.querySelector('.eva-arrow-ios-forward').style.display = 'none';
+        selected_dropdown_headline.querySelector('.eva-arrow-ios-downward').style.display = 'block';
+    }
+}
+
 
 // switch between two tabs
-export function switchTabs(tab) {
+export function switchTabs(selected_tab_link) {
+    // get the select tab_link container: the container for tab-links containers
+    let tab_links_containers = selected_tab_link.parentElement.parentElement
+    // loop through tab link containers to find the wanted
+    for (let tab_link_container of tab_links_containers.children) {
+        // get the tab_link element inside container
+        let tab_link = tab_link_container.querySelector('.tab-link');
+        // if tab_link is active
+        if (tab_link && tab_link.classList.contains('active')) {
+            // if it's the same selected tab link
+            if (tab_link.getAttribute('href') === selected_tab_link.getAttribute('href')) {
+                break;
+            } else {
+                // close the opened tab link
+                tab_link.classList.toggle('active');
+                // reset search results in old tab link
+                resetSearch(tab_link)
+            }
+        }
+    }
+
+    // open the selected tab link
+    selected_tab_link.classList.toggle('active');
+
+    // get the tab using the clicked tab link
+    let selected_tab = document.querySelector(selected_tab_link.getAttribute('href'));
+    // get the selected tab parent element: the container for the rest of the tabs
+    let tabParent = selected_tab.parentElement
+
+    // look for the currently opened tab
+    for (let tab of tabParent.children) {
+        if (tab.classList.contains('active')) {
+            // if it's the same tab break loop
+            if (tab.getAttribute('id') === selected_tab.getAttribute('id')) {
+                break;
+            } else {
+                // if not close it
+                tab.classList.toggle('active');
+                tab.classList.toggle('show');
+            }
+        }
+    }
+
+    // open the selected tab
+    selected_tab.classList.toggle('active')
+    selected_tab.classList.toggle('show')
 
 }
 
