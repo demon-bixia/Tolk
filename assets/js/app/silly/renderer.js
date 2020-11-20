@@ -4,7 +4,7 @@ export class Renderer {
     */
 
     constructor(component_factory) {
-        this.factory = new component_factory();
+        this.factory = component_factory;
     }
 
     static renderNegotiation(kwargs = {"component": null, 'selector': null}) {
@@ -20,6 +20,7 @@ export class Renderer {
             case 'append':
                 // return append
                 return 'append';
+
             case 'replaceOrAppend':
                 // search html page for element
                 if (selector) {
@@ -35,9 +36,11 @@ export class Renderer {
                     // if element dose not exist append
                     return 'append';
                 }
+
             case 'prepend':
                 // return replace
                 return 'prepend';
+
             case 'replaceOrPrepend':
                 // search html page for element
                 if (selector) {
@@ -53,6 +56,10 @@ export class Renderer {
                     // if element dose not exist append
                     return 'prepend';
                 }
+
+            case 'replace':
+                return 'replace'
+
             default:
                 // if no render mode then component is invalid
                 throw new Error('invalid render mode');

@@ -1,3 +1,175 @@
+/*
+* interface.js
+* the behavior of the user interface
+* */
+
+
+// switch between two tabs
+export function switchTabs(tab) {
+
+}
+
+export function conversationReset() {
+    let conversations = document.querySelectorAll('#conversations .nav li');
+    if (conversations) {
+        for (let conversation of conversations) {
+            conversation.style.display = 'list-item';
+        }
+    }
+}
+
+export function friendsReset() {
+    let friends = document.querySelectorAll('#friends .users li');
+    if (friends) {
+        for (let friend of friends) {
+            friend.style.display = 'list-item';
+        }
+    }
+}
+
+export function notificationsReset() {
+    let notifications = document.querySelectorAll('#notifications .notifications li');
+    if (notifications) {
+        for (let notification of notifications) {
+            notification.style.display = 'flex';
+        }
+    }
+}
+
+export function settingsReset() {
+    let settings_tabs = document.querySelectorAll('#settings #preferences li');
+    for (let settings_tab of settings_tabs) {
+        let settings_contents = settings_tab.querySelectorAll('.content.collapse');
+        for (let setting_content of settings_contents) {
+            setting_content.classList.remove('show');
+        }
+    }
+}
+
+export function filterConversations(value) {
+    let conversations = document.querySelectorAll('#conversations .nav li');
+    let regx = new RegExp(`${value}`, 'ig');
+
+    if (conversations) {
+
+        for (let conversation of conversations) {
+            let conversation_name = conversation.querySelector('.headline h5').innerHTML;
+
+
+            if (value.trim().length !== 0) {
+                if (conversation_name.match(regx)) {
+                    conversation.style.display = 'list-item';
+                } else {
+                    conversation.style.display = 'none';
+                }
+            } else {
+                conversation.style.display = 'list-item';
+            }
+        }
+    }
+}
+
+export function filterFriends(value) {
+    let friends = document.querySelectorAll('#friends .users li');
+    let regx = new RegExp(`${value}`, 'ig');
+
+    if (friends) {
+        for (let friend of friends) {
+            let friend_name = friend.querySelector('.content h5');
+            let friend_location = friend.querySelector('.content span');
+
+            if (value.trim().length !== 0) {
+                if (friend_name.innerText.match(regx) || friend_location.innerText.match(regx)) {
+                    friend.style.display = 'list-item';
+                } else {
+                    friend.style.display = 'none';
+                }
+            } else {
+                friend.style.display = 'list-item';
+            }
+        }
+    }
+}
+
+export function filterNotification(value) {
+    let notifications = document.querySelectorAll('#notifications .notifications li');
+    let regx = new RegExp(`${value}`, 'ig');
+
+    if (notifications) {
+        for (let notification of notifications) {
+            let notification_content = notification.querySelector('p').innerText;
+
+            if (value.trim().length !== 0) {
+                if (notification_content.match(regx)) {
+                    notification.style.display = 'flex';
+                } else {
+                    notification.style.display = 'none';
+                }
+            } else {
+                notification.style.display = 'flex';
+            }
+        }
+    }
+}
+
+export function filterSettings(value) {
+    let settings_tabs = document.querySelectorAll('#settings #preferences li');
+    let regx = new RegExp(`${value}`, 'ig');
+    let opened;
+
+    if (settings_tabs) {
+        for (let settings_tab of settings_tabs) {
+            let settings_contents = settings_tab.querySelectorAll('.content.collapse');
+            for (let setting_content of settings_contents) {
+                if (setting_content.getAttribute('id') !== 'account') {
+                    let options = setting_content.querySelectorAll('.options li');
+                    for (let option of options) {
+                        let name = option.querySelector('.headline h5');
+                        if (value.trim().length !== 0) {
+                            if (name.innerText.match(regx)) {
+                                name.classList.add('highlight');
+                                setting_content.classList.add('show');
+                                opened = setting_content;
+                            } else {
+                                name.classList.remove('highlight');
+                                if (opened) {
+                                    if (setting_content.getAttribute('id') !== opened.getAttribute('id')) {
+                                        setting_content.classList.remove('show');
+                                    }
+                                } else {
+                                    setting_content.classList.remove('show');
+                                }
+                            }
+                        } else {
+                            name.classList.remove('highlight');
+                            setting_content.classList.remove('show');
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+export function resetSearch(opened_nav) {
+    let openSection = document.querySelector(`${opened_nav.getAttribute('href')}`);
+
+    switch (openSection.getAttribute('id')) {
+        case 'conversations':
+            conversationReset();
+            break;
+        case 'friends':
+            friendsReset();
+            break;
+        case 'notifications':
+            notificationsReset();
+            break;
+        case 'settings':
+            settingsReset();
+            break;
+    }
+}
+
 export function renderFormErrors(form, form_errors) {
     for (let field_name of Object.keys(form_errors)) {
         if (field_name === 'non_field_errors') {
@@ -63,7 +235,6 @@ export function removeFormErrorEvent(event) {
     }
 }
 
-
 export function emptyForm(form) {
     for (let element of form.elements) {
         if (element.type === 'checkbox') {
@@ -110,7 +281,6 @@ export function changeTheme(dark) {
         root.style.setProperty(color_name, theme_colors[color_name]);
     }
 }
-
 
 let light_theme_colors = {
     '--plain-font-color': '#76839f',
@@ -336,4 +506,3 @@ let dark_theme_colors = {
     '--plain-font-color': '#ffffff',
     '--mute-font-color': '#76839f',
 };
-

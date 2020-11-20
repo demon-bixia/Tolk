@@ -371,23 +371,31 @@
 </div>
 <audio style="display: none;" src="{% static 'sounds/for-sure.ogg' %}" class="notifications-sound"></audio>
 <audio style="display: none;" src="{% static 'sounds/message_bubble_sound.ogg' %}" class="message-sound"></audio>
+
 <!-- vendor javascript scripts -->
 <script src="{% static 'js/vendor/jquery.min.js' %}"></script>
-<script src="{% static 'js/vendor/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/vendor/bootstrap.min.js  ' %}"></script>
 <script src="{% static 'js/vendor/eva.min.js' %}"></script>
 <script src="{% static 'js/vendor/ejs.min.js' %}"></script>
 <script src="{% static 'js/vendor/reconnecting-websocket.min.js' %}"></script>
 <script src="{% static 'js/vendor/js.cookie-2.2.1.min.js' %}"></script>
 
 <!-- local javascript modules-->
+<!--silly.js-->
 <script type="module" src="{% static 'js/app/silly/renderer.js' %}"></script>
 <script type="module" src="{% static 'js/app/silly/component_lib.js' %}"></script>
 <script type="module" src="{% static 'js/app/silly/communication.js' %}"></script>
 <script type="module" src="{% static 'js/app/silly/router.js' %}"></script>
 <script type="module" src="{% static 'js/app/silly/effects.js' %}"></script>
+
+<!-- app -->
+<script type="module" src="{% static 'js/app/init.js' %}"></script>
 <script type="module" src="{% static 'js/app/load.js' %}"></script>
-<script type="module" src="{% static 'js/app/utility.js' %}"></script>
+<script type="module" src="{% static 'js/app/interface.js' %}"></script>
 <script type="module" src="{% static 'js/app/main.js' %}"></script>
+<script type="module" src="{% static 'js/app/events.js' %}"></script>
+<script type="module" src="{% static 'js/app/routes.js' %}"></script>
+<script type="module" src="{% static 'js/app/components.js' %}"></script>
 
 <!-- components -->
 <script type="module" src="{% static 'js/app/components/bubble-last-message.js' %}"></script>
