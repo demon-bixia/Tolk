@@ -11,8 +11,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 import os
 
-import dj_database_url
-import django_heroku
+#import dj_database_url
+#import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -61,7 +61,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    #'whitenoise.middleware.WhiteNoiseMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'Tolk.urls'
@@ -163,6 +163,7 @@ CHANNEL_LAYERS = {
     },
 }
 """
+
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
@@ -171,6 +172,7 @@ CHANNEL_LAYERS = {
         },
     },
 }
+
 
 # Redis Cache
 # when deploying uncomment the below comment
@@ -187,7 +189,8 @@ CACHES = {
         "KEY_PREFIX": "chat"
     },
 }
-"""
+"
+
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
@@ -199,6 +202,7 @@ CACHES = {
         "KEY_PREFIX": "chat"
     },
 }
+
 
 # rest framework
 REST_FRAMEWORK = {

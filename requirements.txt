@@ -1,5 +1,5 @@
 dj-config-url
-django==2.2.5
+django==2.2.7
 pillow==5.2.0
 twisted==19.7.0
 asgiref==3.2.2
