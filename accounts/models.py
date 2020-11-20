@@ -69,10 +69,3 @@ class Contact(models.Model):
 
     def save(self, **kwargs):
         super(Contact, self).save()
-
-        img = Image.open(self.contact_pic.file)
-
-        if img.height > 300 or img.width > 300:
-            output_size = (300, 300)
-            img.thumbnail(output_size)
-            img.save(self.contact_pic.file)

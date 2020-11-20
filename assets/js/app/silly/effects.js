@@ -15,6 +15,54 @@ export class Wizard {
         this.factory = component_factory;
     }
 
+    fadeIn(htmlElement) {
+        let opacity = 0;
+
+        htmlElement.style.opacity = 0;
+        htmlElement.style.display = 'block';
+
+        let intervalID = setInterval(function () {
+            if (opacity < 1) {
+                opacity = opacity + 0.1;
+                htmlElement.style.opacity = opacity;
+            } else {
+                clearInterval(intervalID);
+            }
+        }, 100);
+    }
+
+    fadeOut(htmlElement) {
+        let opacity = 1;
+        htmlElement.display.opacity = 1;
+
+        let intervalID = setInterval(function () {
+            if (opacity > 0) {
+                opacity = opacity - 0.1
+                htmlElement.style.opacity = opacity;
+            } else {
+                htmlElement.style.display = 'none';
+                clearInterval(intervalID);
+            }
+        }, 200);
+    }
+
+
+    progressFill(htmlElement, delay, callback) {
+        let width = 0;
+
+            setTimeout(function () {
+                let intervalID = setInterval(function () {
+                    if (width < 100) {
+                        width++;
+                        htmlElement.style.width = width + "%";
+                    } else {
+                        clearInterval(intervalID);
+                        callback();
+                    }
+                }, 10);
+            }, delay)
+    }
+
 
     hide(htmlElement) {
         htmlElement.classList.remove('active'); // removes class active

@@ -70,11 +70,11 @@ let siteLoaded = false;
             AddAuthEventListeners();
             // change theme
             let theme;
-             
-            if(Cookies.get('theme')) {
+
+            if (Cookies.get('theme')) {
                 // if the theme exist set that theme
                 theme = Cookies.get('theme') === 'dark';
-            }else{
+            } else {
                 // otherwise enable dark mode
                 theme = true;
             }
@@ -88,25 +88,18 @@ let siteLoaded = false;
 })();
 
 function startUp() {
-    Velocity(document.querySelector('.b-preloader img'), {'display': 'block', "opacity": 1}, {
-        duration: 2500,
-        easing: 'easeInOutQuad'
-    });
+    wizard.fadeIn(document.querySelector('.b-preloader img'))
 
-    Velocity(document.querySelector('.b-preloader .progress .progress-bar'), {'width': '100%'}, {
-        duration: 2000,
-        delay: 1500,
-        easing: 'easeInOutQuad',
-    }).then(function () {
-        setInterval(hideBPreloader, 1500)
-    });
+    wizard.progressFill(document.querySelector('.b-preloader .progress .progress-bar'), 1500, hideBPreloader);
 }
 
 function hideBPreloader() {
-    if (siteLoaded) {
-        wizard.hide(b_preloader);
-        clearInterval(hideBPreloader);
-    }
+    let id = setInterval(function () {
+        if (siteLoaded) {
+            wizard.hide(b_preloader);
+            clearInterval(id);
+        }
+    }, 1500)
 }
 
 function AddEventListeners() {
@@ -207,6 +200,10 @@ function AddEventListeners() {
     // when a file message is clicked call downloadFileEvent
     document.querySelector('.chat')
         .addEventListener('click', downloadFileEvent)
+
+    // when a contact is clicked create conversation
+    document.querySelector('.users')
+        .addEventListener('click', createConversationEvent)
 }
 
 function AddAuthEventListeners() {
