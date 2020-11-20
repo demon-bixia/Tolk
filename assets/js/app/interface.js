@@ -1,3 +1,257 @@
+/*
+* interface.js
+* the behavior of the user interface
+* */
+
+// switch between settings dropdown
+export function toggleSettings(selected_dropdown_headline) {
+    let same = false;
+    // get the selected dropdown
+    let selected_dropdown = selected_dropdown_headline.nextElementSibling;
+    // find the opened dropdown
+    let dropdown_containers_list = selected_dropdown_headline.parentElement.parentElement;
+    // loop through dropdown containers and find the opened dropdown
+    for (let dropdown_container of dropdown_containers_list.children) {
+        let dropdown = dropdown_container.querySelector('.content');
+        // if dropdown is opened
+        if (!dropdown.classList.contains('collapse')) {
+            if (dropdown.getAttribute('id') === selected_dropdown.closest('.content').getAttribute('id')) {
+                same = true;
+                selected_dropdown.classList.add('collapse')
+
+                // switch arrows
+                selected_dropdown_headline.querySelector('.eva-arrow-ios-forward').style.display = 'block';
+                selected_dropdown_headline.querySelector('.eva-arrow-ios-downward').style.display = 'none';
+            } else {
+                dropdown.classList.add('collapse')
+                // switch arrows
+                dropdown.previousElementSibling.querySelector('.eva-arrow-ios-forward').style.display = 'block';
+                dropdown.previousElementSibling.querySelector('.eva-arrow-ios-downward').style.display = 'none';
+            }
+        }
+    }
+
+    if (!same) {
+        selected_dropdown.classList.remove('collapse');
+
+        // switch arrows
+        selected_dropdown_headline.querySelector('.eva-arrow-ios-forward').style.display = 'none';
+        selected_dropdown_headline.querySelector('.eva-arrow-ios-downward').style.display = 'block';
+    }
+}
+
+
+// switch between two tabs
+export function switchTabs(selected_tab_link) {
+    // get the select tab_link container: the container for tab-links containers
+    let tab_links_containers = selected_tab_link.parentElement.parentElement
+    // loop through tab link containers to find the wanted
+    for (let tab_link_container of tab_links_containers.children) {
+        // get the tab_link element inside container
+        let tab_link = tab_link_container.querySelector('.tab-link');
+        // if tab_link is active
+        if (tab_link && tab_link.classList.contains('active')) {
+            // if it's the same selected tab link
+            if (tab_link.getAttribute('href') === selected_tab_link.getAttribute('href')) {
+                break;
+            } else {
+                // close the opened tab link
+                tab_link.classList.toggle('active');
+                // reset search results in old tab link
+                resetSearch(tab_link)
+            }
+        }
+    }
+
+    // open the selected tab link
+    selected_tab_link.classList.toggle('active');
+
+    // get the tab using the clicked tab link
+    let selected_tab = document.querySelector(selected_tab_link.getAttribute('href'));
+    // get the selected tab parent element: the container for the rest of the tabs
+    let tabParent = selected_tab.parentElement
+
+    // look for the currently opened tab
+    for (let tab of tabParent.children) {
+        if (tab.classList.contains('active')) {
+            // if it's the same tab break loop
+            if (tab.getAttribute('id') === selected_tab.getAttribute('id')) {
+                break;
+            } else {
+                // if not close it
+                tab.classList.toggle('active');
+                tab.classList.toggle('show');
+            }
+        }
+    }
+
+    // open the selected tab
+    selected_tab.classList.toggle('active')
+    selected_tab.classList.toggle('show')
+
+}
+
+export function conversationReset() {
+    let conversations = document.querySelectorAll('#conversations .nav li');
+    if (conversations) {
+        for (let conversation of conversations) {
+            conversation.style.display = 'list-item';
+        }
+    }
+}
+
+export function friendsReset() {
+    let friends = document.querySelectorAll('#friends .users li');
+    if (friends) {
+        for (let friend of friends) {
+            friend.style.display = 'list-item';
+        }
+    }
+}
+
+export function notificationsReset() {
+    let notifications = document.querySelectorAll('#notifications .notifications li');
+    if (notifications) {
+        for (let notification of notifications) {
+            notification.style.display = 'flex';
+        }
+    }
+}
+
+export function settingsReset() {
+    let settings_tabs = document.querySelectorAll('#settings #preferences li');
+    for (let settings_tab of settings_tabs) {
+        let settings_contents = settings_tab.querySelectorAll('.content.collapse');
+        for (let setting_content of settings_contents) {
+            setting_content.classList.remove('show');
+        }
+    }
+}
+
+export function filterConversations(value) {
+    let conversations = document.querySelectorAll('#conversations .nav li');
+    let regx = new RegExp(`${value}`, 'ig');
+
+    if (conversations) {
+
+        for (let conversation of conversations) {
+            let conversation_name = conversation.querySelector('.headline h5').innerHTML;
+
+
+            if (value.trim().length !== 0) {
+                if (conversation_name.match(regx)) {
+                    conversation.style.display = 'list-item';
+                } else {
+                    conversation.style.display = 'none';
+                }
+            } else {
+                conversation.style.display = 'list-item';
+            }
+        }
+    }
+}
+
+export function filterFriends(value) {
+    let friends = document.querySelectorAll('#friends .users li');
+    let regx = new RegExp(`${value}`, 'ig');
+
+    if (friends) {
+        for (let friend of friends) {
+            let friend_name = friend.querySelector('.content h5');
+            let friend_location = friend.querySelector('.content span');
+
+            if (value.trim().length !== 0) {
+                if (friend_name.innerText.match(regx) || friend_location.innerText.match(regx)) {
+                    friend.style.display = 'list-item';
+                } else {
+                    friend.style.display = 'none';
+                }
+            } else {
+                friend.style.display = 'list-item';
+            }
+        }
+    }
+}
+
+export function filterNotification(value) {
+    let notifications = document.querySelectorAll('#notifications .notifications li');
+    let regx = new RegExp(`${value}`, 'ig');
+
+    if (notifications) {
+        for (let notification of notifications) {
+            let notification_content = notification.querySelector('p').innerText;
+
+            if (value.trim().length !== 0) {
+                if (notification_content.match(regx)) {
+                    notification.style.display = 'flex';
+                } else {
+                    notification.style.display = 'none';
+                }
+            } else {
+                notification.style.display = 'flex';
+            }
+        }
+    }
+}
+
+export function filterSettings(value) {
+    let settings_tabs = document.querySelectorAll('#settings #preferences li');
+    let regx = new RegExp(`${value}`, 'ig');
+    let opened;
+
+    if (settings_tabs) {
+        for (let settings_tab of settings_tabs) {
+            let settings_contents = settings_tab.querySelectorAll('.content.collapse');
+            for (let setting_content of settings_contents) {
+                if (setting_content.getAttribute('id') !== 'account') {
+                    let options = setting_content.querySelectorAll('.options li');
+                    for (let option of options) {
+                        let name = option.querySelector('.headline h5');
+                        if (value.trim().length !== 0) {
+                            if (name.innerText.match(regx)) {
+                                name.classList.add('highlight');
+                                setting_content.classList.add('show');
+                                opened = setting_content;
+                            } else {
+                                name.classList.remove('highlight');
+                                if (opened) {
+                                    if (setting_content.getAttribute('id') !== opened.getAttribute('id')) {
+                                        setting_content.classList.remove('show');
+                                    }
+                                } else {
+                                    setting_content.classList.remove('show');
+                                }
+                            }
+                        } else {
+                            name.classList.remove('highlight');
+                            setting_content.classList.remove('show');
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+export function resetSearch(opened_nav) {
+    let openSection = document.querySelector(`${opened_nav.getAttribute('href')}`);
+
+    switch (openSection.getAttribute('id')) {
+        case 'conversations':
+            conversationReset();
+            break;
+        case 'friends':
+            friendsReset();
+            break;
+        case 'notifications':
+            notificationsReset();
+            break;
+        case 'settings':
+            settingsReset();
+            break;
+    }
+}
+
 export function renderFormErrors(form, form_errors) {
     for (let field_name of Object.keys(form_errors)) {
         if (field_name === 'non_field_errors') {
@@ -63,7 +317,6 @@ export function removeFormErrorEvent(event) {
     }
 }
 
-
 export function emptyForm(form) {
     for (let element of form.elements) {
         if (element.type === 'checkbox') {
@@ -110,7 +363,6 @@ export function changeTheme(dark) {
         root.style.setProperty(color_name, theme_colors[color_name]);
     }
 }
-
 
 let light_theme_colors = {
     '--plain-font-color': '#76839f',
@@ -336,4 +588,3 @@ let dark_theme_colors = {
     '--plain-font-color': '#ffffff',
     '--mute-font-color': '#76839f',
 };
-

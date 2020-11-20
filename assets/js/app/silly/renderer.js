@@ -4,10 +4,10 @@ export class Renderer {
     */
 
     constructor(component_factory) {
-        this.factory = new component_factory();
+        this.factory = component_factory;
     }
 
-    static renderNegotiation(kwargs = { "component": null, 'selector': null }) {
+    static renderNegotiation(kwargs = {"component": null, 'selector': null}) {
         /*
         * selects the best render method (append, replace, prepend)
         * based on component
@@ -20,6 +20,7 @@ export class Renderer {
             case 'append':
                 // return append
                 return 'append';
+
             case 'replaceOrAppend':
                 // search html page for element
                 if (selector) {
@@ -35,9 +36,11 @@ export class Renderer {
                     // if element dose not exist append
                     return 'append';
                 }
+
             case 'prepend':
                 // return replace
                 return 'prepend';
+
             case 'replaceOrPrepend':
                 // search html page for element
                 if (selector) {
@@ -53,6 +56,10 @@ export class Renderer {
                     // if element dose not exist append
                     return 'prepend';
                 }
+
+            case 'replace':
+                return 'replace'
+
             default:
                 // if no render mode then component is invalid
                 throw new Error('invalid render mode');
@@ -158,34 +165,38 @@ export class Renderer {
 
         if (!component_name) {
             // if called with missing args throw error
-            throw new Error("Expected args not provided");
+            throw new Error("must provide component name in order to render");
         } else {
             // create component using component factory
-            let component = this.factory.create({ 'component_name': component_name, 'data': data });
+            return this.factory.create({'component_name': component_name, 'data': data})
+                .then((component) => {
+                    return new Promise(function (resolve, reject) {
+                        // pre form render negotiation
+                        let render_method = Renderer.renderNegotiation({
+                            "component": component,
+                            'selector': selector || null
+                        });
 
-            return new Promise(function (resolve, reject) {
-                // pre form render negotiation
-                let render_method = Renderer.renderNegotiation({ "component": component, 'selector': selector || null });
+                        // used to setup animation by user and element specific props
+                        if (before_render) {
+                            before_render(component);
+                        }
 
-                // used to setup animation by user and element specific props
-                if (before_render) {
-                    before_render(component);
-                }
-
-                // render component
-                Renderer.renderComponent({
-                    'component': component || null,
-                    "render_method": render_method || null,
-                    "refresh": refresh || null,
-                    'container': container || null,
-                    'selector': selector || null,
-                }).then(function (element) {
-                    // resolve promise if component is rendered
-                    resolve(element, data);
-                }, function (error) {
-                    reject(error);
-                });
-            });
+                        // render component
+                        Renderer.renderComponent({
+                            'component': component || null,
+                            "render_method": render_method || null,
+                            "refresh": refresh || null,
+                            'container': container || null,
+                            'selector': selector || null,
+                        }).then(function (element) {
+                            // resolve promise if component is rendered
+                            resolve(element, data);
+                        }, function (error) {
+                            reject(error);
+                        });
+                    });
+                })
         }
     }
 }
@@ -194,7 +205,7 @@ export class Renderer {
 // used as abstract class to communicate between renderer module
 // and web component libraries modules
 export class AbstractComponentFactory {
-    create(kwargs = { 'component_name': null, 'data': null }) {
+    create(kwargs = {'component_name': null, 'data': null}) {
         // creates a component and returns a component pack
     }
 }

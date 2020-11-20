@@ -3,10 +3,10 @@ export class Communicator {
     * facilitates communication between other modules and this
     * module
     * */
-    constructor(router_class) {
+    constructor(router) {
         this.ajax = new AjaxCommunicator(); // create ajax communication instance
         this.socket = new SocketCommunicator(); // create socket communication instance
-        this.router = new router_class(); // create router
+        this.router = router;
         this.socket.receive = data => this.on_receive(data);
     }
 

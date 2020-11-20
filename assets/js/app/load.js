@@ -1,11 +1,9 @@
-
-import { Renderer } from "./silly/renderer.js";
-import { ComponentFactory } from "./silly/component_lib.js";
-import { Router } from "./silly/router.js";
-import { Communicator } from "./silly/communication.js"
-
-let communicator = new Communicator(Router);
-let renderer = new Renderer(ComponentFactory);
+/*
+* load.js
+* handles gathering data from sever
+* and loading html components to document
+* */
+import {renderer, communicator} from "./init.js";
 
 export function load(command, options) {
 
@@ -26,7 +24,7 @@ export function load(command, options) {
             return loadFriends(options);
 
         case 'chats':
-            return loadChats(options);
+            return loadChats(options, );
 
         case 'settings':
             return loadSettings(options);
