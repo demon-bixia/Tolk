@@ -153,7 +153,7 @@ export function AddEventListeners() {
         .addEventListener('click', toggleSettingsEvent);
 
     // when a chat tab link is clicked switch to that tab
-    document.querySelector('.middle .nav')
+    document.querySelector('.middle ')
         .addEventListener('click', switchChatTabs);
 }
 

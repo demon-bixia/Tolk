@@ -74,6 +74,7 @@ let siteLoaded = false;
 
                                 joinConversations();
                                 getStatuses();
+                                siteLoaded=true;
                             })
                         })
                 })

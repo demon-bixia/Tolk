@@ -1,7 +1,7 @@
 export let template =
 `<ul class="nav discussion" role="tablist">
     <% if (conversation.type === 'couple'){ %> <% for(let participant of conversation.participants){ %> <% if (participant.id !== authenticated_contact.id){ %>
-    <li><a href="#conversation_<%= conversation.id %>" class="filter direct" data-id="<%= conversation.id %>"
+    <li><a href="#conversation_<%= conversation.id %>" class="filter tab-link direct" data-id="<%= conversation.id %>"
            data-name="<%= conversation.name %>" data-user="<%= participant.user %>" data-toggle="tab" data-chat="open"
            role="tab" aria-controls="<%= conversation.data %>" aria-selected="true">
             <div class="status online">
@@ -21,7 +21,7 @@ export let template =
         </a></li><% } %> <% } %>
     <% } %>
     <% if (conversation.type === 'group'){ %>
-    <li><a href="#conversation_<%= conversation.id %>" class="filter direct" data-id="<%= conversation.id %>"
+    <li><a href="#conversation_<%= conversation.id %>" class="filter tab-link direct" data-id="<%= conversation.id %>"
            data-name="<%= conversation.name %>" data-toggle="tab" data-chat="open" role="tab"
            aria-controls="<%= conversation.name %>" aria-selected="true">
             <div class="status online">
