@@ -11,8 +11,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 import os
 
-#import dj_database_url
-#import django_heroku
+import dj_database_url
+import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -28,7 +28,7 @@ DEBUG = True
 
 # hosts allowed for use with this application
 ALLOWED_HOSTS = [
-    #'https://tolk-project.herokuapp.com/',
+    'http://tolk-project.herokuapp.com/',
 ]
 
 # Application definition
@@ -61,7 +61,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    #'whitenoise.middleware.WhiteNoiseMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'Tolk.urls'
@@ -86,13 +86,7 @@ WSGI_APPLICATION = 'Tolk.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-#DATABASES = {'default': dj_database_url.config(ssl_require=False)}
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+DATABASES = {'default': dj_database_url.config(ssl_require=False)}
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
@@ -150,8 +144,6 @@ AUTH_PASSWORD_VALIDATORS = [
 # root application
 ASGI_APPLICATION = "Tolk.routing.application"
 # channel layers backends
-# when deploying uncomment the below comment
-"""
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
@@ -162,21 +154,9 @@ CHANNEL_LAYERS = {
         },
     },
 }
-"""
-
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [("localhost", 6379)],
-        },
-    },
-}
 
 
 # Redis Cache
-# when deploying uncomment the below comment
-"""
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
@@ -189,19 +169,7 @@ CACHES = {
         "KEY_PREFIX": "chat"
     },
 }
-"""
 
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
-        'TIMEOUT': 60 * 60 * 24,
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        },
-        "KEY_PREFIX": "chat"
-    },
-}
 
 
 # rest framework
@@ -215,10 +183,10 @@ REST_FRAMEWORK = {
 
 # **** heroku settings ****
 # Activate Django-Heroku.
-#django_heroku.settings(locals())
+django_heroku.settings(locals())
 # delete ssl mode
-#del DATABASES['default']['OPTIONS']['sslmode']
+del DATABASES['default']['OPTIONS']['sslmode']
 
 # **** dropbox settings ****
-#DEFAULT_FILE_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
-#DROPBOX_OAUTH2_TOKEN = os.environ.get('DROPBOX_OAUTH2_TOKEN')
+DEFAULT_FILE_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
+DROPBOX_OAUTH2_TOKEN = os.environ.get('DROPBOX_OAUTH2_TOKEN')
