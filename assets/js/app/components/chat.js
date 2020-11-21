@@ -72,13 +72,6 @@ export let template = `
                                     class="flaticon-folders"></i> </label> <input type="file" class="attachments"
                                                                                   data-conversation="<%= conversation.id %>">
                     </div>
-                    <div class="media"><img src="/static/images/pictures/stock_1.jpg" alt="food"> <img
-                                src="/static/images/pictures/stock_2.jpg" alt="food"> <img
-                                src="/static/images/pictures/stock_3.jpg" alt="food"> <img
-                                src="/static/images/pictures/stock_4.jpg" alt="food">
-                        <div class="file-media"><i class="flaticon-high-volume"></i></div>
-                        <div class="file-media"><i class="flaticon-note"></i></div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -153,13 +146,6 @@ export let template = `
                     <div class="headline"><span>Attachment</span> <label class="button" for="attachments"> <i
                                     class="flaticon-folders"></i> </label> <input type="file" class="attachments"
                                                                                   data-conversation="<%= conversation.id %>">
-                    </div>
-                    <div class="media"><img src="/static/images/pictures/stock_1.jpg" alt="food"> <img
-                                src="/static/images/pictures/stock_2.jpg" alt="food"> <img
-                                src="/static/images/pictures/stock_3.jpg" alt="food"> <img
-                                src="/static/images/pictures/stock_4.jpg" alt="food">
-                        <div class="file-media"><i class="flaticon-high-volume"></i></div>
-                        <div class="file-media"><i class="flaticon-note"></i></div>
                     </div>
                 </div>
             </div>
