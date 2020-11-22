@@ -4,7 +4,7 @@
 
 
 <h1 align="center">
-    A Beautiful Vanilla JavaScript Chat Application
+    A Beautiful Django, Vanilla JavaScript Chat Application
 </h1>
 
 <br/>
