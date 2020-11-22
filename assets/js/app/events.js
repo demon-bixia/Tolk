@@ -135,7 +135,7 @@ export function AddEventListeners() {
 
     // when a navigation tab link is clicked switch the current tab
     document.querySelector('.nav')
-        .addEventListener('click', switchTabEvent);
+        .addEventListener('click', switchNavigationTabsEvent);
 
     // when create button is clicked open create modal
     document.querySelector('.nav a[href="#create"]')
@@ -146,7 +146,7 @@ export function AddEventListeners() {
         .addEventListener('click', closeCreateModalEvent);
 
     document.querySelector('#create .modal-body .nav')
-        .addEventListener('click', switchTabEvent);
+        .addEventListener('click', switchModalTabsEvent);
 
     // when a setting tab is clicked toggle settings
     document.querySelector('.middle ')
@@ -155,6 +155,35 @@ export function AddEventListeners() {
     // when a chat tab link is clicked switch to that tab
     document.querySelector('.middle ')
         .addEventListener('click', switchChatTabs);
+
+    // when dropdown menu in mobile view is clicked
+    // open it
+    document.querySelector('.sidebar .top')
+        .addEventListener('click', toggleDropdownEvent);
+
+    document.querySelector('.sidebar .top .dropdown-menu .compose')
+        .addEventListener('click', openCreateModalEvent);
+
+
+    // when a user is clicked open the respective conversation
+    document.querySelector('.users')
+        .addEventListener('click', openUserConversationEvent)
+}
+
+function openUserConversationEvent(event) {
+    let element = event.target.closest('.contact');
+
+    if(element) {
+        let id = element.dataset['user'];
+        let target_tab = document.querySelector(`#conversations .tab-link[data-user="${id}"]`);
+
+        if(target_tab && target_tab.getAttribute('href') === document.querySelector('#conversations .tab-link.active').getAttribute('href')){
+            document.querySelector('.nav .tab-link[href="#conversations"]').click()
+        } else {
+            switchTabs(target_tab);
+            document.querySelector('.nav .tab-link[href="#conversations"]').click()
+        }
+    }
 }
 
 // setup event callbacks for un-authenticated users
@@ -654,7 +683,10 @@ function closeChatEvent(event) {
     if (element.classList.contains('close-chat') || element.parentElement.classList.contains('close-chat')) {
         let chat = document.querySelector('.chat');
         chat.classList.remove('open');
-        document.querySelector('#conversations .nav li a.active').classList.remove('active');
+        let active_tab = document.querySelector('#conversations .nav li a.active');
+        if (active_tab){
+            active_tab.classList.remove('active');
+        }
     }
 }
 
@@ -777,14 +809,26 @@ function downloadFileEvent(event) {
     }
 }
 
-// when a tab-link is clicked close tab
-function switchTabEvent(event) {
+// when navigation tab link is clicked open it
+function switchNavigationTabsEvent(event) {
     let tab_link = event.target.closest('.tab-link');
+    let active_tab_link = document.querySelector('.navigation .nav .tab-link.active');
 
-    if(tab_link) {
+    if(tab_link && tab_link.getAttribute('href') !== active_tab_link.getAttribute('href')) {
         switchTabs(tab_link);
     }
 }
+
+// when a tab-link is clicked inside the create model switch to it
+function switchModalTabsEvent(event) {
+    let tab_link = event.target.closest('.tab-link');
+    let active_tab_link = document.querySelector('#create .modal-body .tab-link.active');
+
+    if(tab_link && tab_link.getAttribute('href') !== active_tab_link.getAttribute('href')) {
+        switchTabs(tab_link);
+    }
+}
+
 
 // when add button in nav is clicked open create modal
 function openCreateModalEvent(event) {
@@ -813,6 +857,23 @@ function switchChatTabs(event) {
 
     if (element && !document.querySelector(element.getAttribute('href')).classList.contains('active')){
             switchTabs(element);
+    }
+}
+
+// when the dropdown button is clicked open menu
+function toggleDropdownEvent(event) {
+    let element = event.target.closest('button');
+
+    if(element && element.nextElementSibling.classList.contains('dropdown-menu')){
+        let dropdown = element.nextElementSibling;
+
+        if(!dropdown.style.display || dropdown.style.display === 'none') {
+            dropdown.style.display = 'block'
+        }
+
+        else if(dropdown.style.display === 'block'){
+            dropdown.style.display = 'none';
+        }
     }
 }
 

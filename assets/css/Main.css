@@ -325,6 +325,10 @@ span {
     border-radius: 6px
 }
 
+.dropdown-item:focus, .dropdown-item:hover {
+    background:var(--navigation-active-icon);
+}
+
 @media (min-width:992px) {
     .container {
         padding-right: 30px;
