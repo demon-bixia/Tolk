@@ -163,8 +163,28 @@ export function AddEventListeners() {
 
     document.querySelector('.sidebar .top .dropdown-menu .compose')
         .addEventListener('click', openCreateModalEvent);
+
+
+    // when a user is clicked open the respective conversation
+    document.querySelector('.users')
+        .addEventListener('click', openUserConversationEvent)
 }
 
+function openUserConversationEvent(event) {
+    let element = event.target.closest('.contact');
+
+    if(element) {
+        let id = element.dataset['user'];
+        let target_tab = document.querySelector(`#conversations .tab-link[data-user="${id}"]`);
+
+        if(target_tab && target_tab.getAttribute('href') === document.querySelector('#conversations .tab-link.active').getAttribute('href')){
+            document.querySelector('.nav .tab-link[href="#conversations"]').click()
+        } else {
+            switchTabs(target_tab);
+            document.querySelector('.nav .tab-link[href="#conversations"]').click()
+        }
+    }
+}
 
 // setup event callbacks for un-authenticated users
 export function AddAuthEventListeners() {
