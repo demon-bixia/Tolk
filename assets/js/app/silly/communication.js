@@ -98,7 +98,7 @@ class AjaxCommunicator {
         return Cookies.get('csrftoken');
     }
 
-    static csrfSafeMethod(method) {
+    static csrfSafeMethod(method) { 
         /*
         * check if request is csrf token safe
         * */
