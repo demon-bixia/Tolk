@@ -18,9 +18,13 @@ You can check it out in <a href="http://tolk-project.herokuapp.com/">demo</a>.
 <br/>
 
 ## Running tolk locally
-close the repo
+clone the repo
 ```
 git clone https://github.com/MuhammadSalahAli/TolkProject.git
+```
+enter the proejcts folder
+```
+cd TolkProjec
 ```
 checkout the development branch
 ```
