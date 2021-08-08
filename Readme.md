@@ -2,6 +2,7 @@
     <img src="assets/images/logo/TolkProjectIcon.ai.svg" />
 </h1>
 
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/facebook/react/blob/main/LICENSE)
 
 <h1 align="center">
     A Beautiful Django, Vanilla JavaScript Chat Application
@@ -19,18 +20,29 @@ and status updates. it also comes with two themes Dark Purple and White Light.<b
 You can check it out in <a href="http://tolk-project.herokuapp.com/">demo</a>.
 </p>
 <br/>
-##Features
- - [x] sending/receiving messages
- - [x] contacts system
- - [x] create groups
- - [x] privacy mode
- - [x] app notifications
- - [x] privacy mode
- - [x] dark mode
- - [x] API at /api
+
+## Features
+
+- [x] sending/receiving messages
+- [x] contacts system
+- [x] create groups
+- [x] privacy mode
+- [x] app notifications
+- [x] privacy mode
+- [x] dark mode
+- [x] API at /api
+- [x] send attachments
+- [x] single page application
+- [x] search
 
 <br/>
-## Running tolk locally
+
+## ScreenShot
+
+<hr/>
+<img src="https://pasteboard.co/KeXo1Af.png" alt="dark_theme"/>
+
+## Running Tolk locally
 
 <hr/>
 
