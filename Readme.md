@@ -32,8 +32,6 @@ You can check it out in <a href="http://tolk-project.herokuapp.com/">demo</a>.
 - [x] search
 
 ## ScreenShots
-
-<hr/>
 <img src="screenshots/Screenshot%20from%202021-08-08%2018-06-11.png" alt="dark_theme"/>
 <img src="screenshots/Screenshot%20from%202021-08-08%2018-21-48.png" alt="login"/>
 <img src="screenshots/Screenshot%20from%202021-08-08%2018-23-00.png" alt="light_theme"/>
