@@ -31,14 +31,14 @@ You can check it out in <a href="http://tolk-project.herokuapp.com/">demo</a>.
 - [x] single page application
 - [x] search
 
-## ScreenShot
+## ScreenShots
 
 <hr/>
-<img src="blob:https://pasteboard.co/1214ee36-98d9-4641-b229-093353496c06" alt="dark_theme"/>
+<img src="screenshots/Screenshot%20from%202021-08-08%2018-06-11.png" alt="dark_theme"/>
+<img src="screenshots/Screenshot%20from%202021-08-08%2018-21-48.png" alt="login"/>
+<img src="screenshots/Screenshot%20from%202021-08-08%2018-23-00.png" alt="light_theme"/>
 
 ## Running Tolk locally
-
-<hr/>
 
 clone the repo
 
@@ -72,16 +72,12 @@ python manage.py runserver
 
 visit <a href="http://127.0.0.1:8000/">http://127.0.0.1:8000/</a> and you will see the tolk preloader.
 
-
-
 ## Frontend library
 
-<hr/>
-The tolk fronted is built using a custom js library in the folder assets/js/app/silly.
-The library simply splits html code into templates (i call them components in code) and then renders them 
-using the <a href="https://ejs.co/">ejs</a> template engine.
-There is also an interface for sending ajax and websocket messages. it's meant to be used to rapidly static 
-html pages into dynamically rendered ones.<br/>
+The tolk fronted is built using a custom js library in the folder assets/js/app/silly. The library simply splits html
+code into templates (i call them components in code) and then renders them using the <a href="https://ejs.co/">ejs</a>
+template engine. There is also an interface for sending ajax and websocket messages. it's meant to be used to rapidly
+static html pages into dynamically rendered ones.<br/>
 <br/>
 <img src="Documentation/JsAppClassdiagram.jpg" alt="silly_class_diagram"  width="700" height="700"/>
 <p>
