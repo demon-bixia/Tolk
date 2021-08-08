@@ -173,11 +173,11 @@ export function AddEventListeners() {
 function openUserConversationEvent(event) {
     let element = event.target.closest('.contact');
 
-    if(element) {
+    if (element) {
         let id = element.dataset['user'];
         let target_tab = document.querySelector(`#conversations .tab-link[data-user="${id}"]`);
 
-        if(target_tab && target_tab.getAttribute('href') === document.querySelector('#conversations .tab-link.active').getAttribute('href')){
+        if (target_tab && target_tab.getAttribute('href') === document.querySelector('#conversations .tab-link.active').getAttribute('href')) {
             document.querySelector('.nav .tab-link[href="#conversations"]').click()
         } else {
             switchTabs(target_tab);
@@ -320,7 +320,7 @@ function addFriendEvent(event) {
     // show preloader
     wizard.show(preloader);
 
-        communicator.send_ajax({'route_name': 'add-friend', 'data': data})
+    communicator.send_ajax({'route_name': 'add-friend', 'data': data})
         .then(function (response) {
             if (response['success']) {
                 // send notification to user
@@ -395,7 +395,7 @@ function createConversationEvent(event) {
 
         wizard.hide(document.querySelector('#create'))
 
-        let conversation = document.querySelector(`#conversations .nav  li a[data-user="${element.dataset['user']}"]`);
+        let conversation = document.querySelector(`#conversations .nav li a[data-user="${element.dataset['user']}"]`);
 
         if (!conversation) {
             wizard.show(preloader);
@@ -684,7 +684,7 @@ function closeChatEvent(event) {
         let chat = document.querySelector('.chat');
         chat.classList.remove('open');
         let active_tab = document.querySelector('#conversations .nav li a.active');
-        if (active_tab){
+        if (active_tab) {
             active_tab.classList.remove('active');
         }
     }
@@ -814,7 +814,7 @@ function switchNavigationTabsEvent(event) {
     let tab_link = event.target.closest('.tab-link');
     let active_tab_link = document.querySelector('.navigation .nav .tab-link.active');
 
-    if(tab_link && tab_link.getAttribute('href') !== active_tab_link.getAttribute('href')) {
+    if (tab_link && tab_link.getAttribute('href') !== active_tab_link.getAttribute('href')) {
         switchTabs(tab_link);
     }
 }
@@ -824,7 +824,7 @@ function switchModalTabsEvent(event) {
     let tab_link = event.target.closest('.tab-link');
     let active_tab_link = document.querySelector('#create .modal-body .tab-link.active');
 
-    if(tab_link && tab_link.getAttribute('href') !== active_tab_link.getAttribute('href')) {
+    if (tab_link && tab_link.getAttribute('href') !== active_tab_link.getAttribute('href')) {
         switchTabs(tab_link);
     }
 }
@@ -855,8 +855,8 @@ function toggleSettingsEvent(event) {
 function switchChatTabs(event) {
     let element = event.target.closest('.tab-link');
 
-    if (element && !document.querySelector(element.getAttribute('href')).classList.contains('active')){
-            switchTabs(element);
+    if (element && !document.querySelector(element.getAttribute('href')).classList.contains('active')) {
+        switchTabs(element);
     }
 }
 
@@ -864,14 +864,12 @@ function switchChatTabs(event) {
 function toggleDropdownEvent(event) {
     let element = event.target.closest('button');
 
-    if(element && element.nextElementSibling.classList.contains('dropdown-menu')){
+    if (element && element.nextElementSibling.classList.contains('dropdown-menu')) {
         let dropdown = element.nextElementSibling;
 
-        if(!dropdown.style.display || dropdown.style.display === 'none') {
+        if (!dropdown.style.display || dropdown.style.display === 'none') {
             dropdown.style.display = 'block'
-        }
-
-        else if(dropdown.style.display === 'block'){
+        } else if (dropdown.style.display === 'block') {
             dropdown.style.display = 'none';
         }
     }
@@ -879,8 +877,10 @@ function toggleDropdownEvent(event) {
 
 
 /* Websocket receive callback */
+
 // setup callbacks for websockets
 export function receive(data) {
+    console.log("socket connected");
     let json_data = JSON.parse(data);
 
     switch (json_data['command']) {
@@ -913,7 +913,7 @@ function conversation_message(data) {
         return load('bubble-last-message', data);
     }).then(function () {
         eva.replace();
-        let conversation = document.querySelector(`#conversations  a[data-id="${data['conversation_id']}"]`);
+        let conversation = document.querySelector(`#conversations a[data-id="${data['conversation_id']}"]`);
         scrollChat(conversation);
     }).then(function () {
         message_audio.play();
