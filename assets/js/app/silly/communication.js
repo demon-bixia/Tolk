@@ -256,6 +256,7 @@ class SocketCommunicator {
     }
 
     disconnect(socket) {
+        console.log("socket disconnected");
         // disconnect web socket object
         this.socket.close();
     }
