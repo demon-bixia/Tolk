@@ -7,7 +7,7 @@ from chat import consumers as chat_consumers
 application = ProtocolTypeRouter({
     "websocket": AuthMiddlewareStack(
         URLRouter([
-            path('ws/chat/', chat_consumers.ChatConsumer),
+            path('ws/chat/', chat_consumers.ChatConsumer.as_asgi()),
         ])
     )
 })
