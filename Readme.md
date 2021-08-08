@@ -8,10 +8,6 @@
     A Beautiful Django, Vanilla JavaScript Chat Application
 </h1>
 
-<br/>
-<br/>
-<br/>
-
 <p>Tolk is a single page chat web application developed using <a href="https://github.com/django/django">
 django web framework</a> and JavaScript.<br/>It uses 
 <a href="https://github.com/django/channels">django channles</a> and JavaScript WebSockets to send messages,
@@ -35,12 +31,10 @@ You can check it out in <a href="http://tolk-project.herokuapp.com/">demo</a>.
 - [x] single page application
 - [x] search
 
-<br/>
-
 ## ScreenShot
 
 <hr/>
-<img src="https://pasteboard.co/KeXo1Af.png" alt="dark_theme"/>
+<img src="blob:https://pasteboard.co/1214ee36-98d9-4641-b229-093353496c06" alt="dark_theme"/>
 
 ## Running Tolk locally
 
@@ -79,8 +73,6 @@ python manage.py runserver
 visit <a href="http://127.0.0.1:8000/">http://127.0.0.1:8000/</a> and you will see the tolk preloader.
 
 
-<br/>
-<br/>
 
 ## Frontend library
 
@@ -90,9 +82,8 @@ The library simply splits html code into templates (i call them components in co
 using the <a href="https://ejs.co/">ejs</a> template engine.
 There is also an interface for sending ajax and websocket messages. it's meant to be used to rapidly static 
 html pages into dynamically rendered ones.<br/>
-
 <br/>
 <img src="Documentation/JsAppClassdiagram.jpg" alt="silly_class_diagram"  width="700" height="700"/>
 <p>
- A UML Class Diagram For Silly.
+A UML Class Diagram For Silly.
 </p>
