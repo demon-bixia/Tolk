@@ -74,7 +74,8 @@ visit <a href="http://127.0.0.1:8000/">http://127.0.0.1:8000/</a> and you will s
 
 The tolk fronted is built using a custom js library in the folder assets/js/app/silly. The library simply splits html
 code into templates (i call them components in code) and then renders them using the <a href="https://ejs.co/">ejs</a>
-template engine. There is also an interface for sending ajax and websocket messages. it's meant to be used to rapidly
+template engine. There is also an interface for sending ajax and websocket messages. it's meant to be used to rapidly 
+convert
 static html pages into dynamically rendered ones.<br/>
 <br/>
 <img src="Documentation/JsAppClassdiagram.jpg" alt="silly_class_diagram"  width="700" height="700"/>
