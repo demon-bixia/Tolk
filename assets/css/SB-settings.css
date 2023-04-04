@@ -12,7 +12,8 @@
 }
 
 .settings .inside label {
-    color: var(--plain-font-color)
+    color: var(--plain-font-color);
+    font-size: 14px;
 }
 
 .settings label.custom-file-label {
@@ -31,7 +32,7 @@
 }
 
 .settings ul>li>.headline h5 {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
     margin-bottom: 7px;
     transition: all .3s;

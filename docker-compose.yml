@@ -1,0 +1,49 @@
+# docker-compose uses services instead of containers
+version: "3"
+
+services:
+  # define a service with name web
+  web:
+    # build the image in current directory
+    build: .
+    # execute this command to start this service
+    command: bash -c "python manage.py migrate && python manage.py collectstatic --no-input && daphne -b 0.0.0.0 -p 8000 Tolk.asgi:application -v2"
+    # command: python manage.py runserver 0.0.0.0:8000
+    # bind this directory with /code in container
+    volumes:
+      - .:/app 
+    # bind port 8000 in local machine with port 8000 in container
+    ports:
+      - 8000:8000
+    # don't run this service before db
+    depends_on:
+      - db
+      - cache
+
+  # define a database service with name db
+  db:
+    # build the container from this image
+    image: postgres
+    volumes:
+      # bind /var/lib/postgresql/data in container with ...
+      #...postgres_data volume in host files system
+      - postgres_data:/var/lib/postgresql/data
+    # the file containing environment variables for running the database
+    env_file:
+        - ./.env
+
+  # redis service
+  cache:
+    # build the container from this image
+    image: redis
+    # bind port 6379 in the local machine to port 6379 in the container
+    ports:
+      - 6379:6379
+    # presist redis data in the /data/cache directory in container
+    volumes:
+      - redis-data:/data/cache
+
+# list all named volumes in here
+volumes:
+  postgres_data:
+  redis-data:

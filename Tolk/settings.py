@@ -10,12 +10,14 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 import os
-
 import dj_database_url
-import django_heroku
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# load the environment variables.
+load_dotenv(os.path.join(BASE_DIR, ".env"))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -24,28 +26,36 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = int(os.environ.get('DEBUG', default=0))
 
-# hosts allowed for use with this application
-ALLOWED_HOSTS = [
-    'http://tolk-project.herokuapp.com/',
-]
+# HTTPS settings
+if os.environ.get('ENV') == 'production':
+    # hosts allowed for use with this application
+    ALLOWED_HOSTS = [os.environ.get('APP_HOST')]
+    # csrf won't work if this is net set.
+    CSRF_TRUSTED_ORIGINS = [os.environ.get('APP_ORIGIN')]
+    # Set this to True to avoid transmitting the CSRF cookie over HTTP accidentally.
+    CSRF_COOKIE_SECURE = True
+    # Set this to True to avoid transmitting the session cookie over HTTP accidentally.
+    SESSION_COOKIE_SECURE = True
 
 # Application definition
 INSTALLED_APPS = [
+    # 3rd party
+    'daphne',
+    'channels',
+    'rest_framework',
+
     # built-in
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'whitenoise.runserver_nostatic',  # 3rd party
     'django.contrib.staticfiles',
 
-    # third party
-    'channels',
-    'rest_framework',
-
-    # local
+    # locals
     'chat.apps.ChatConfig',
     'accounts.apps.AccountsConfig',
     'Authentication.apps.AuthenticationConfig',
@@ -55,13 +65,13 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'Tolk.urls'
@@ -84,9 +94,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Tolk.wsgi.application'
 
+ASGI_APPLICATION = "Tolk.asgi.application"
+
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-DATABASES = {'default': dj_database_url.config(ssl_require=False)}
+DATABASES = {
+    'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
+}
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
@@ -103,10 +119,10 @@ USE_TZ = True
 # Static files settings
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
-
-
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 STATIC_URL = '/static/'
+
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Extra places for collectstatic to find static files.
@@ -140,16 +156,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-#  *****Channels settings******
-# root application
-ASGI_APPLICATION = "Tolk.routing.application"
-# channel layers backends
+# Channel layers backends
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
             "hosts": [
-                f"redis://:{os.environ.get('REDIS_PASSWORD_1')}@{os.environ.get('REDIS_HOST_1')}",
+                os.environ.get("CACHE_URL")
             ],
         },
     },
@@ -160,19 +173,16 @@ CHANNEL_LAYERS = {
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": f"redis://{os.environ.get('REDIS_HOST_2')}",
+        "LOCATION": os.environ.get("CACHE_URL"),
         'TIMEOUT': 60 * 60 * 24,
         "OPTIONS": {
-            'PASSWORD': os.environ.get('REDIS_PASSWORD_2'),
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         },
         "KEY_PREFIX": "chat"
     },
 }
 
-
-
-# rest framework
+# Rest Framework
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
@@ -180,13 +190,3 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.AdminRenderer',
     ]
 }
-
-# **** heroku settings ****
-# Activate Django-Heroku.
-django_heroku.settings(locals())
-# delete ssl mode
-del DATABASES['default']['OPTIONS']['sslmode']
-
-# **** dropbox settings ****
-DEFAULT_FILE_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
-DROPBOX_OAUTH2_TOKEN = os.environ.get('DROPBOX_OAUTH2_TOKEN')

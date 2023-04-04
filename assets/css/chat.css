@@ -38,10 +38,9 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 30px 20px;
+    padding: 20px;
     background: var(--chat-top-background);
-    height: 100px;
-    max-height: 100px
+    max-height: 78px;
 }
 
 .chat .top .headline {
@@ -51,8 +50,8 @@
 }
 
 .chat .item .top img {
-    width: 42px;
-    height: 42px;
+    width: 40px;
+    height: 40px;
     border-radius: 100%;
     margin-right: 15px
 }
@@ -110,7 +109,8 @@
     display: flex;
     height: calc(100vh - 200px);
     overflow-x: hidden;
-    overflow-y: auto
+    overflow-y: auto;
+    flex-grow: 1;
 }
 
 .chat .item .middle::-webkit-scrollbar {
@@ -238,7 +238,7 @@
 }
 
 .chat .item .bottom {
-    padding: 20px 20px;
+    padding: 10px 20px;
     background: var(--chat-bottom-background)
 }
 

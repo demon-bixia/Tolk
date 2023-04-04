@@ -1,9 +1,11 @@
-{% load static %}<!Doctype html>
+{% load static %}
+<!Doctype html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Tolk</title>
     <!-- vendor styles -->
@@ -28,366 +30,383 @@
     <link rel="stylesheet" href="{% static 'css/compose.css' %}">
     <link rel="stylesheet" href="{% static 'css/loader.css' %}">
 </head>
+
 <body ondragstart="return false;" ondrop="return false;">
-<div class="b-preloader"><img src="{% static 'images/logo/TolkProjectIcon.ai.svg' %}" alt="Tolk_Icon">
-    <div class="progress">
-        <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+    <div class="b-preloader"><img src="{% static 'images/logo/TolkProjectIcon.ai.svg' %}" alt="Tolk_Icon">
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <a href="https://www.freepik.com/free-photos-vectors/logo">Logo vector created by freepik - www.freepik.com</a>
     </div>
-    <a href="https://www.freepik.com/free-photos-vectors/logo">Logo vector created by freepik - www.freepik.com</a>
-</div>
-<div class="loader"><i class="m-spinner--swirl"></i></div>
-<div class="layout">
-    <nav class="navigation">
-        <div class="container">
-            <ul class="nav" role="tablist">
-                <li>
-                    <div class="profile-container">
-                        <div class="circle-status ">
-                            <img class="profile-picture"
-                                 alt="avatar">
+    <div class="loader"><i class="m-spinner--swirl"></i></div>
+    <div class="layout">
+        <nav class="navigation">
+            <div class="container">
+                <ul class="nav" role="tablist">
+                    <li>
+                        <div class="profile-container">
+                            <div class="circle-status ">
+                                <img class="profile-picture" alt="avatar">
+                            </div>
+                        </div>
+                    </li>
+
+                    <li>
+                        <a href="#conversations" class="active tab-link">
+                            <i class="flaticon-menu-button"></i>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#friends" class="tab-link">
+                            <i class="flaticon-user"></i>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#notifications" class="tab-link">
+                            <i class="flaticon-notification"></i>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#settings" class="tab-link">
+                            <i class="flaticon-settings"></i>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#create" class="node">
+                            <i class="flaticon-add-button"></i>
+                        </a>
+                    </li>
+
+                    <li><a href="#logout" class="node" id="Logout"> <i class="flaticon-next-page"></i> </a></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="sidebar">
+            <div class="container">
+                <div class="top">
+                    <form><input type="text" class="form-control" placeholder="| Search In Your Inbox">
+                        <button type="button" class="btn"><i data-eva="search"></i></button>
+                    </form>
+                    <button type="button" class="btn" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false"><i class="eva-hover"> <i data-eva-animation="pulse" data-hover="hover"
+                                data-eva="more-vertical"></i></i></button>
+                    <div class="dropdown-menu" x-placement="bottom-start"
+                        style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(210px, 65px, 0px);">
+                        <button type="button" class="dropdown-item compose" data-toggle="modal" data-target="#create"><i
+                                data-eva="plus-circle-outline"></i>compose
+                        </button>
+                        <button type="button" class="dropdown-item"><i
+                                data-eva="settings-2-outline"></i>settings</button>
+                        <button type="button" class="dropdown-item"><i data-eva="arrow-back-outline"></i>logout</button>
+                    </div>
+                </div>
+                <div class="middle tab-content">
+                    <div class="tab-pane fade show active" id="conversations" role="tabpanel">
+                        <div class="container">
+                            <ul class="nav discussion" role="tablist"></ul>
                         </div>
                     </div>
-                </li>
-
-                <li>
-                    <a href="#conversations" class="active tab-link">
-                        <i class="flaticon-menu-button"></i>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="#friends" class="tab-link">
-                        <i class="flaticon-user"></i>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="#notifications" class="tab-link">
-                        <i class="flaticon-notification"></i>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="#settings" class="tab-link">
-                        <i class="flaticon-settings"></i>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="#create" class="node">
-                        <i class="flaticon-add-button"></i>
-                    </a>
-                </li>
-
-                <li><a href="#logout" class="node" id="Logout"> <i class="flaticon-next-page"></i> </a></li>
-            </ul>
-        </div>
-    </nav>
-    <div class="sidebar">
-        <div class="container">
-            <div class="top">
-                <form><input type="text" class="form-control" placeholder="| Search In Your Inbox">
-                    <button type="button" class="btn prepend"><i data-eva="search"></i></button>
-                </form>
-                <button type="button" class="btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
-                        class="eva-hover"> <i data-eva-animation="pulse" data-hover="hover"
-                                              data-eva="more-vertical"></i></i></button>
-                <div class="dropdown-menu" x-placement="bottom-start"
-                     style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(210px, 65px, 0px);">
-                    <button type="button" class="dropdown-item compose" data-toggle="modal" data-target="#create"><i
-                            data-eva="plus-circle-outline"></i>compose
-                    </button>
-                    <button type="button" class="dropdown-item"><i data-eva="settings-2-outline"></i>settings</button>
-                    <button type="button" class="dropdown-item"><i data-eva="arrow-back-outline"></i>logout</button>
-                </div>
-            </div>
-            <div class="middle tab-content">
-                <div class="tab-pane fade show active" id="conversations" role="tabpanel">
-                    <div class="container">
-                        <ul class="nav discussion" role="tablist"></ul>
+                    <div class="tab-pane fade " id="friends" role="tabpanel">
+                        <div class="container">
+                            <ul class="users" role="tablist"></ul>
+                        </div>
                     </div>
-                </div>
-                <div class="tab-pane fade " id="friends" role="tabpanel">
-                    <div class="container">
-                        <ul class="users" role="tablist"></ul>
+                    <div class="tab-pane fade " id="notifications" role="tabpanel">
+                        <div class="container">
+                            <ul class="notifications"></ul>
+                        </div>
                     </div>
-                </div>
-                <div class="tab-pane fade " id="notifications" role="tabpanel">
-                    <div class="container">
-                        <ul class="notifications"></ul>
-                    </div>
-                </div>
-                <div class="settings tab-pane fade" id="settings" role="tabpanel">
-                    <div class="container">
-                        <ul id="preferences">
-                            <li><a href="#" class="headline collapsed" data-toggle="collapse" aria-expanded="false"
-                                   data-target="#account" aria-controls="account">
-                                <div class="title"><h5>Account</h5>
-                                    <p>Update your profile details</p></div>
-                                <i data-eva="arrow-ios-forward"></i> <i data-eva="arrow-ios-downward"></i> </a>
-                                <div class="content collapse" id="account" data-parent="#preferences">
-                                    <div class="inside">
-                                        <form class="account" action="" method="post" id="account-form">
-                                            <div class="form-row">
-                                                <div class="col-sm-6">
-                                                    <div class="form-group"><label>First Name</label> <input
-                                                            name="first_name" autocomplete="off" type="text"
-                                                            class="form-control" placeholder="First name">
-                                                        <div class="error_container"></div>
+                    <div class="settings tab-pane fade" id="settings" role="tabpanel">
+                        <div class="container">
+                            <ul id="preferences">
+                                <li><a href="#" class="headline collapsed" data-toggle="collapse" aria-expanded="false"
+                                        data-target="#account" aria-controls="account">
+                                        <div class="title">
+                                            <h5>Account</h5>
+                                            <p>Update your profile details</p>
+                                        </div>
+                                        <i data-eva="arrow-ios-forward"></i> <i data-eva="arrow-ios-downward"></i>
+                                    </a>
+                                    <div class="content collapse" id="account" data-parent="#preferences">
+                                        <div class="inside">
+                                            <form class="account" action="" method="post" id="account-form">
+                                                <div class="form-row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group"><label>First Name</label> <input
+                                                                name="first_name" autocomplete="off" type="text"
+                                                                class="form-control" placeholder="First name">
+                                                            <div class="error_container"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group"><label>Last Name</label> <input
+                                                                name="last_name" autocomplete="off" type="text"
+                                                                class="form-control" placeholder="Last name">
+                                                            <div class="error_container"></div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-sm-6">
-                                                    <div class="form-group"><label>Last Name</label> <input
-                                                            name="last_name" autocomplete="off" type="text"
-                                                            class="form-control" placeholder="Last name">
-                                                        <div class="error_container"></div>
-                                                    </div>
+                                                <div class="form-group"><label>Location</label> <input name="location"
+                                                        autocomplete="off" type="text" class="form-control"
+                                                        placeholder="Location">
+                                                    <div class="error_container"></div>
                                                 </div>
-                                            </div>
-                                            <div class="form-group"><label>Location</label> <input name="location"
-                                                                                                   autocomplete="off"
-                                                                                                   type="text"
-                                                                                                   class="form-control"
-                                                                                                   placeholder="Location">
-                                                <div class="error_container"></div>
-                                            </div>
-                                            <div class="form-group"><label>Profile Picture</label>
-                                                <div class="custom-file"><input type="file" class="custom-file-input"
-                                                                                id="id_contact_pic"> <label
-                                                        class="custom-file-label" for="customFile">Choose contact
-                                                    picture file</label></div>
-                                                <div class="error_container"></div>
-                                            </div>
-                                            <button type="submit" class="btn btn-block btn-primary primary">Save
-                                                settings
-                                            </button>
-                                        </form>
+                                                <div class="form-group"><label>Profile Picture</label>
+                                                    <div class="custom-file"><input type="file"
+                                                            class="custom-file-input" id="id_contact_pic"> <label
+                                                            class="custom-file-label" for="customFile">Choose contact
+                                                            picture file</label></div>
+                                                    <div class="error_container"></div>
+                                                </div>
+                                                <button type="submit" class="btn btn-block btn-primary primary">Save
+                                                    settings
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li id="privacy-settings"><a href="#" class="headline collapsed" data-toggle="collapse"
+                                        aria-expanded="false" data-target="#privacy" aria-controls="privacy">
+                                        <div class="title">
+                                            <h5>Privacy &amp; Safety</h5>
+                                            <p>Control your privacy settings</p>
+                                        </div>
+                                        <i data-eva="arrow-ios-forward"></i> <i data-eva="arrow-ios-downward"></i>
+                                    </a>
+                                    <div class="content collapse" id="privacy" data-parent="#preferences">
+                                        <div class="inside">
+                                            <ul class="options">
+                                                <li class="privacy-mode">
+                                                    <div class="headline">
+                                                        <h5>Privacy Mode</h5> <label class="switch">
+                                                            <input autocomplete="off" type="checkbox" checked=""> <span
+                                                                class="slider round"></span> </label>
+                                                    </div>
+                                                    <p>let other contacts add you into a conversation or group.</p>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li id="notifications-settings"><a href="#" class="headline collapsed"
+                                        data-toggle="collapse" aria-expanded="false" data-target="#alerts"
+                                        aria-controls="alerts">
+                                        <div class="title">
+                                            <h5>Notifications</h5>
+                                            <p>Turn notifications on or off</p>
+                                        </div>
+                                        <i data-eva="arrow-ios-forward"></i> <i data-eva="arrow-ios-downward"></i>
+                                    </a>
+                                    <div class="content collapse" id="alerts" data-parent="#preferences">
+                                        <div class="inside">
+                                            <ul class="options">
+                                                <li class="notifications-mode">
+                                                    <div class="headline">
+                                                        <h5>Turn On Notifications</h5> <label class="switch"> <input
+                                                                type="checkbox" checked=""> <span
+                                                                class="slider round"></span> </label>
+                                                    </div>
+                                                    <p>get notifications from conversations and accounts.</p>
+                                                </li>
+                                                <li class="save-notifications-mode">
+                                                    <div class="headline">
+                                                        <h5>save Notifications</h5> <label class="switch">
+                                                            <input type="checkbox" checked> <span
+                                                                class="slider round"></span>
+                                                        </label>
+                                                    </div>
+                                                    <p>don't delete notifications after they are viewed.</p>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li id="appearance-settings"><a href="#" class="headline collapsed"
+                                        data-toggle="collapse" aria-expanded="false" data-target="#appearance"
+                                        aria-controls="appearance">
+                                        <div class="title">
+                                            <h5>Appearance</h5>
+                                            <p>Customize the look of Swipe</p>
+                                        </div>
+                                        <i data-eva="arrow-ios-forward"></i> <i data-eva="arrow-ios-downward"></i>
+                                    </a>
+                                    <div class="content collapse" id="appearance" data-parent="#preferences">
+                                        <div class="inside">
+                                            <ul class="options">
+                                                <li class="night-mode">
+                                                    <div class="headline">
+                                                        <h5>Night Mode</h5> <label class="switch"> <input
+                                                                type="checkbox"> <span class="slider round mode"></span>
+                                                        </label>
+                                                    </div>
+                                                    <p>A Dark theme.</p>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="chat">
+            <div class="tab-content"></div>
+        </div>
+        <div class="modal fade" id="create" tabindex="-1" role="dialog" aria-label="create" aria-hidden="true"></div>
+        <div class="modal " id="Register" tabindex="-1" role="dialog" aria-label="Register" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4><i class="flaticon-user"></i></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="details tab-pane fade show active">
+                            <form action="" method="post" id="register-form" enctype="multipart/form-data">
+                                <div class="row">
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group"><label>First Name:</label> <input autocomplete="off"
+                                                type="text" name="first_name" id="id_first_name" class="form-control"
+                                                placeholder="Your First Name">
+                                            <div class="error_container"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group"><label>Last Name:</label> <input autocomplete="off"
+                                                type="text" name="last_name" id="id_last_name" class="form-control"
+                                                placeholder="Your Last Name">
+                                            <div class="error_container"></div>
+                                        </div>
                                     </div>
                                 </div>
-                            </li>
-                            <li id="privacy-settings"><a href="#" class="headline collapsed" data-toggle="collapse"
-                                                         aria-expanded="false" data-target="#privacy"
-                                                         aria-controls="privacy">
-                                <div class="title"><h5>Privacy &amp; Safety</h5>
-                                    <p>Control your privacy settings</p></div>
-                                <i data-eva="arrow-ios-forward"></i> <i data-eva="arrow-ios-downward"></i> </a>
-                                <div class="content collapse" id="privacy" data-parent="#preferences">
-                                    <div class="inside">
-                                        <ul class="options">
-                                            <li class="privacy-mode">
-                                                <div class="headline"><h5>Privacy Mode</h5> <label class="switch">
-                                                    <input autocomplete="off" type="checkbox" checked=""> <span
-                                                        class="slider round"></span> </label></div>
-                                                <p>let other contacts add you into a conversation or group.</p></li>
-                                        </ul>
-                                    </div>
+                                <div class="form-group"><label>Email:</label> <input autocomplete="off" type="email"
+                                        name="email" id="id_email" class="form-control" placeholder="Email Address">
+                                    <div class="error_container"></div>
                                 </div>
-                            </li>
-                            <li id="notifications-settings"><a href="#" class="headline collapsed"
-                                                               data-toggle="collapse" aria-expanded="false"
-                                                               data-target="#alerts" aria-controls="alerts">
-                                <div class="title"><h5>Notifications</h5>
-                                    <p>Turn notifications on or off</p></div>
-                                <i data-eva="arrow-ios-forward"></i> <i data-eva="arrow-ios-downward"></i> </a>
-                                <div class="content collapse" id="alerts" data-parent="#preferences">
-                                    <div class="inside">
-                                        <ul class="options">
-                                            <li class="notifications-mode">
-                                                <div class="headline"><h5>Turn On Notifications</h5> <label
-                                                        class="switch"> <input type="checkbox" checked=""> <span
-                                                        class="slider round"></span> </label></div>
-                                                <p>get notifications from conversations and accounts.</p></li>
-                                            <li class="save-notifications-mode">
-                                                <div class="headline"><h5>save Notifications</h5> <label class="switch">
-                                                    <input type="checkbox" checked> <span class="slider round"></span>
-                                                </label></div>
-                                                <p>don't delete notifications after they are viewed.</p></li>
-                                        </ul>
-                                    </div>
+                                <div class="form-group"><label>location City, Country:</label> <input autocomplete="off"
+                                        type="text" name="location" id="id_location" class="form-control"
+                                        placeholder="Your Location">
+                                    <div class="error_container"></div>
                                 </div>
-                            </li>
-                            <li id="appearance-settings"><a href="#" class="headline collapsed" data-toggle="collapse"
-                                                            aria-expanded="false" data-target="#appearance"
-                                                            aria-controls="appearance">
-                                <div class="title"><h5>Appearance</h5>
-                                    <p>Customize the look of Swipe</p></div>
-                                <i data-eva="arrow-ios-forward"></i> <i data-eva="arrow-ios-downward"></i> </a>
-                                <div class="content collapse" id="appearance" data-parent="#preferences">
-                                    <div class="inside">
-                                        <ul class="options">
-                                            <li class="night-mode">
-                                                <div class="headline"><h5>Night Mode</h5> <label class="switch"> <input
-                                                        type="checkbox"> <span class="slider round mode"></span>
-                                                </label></div>
-                                                <p>A Dark theme.</p></li>
-                                        </ul>
-                                    </div>
+                                <div class="form-group"><label>password:</label> <input autocomplete="off"
+                                        type="password" name="password" id="id_password1" class="form-control"
+                                        placeholder="Your Password">
+                                    <div class="error_container"></div>
                                 </div>
-                            </li>
-                        </ul>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" data-target="#register-form" class="button btn-primary">Register</button>
+                        <div class="switch-form"><small>Already have an account ?<a href="#Login"
+                                    class="switch-login">Login</a></small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal " id="Login" tabindex="-1" role="dialog" aria-label="Login" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4><i class="flaticon-padlock"></i></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="details tab-pane fade show active">
+                            <form action="{% url 'login' %}" method="post" id="login-form">
+                                <div class="form-group"><label>Email:</label> <input autocomplete="off" type="email"
+                                        name="email" id="id_email_address" class="form-control"
+                                        placeholder="Email Address">
+                                    <div class="error_container"></div>
+                                </div>
+                                <div class="form-group"><label>password</label> <input autocomplete="off"
+                                        type="password" name="password" id="id_password" class="form-control"
+                                        placeholder="Your Password">
+                                    <div class="error_container"></div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button data-target="#login-form" type="submit" class="button btn-primary">Login</button>
+                        <div class="switch-form"><small>Don't have an account ? <a href="#Register"
+                                    class="switch-register">SignUp</a></small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="Created" tabindex="-1" role="dialog" aria-label="Created" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body"><i class="flaticon-check-square"></i>
+                        <small>New Account Created you can
+                            <a href="#Login" class="switch-login">login</a>
+                        </small>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="chat">
-        <div class="tab-content"></div>
-    </div>
-    <div class="modal fade" id="create" tabindex="-1" role="dialog" aria-label="create" aria-hidden="true"></div>
-    <div class="modal " id="Register" tabindex="-1" role="dialog" aria-label="Register" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header"><h4><i class="flaticon-user"></i></h4></div>
-                <div class="modal-body">
-                    <div class="details tab-pane fade show active">
-                        <form action="" method="post" id="register-form" enctype="multipart/form-data">
-                            <div class="row">
-                                <div class="col-12 col-md-6">
-                                    <div class="form-group"><label>First Name:</label> <input autocomplete="off"
-                                                                                              type="text"
-                                                                                              name="first_name"
-                                                                                              id="id_first_name"
-                                                                                              class="form-control"
-                                                                                              placeholder="Your First Name">
-                                        <div class="error_container"></div>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6">
-                                    <div class="form-group"><label>Last Name:</label> <input autocomplete="off"
-                                                                                             type="text"
-                                                                                             name="last_name"
-                                                                                             id="id_last_name"
-                                                                                             class="form-control"
-                                                                                             placeholder="Your Last Name">
-                                        <div class="error_container"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group"><label>Email:</label> <input autocomplete="off" type="email"
-                                                                                 name="email" id="id_email"
-                                                                                 class="form-control"
-                                                                                 placeholder="Email Address">
-                                <div class="error_container"></div>
-                            </div>
-                            <div class="form-group"><label>location City, Country:</label> <input autocomplete="off"
-                                                                                                  type="text"
-                                                                                                  name="location"
-                                                                                                  id="id_location"
-                                                                                                  class="form-control"
-                                                                                                  placeholder="Your Location">
-                                <div class="error_container"></div>
-                            </div>
-                            <div class="form-group"><label>password:</label> <input autocomplete="off" type="password"
-                                                                                    name="password" id="id_password1"
-                                                                                    class="form-control"
-                                                                                    placeholder="Your Password">
-                                <div class="error_container"></div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" data-target="#register-form" class="button btn-primary">Register</button>
-                    <div class="switch-form"><small>Already have an account ?<a href="#Login"
-                                                                                class="switch-login">Login</a></small>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal " id="Login" tabindex="-1" role="dialog" aria-label="Login" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header"><h4><i class="flaticon-padlock"></i></h4></div>
-                <div class="modal-body">
-                    <div class="details tab-pane fade show active">
-                        <form action="{% url 'login' %}" method="post" id="login-form">
-                            <div class="form-group"><label>Email:</label> <input autocomplete="off" type="email"
-                                                                                 name="email" id="id_email_address"
-                                                                                 class="form-control"
-                                                                                 placeholder="Email Address">
-                                <div class="error_container"></div>
-                            </div>
-                            <div class="form-group"><label>password</label> <input autocomplete="off" type="password"
-                                                                                   name="password" id="id_password"
-                                                                                   class="form-control"
-                                                                                   placeholder="Your Password">
-                                <div class="error_container"></div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button data-target="#login-form" type="submit" class="button btn-primary">Login</button>
-                    <div class="switch-form"><small>Don't have an account ? <a href="#Register" class="switch-register">SignUp</a></small>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal" id="Created" tabindex="-1" role="dialog" aria-label="Created" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-body"><i class="flaticon-check-square"></i>
-                    <small>New Account Created you can
-                        <a href="#Login" class="switch-login">login</a>
-                    </small>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<audio style="display: none;" src="{% static 'sounds/for-sure.ogg' %}" class="notifications-sound"></audio>
-<audio style="display: none;" src="{% static 'sounds/message_bubble_sound.ogg' %}" class="message-sound"></audio>
+    <audio style="display: none;" src="{% static 'sounds/notifications_sound.mp3' %}"
+        class="notifications-sound"></audio>
+    <audio style="display: none;" src="{% static 'sounds/message_bubble_sound.ogg' %}" class="message-sound"></audio>
 
-<!-- vendor javascript scripts -->
-<script src="{% static 'js/vendor/eva.min.js' %}"></script>
-<script src="{% static 'js/vendor/ejs.min.js' %}"></script>
-<script src="{% static 'js/vendor/js.cookie-2.2.1.min.js' %}"></script>
+    <!-- vendor javascript scripts -->
+    <script src="{% static 'js/vendor/eva.min.js' %}"></script>
+    <script src="{% static 'js/vendor/ejs.min.js' %}"></script>
+    <script src="{% static 'js/vendor/js.cookie-2.2.1.min.js' %}"></script>
 
-<!-- local javascript modules-->
-<!--silly.js-->
-<script type="module" src="{% static 'js/app/silly/renderer.js' %}"></script>
-<script type="module" src="{% static 'js/app/silly/component_lib.js' %}"></script>
-<script type="module" src="{% static 'js/app/silly/communication.js' %}"></script>
-<script type="module" src="{% static 'js/app/silly/router.js' %}"></script>
-<script type="module" src="{% static 'js/app/silly/effects.js' %}"></script>
+    <!-- local javascript modules-->
+    <!--silly.js-->
+    <script type="module" src="{% static 'js/app/silly/renderer.js' %}"></script>
+    <script type="module" src="{% static 'js/app/silly/component_lib.js' %}"></script>
+    <script type="module" src="{% static 'js/app/silly/communication.js' %}"></script>
+    <script type="module" src="{% static 'js/app/silly/router.js' %}"></script>
+    <script type="module" src="{% static 'js/app/silly/effects.js' %}"></script>
 
-<!-- app modules -->
-<script type="module" src="{% static 'js/app/init.js' %}"></script>
-<script type="module" src="{% static 'js/app/load.js' %}"></script>
-<script type="module" src="{% static 'js/app/interface.js' %}"></script>
-<script type="module" src="{% static 'js/app/main.js' %}"></script>
-<script type="module" src="{% static 'js/app/chat.js' %}"></script>
-<script type="module" src="{% static 'js/app/events.js' %}"></script>
-<script type="module" src="{% static 'js/app/routes.js' %}"></script>
-<script type="module" src="{% static 'js/app/components.js' %}"></script>
+    <!-- app modules -->
+    <script type="module" src="{% static 'js/app/init.js' %}"></script>
+    <script type="module" src="{% static 'js/app/load.js' %}"></script>
+    <script type="module" src="{% static 'js/app/interface.js' %}"></script>
+    <script type="module" src="{% static 'js/app/main.js' %}"></script>
+    <script type="module" src="{% static 'js/app/chat.js' %}"></script>
+    <script type="module" src="{% static 'js/app/events.js' %}"></script>
+    <script type="module" src="{% static 'js/app/routes.js' %}"></script>
+    <script type="module" src="{% static 'js/app/components.js' %}"></script>
 
-<!-- components -->
-<script type="module" src="{% static 'js/app/components/bubble-last-message.js' %}"></script>
-<script type="module" src="{% static 'js/app/components/chat.js' %}"></script>
-<script type="module" src="{% static 'js/app/components/contact-picture.js' %}"></script>
-<script type="module" src="{% static 'js/app/components/chats-list.js' %}"></script>
-<script type="module" src="{% static 'js/app/components/contact-update-form.js' %}"></script>
-<script type="module" src="{% static 'js/app/components/conversation-create-form.js' %}"></script>
-<script type="module" src="{% static 'js/app/components/conversations-list.js' %}"></script>
-<script type="module" src="{% static 'js/app/components/conversation-bubble.js' %}"></script>
-<script type="module" src="{% static 'js/app/components/first-chat.js' %}"></script>
-<script type="module" src="{% static 'js/app/components/first-conversation-bubble.js' %}"></script>
-<script type="module" src="{% static 'js/app/components/first-notification-bubble.js' %}"></script>
-<script type="module" src="{% static 'js/app/components/friends-list.js' %}"></script>
-<script type="module" src="{% static 'js/app/components/history-switch.js' %}"></script>
-<script type="module" src="{% static 'js/app/components/message.js' %}"></script>
-<script type="module" src="{% static 'js/app/components/notification-bubble.js' %}"></script>
-<script type="module" src="{% static 'js/app/components/notifications-list.js' %}"></script>
-<script type="module" src="{% static 'js/app/components/notifications-switch.js' %}"></script>
-<script type="module" src="{% static 'js/app/components/privacy-switch.js' %}"></script>
-<script type="module" src="{% static 'js/app/components/save-notifications-switch.js' %}"></script>
-<script type="module" src="{% static 'js/app/components/theme-switch.js' %}"></script>
+    <!-- components -->
+    <script type="module" src="{% static 'js/app/components/bubble-last-message.js' %}"></script>
+    <script type="module" src="{% static 'js/app/components/chat.js' %}"></script>
+    <script type="module" src="{% static 'js/app/components/contact-picture.js' %}"></script>
+    <script type="module" src="{% static 'js/app/components/chats-list.js' %}"></script>
+    <script type="module" src="{% static 'js/app/components/contact-update-form.js' %}"></script>
+    <script type="module" src="{% static 'js/app/components/conversation-create-form.js' %}"></script>
+    <script type="module" src="{% static 'js/app/components/conversations-list.js' %}"></script>
+    <script type="module" src="{% static 'js/app/components/conversation-bubble.js' %}"></script>
+    <script type="module" src="{% static 'js/app/components/first-chat.js' %}"></script>
+    <script type="module" src="{% static 'js/app/components/first-conversation-bubble.js' %}"></script>
+    <script type="module" src="{% static 'js/app/components/first-notification-bubble.js' %}"></script>
+    <script type="module" src="{% static 'js/app/components/friends-list.js' %}"></script>
+    <script type="module" src="{% static 'js/app/components/history-switch.js' %}"></script>
+    <script type="module" src="{% static 'js/app/components/message.js' %}"></script>
+    <script type="module" src="{% static 'js/app/components/notification-bubble.js' %}"></script>
+    <script type="module" src="{% static 'js/app/components/notifications-list.js' %}"></script>
+    <script type="module" src="{% static 'js/app/components/notifications-switch.js' %}"></script>
+    <script type="module" src="{% static 'js/app/components/privacy-switch.js' %}"></script>
+    <script type="module" src="{% static 'js/app/components/save-notifications-switch.js' %}"></script>
+    <script type="module" src="{% static 'js/app/components/theme-switch.js' %}"></script>
 
-<div style="display:none;">Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a>
-    from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a
+    <div style="display:none;">Icons made by <a href="https://www.flaticon.com/authors/freepik"
+            title="Freepik">Freepik</a>
+        from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a
             href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0
-        BY</a></div>
+            BY</a></div>
 </body>
+
 </html>

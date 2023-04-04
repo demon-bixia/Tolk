@@ -1,12 +1,41 @@
+.modal-dialog.modal-dialog-centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .modal-content {
     border: none;
-    border-radius: 6px
+    border-radius: 6px;
+    width: 4500px;
+    padding: 40px;
+    background: var(--compose-body-nav-background);
+}
+
+#create.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+#create .modal-dialog.modal-dialog-centered {
+    height: fit-content !important;
+    min-height: unset !important;
+    margin: 0;
+}
+
+#create .modal-content {
+    max-height: 500px;
+    overflow-y: scroll;
+}
+
+#create .modal-content::-webkit-scrollbar {
+    display: none;
 }
 
 .modal-header {
+    padding: 0;
     align-items: center;
-    padding: 25px 30px;
-    background: var(--compose-body-nav-background);
     border-bottom: none
 }
 
@@ -69,9 +98,6 @@
     border-radius: 6px
 }
 
-.modal-body .details {
-    padding: 30px 30px 0
-}
 
 .modal-body .details label {
     color: var(--plain-font-color)
@@ -83,7 +109,7 @@
 
 .modal-body input.form-control {
     padding: 0 20px;
-    height: 55px;
+    height: 45px;
     color: var(--compose-input-font-color);
     background: var(--compose-input-background-color)
 }
@@ -310,7 +336,7 @@
 }
 
 .modal-footer {
-    padding: 30px;
+    padding: 0;
     background: var(--compose-body-nav-background);
     border: none
 }
@@ -318,7 +344,6 @@
 .modal+.modal {
     background: var(--auth-modal-background-color);
     overflow-y: auto;
-    padding-top: 50px
 }
 
 .modal+.modal::-webkit-scrollbar {

@@ -29,23 +29,31 @@
 }
 
 .sidebar .top {
-    height: 100px;
-    max-height: 100px;
     background: var(--search-form-input-background-color);
-    padding: 30px 20px
+    padding: 20px 20px;
+    height: 78px;
 }
 
 .sidebar .top form {
-    position: relative
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar .top form .prepend {
+    position: relative;
+    margin-right: 10px;
+    padding: 0;
 }
 
 .sidebar .top .form-control {
-    padding: 0 10px 0 50px;
-    height: 55px;
+    padding:0;
     border-radius: 30px;
     background: 0 0;
+    order:2;
     color: var(--search-form-input-font-color)
 }
+
 
 .sidebar .top form .eva {
     fill: var(--search-form-input-font-color)
@@ -144,12 +152,12 @@
     }
 
     .sidebar .top {
-        height: 100px;
-        display: flex
+        display: flex;
+        padding: 20px 20px;
     }
 
     .sidebar .top form {
-        flex-grow: 2
+        flex-grow: 2;
     }
 
     .sidebar .top .btn[data-toggle=dropdown] {
@@ -182,19 +190,11 @@
 }
 
 .sidebar .top {
-    height: 100px;
-    max-height: 100px;
     background: var(--search-form-input-background-color);
-    padding: 30px 20px
-}
-
-.sidebar .top form {
-    position: relative
+    padding: 20px 20px;
 }
 
 .sidebar .top .form-control {
-    padding: 0 10px 0 50px;
-    height: 55px;
     border-radius: 30px;
     background: 0 0;
     color: var(--search-form-input-font-color)
@@ -297,8 +297,8 @@
     }
 
     .sidebar .top {
-        height: 100px;
-        display: flex
+        display: flex;
+        padding: 20px 20px;
     }
 
     .sidebar .top form {
