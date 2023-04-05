@@ -190,3 +190,10 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.AdminRenderer',
     ]
 }
+
+# **** storage settings ****
+if os.environ.get('ENV') == 'production':
+    DEFAULT_FILE_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
+    DROPBOX_OAUTH2_TOKEN = os.environ.get('DROPBOX_OAUTH2_TOKEN')
+    DROPBOX_APP_KEY = os.environ.get('DROPBOX_APP_KEY')
+    DROPBOX_APP_SECRET = os.environ.get('DROPBOX_APP_SECRET')
