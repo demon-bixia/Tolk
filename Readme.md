@@ -63,10 +63,10 @@ install dependencies
 pip install -r requirements.txt
 ```
 
-now run the development server
+now run the daphne server
 
 ```bash
-python manage.py runserver
+docker compose up
 ```
 
 visit <a href="http://127.0.0.1:8000/">http://127.0.0.1:8000/</a> and you will see the tolk preloader.
