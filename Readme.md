@@ -1,6 +1,6 @@
-<div style="width:100;height:auto;display:flex;justify-content:center;">
+<h5 align="center">
     <img src="assets/images/logo/tolk-logo.svg" style="width:350px;height:350px;" />
-</div>
+</h5>
 
 <br/>
 
