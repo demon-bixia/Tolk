@@ -1,6 +1,10 @@
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/facebook/react/blob/main/LICENSE)
+<div style="width:100;height:auto;display:flex;justify-content:center;">
+    <img src="assets/images/logo/tolk-logo.svg" style="width:350px;height:350px;" />
+</div>
 
-<h1>
+<br/>
+
+<h1 align="center">
     A Beautiful Django, Vanilla JavaScript Chat Application
 </h1>
 
@@ -24,13 +28,12 @@ You can check it out in <a href="http://tolk-project.herokuapp.com/">demo</a>.
 - [x] contacts system
 - [x] create groups
 - [x] privacy mode
-- [x] app notifications
-- [x] privacy mode
-- [x] dark mode
-- [x] API at /api
+- [x] dark/light modes
+- [x] notifications
 - [x] send attachments
-- [x] single page application
+- [x] API at /api
 - [x] search
+- [x] single page application
 
 <br>
 
