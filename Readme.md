@@ -42,7 +42,7 @@ You can check it out in <a href="http://tolk-project.herokuapp.com/">demo</a>.
 clone the repo
 
 ```
-git clone https://github.com/MuhammadSalahAli/TolkProject.git
+git clone https://github.com/demon-bixia/Tolk.git
 ```
 
 enter the project's folder
